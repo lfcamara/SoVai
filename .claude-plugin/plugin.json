@@ -1,0 +1,16 @@
+{
+  "name": "sovai",
+  "version": "0.1.0",
+  "description": "Engineering workflow plugin for the SoVai mobile app project — skills and agents organized by workflow block (planning, development, testing/review, debugging, wrap-up, prototyping).",
+  "author": {
+    "name": "Leonardo Câmara"
+  },
+  "license": "MIT",
+  "skills": [
+    "./skills/productivity/writing-great-skills",
+    "./skills/productivity/grilling",
+    "./skills/productivity/grill-me",
+    "./skills/engineering/grill-with-docs",
+    "./skills/engineering/domain-modeling"
+  ]
+}
