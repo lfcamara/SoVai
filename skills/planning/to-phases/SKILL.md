@@ -1,0 +1,73 @@
+---
+name: to-phases
+description: Break a large effort into phases that each ship something useful on their own. Use when a spec covers more work than one release, when the user asks how to sequence or stage a project, or when another skill needs a roadmap before tickets can be written.
+---
+
+# To Phases
+
+An effort is too large to build in one go. Break it into **phases** — each one ending in something that **ships**.
+
+Shipping is the whole discipline. A phase that ends with work merged but nothing a user can do is not a phase; it is a checkpoint someone drew on a plan. Naming those honestly is the difference between a roadmap and a wish.
+
+## Gather context
+
+Work from the PRD and the spec under `docs/planning/<slug>/`, plus whatever the session already established. Read the codebase to see what exists today — the starting point decides how much has to happen before the first phase can ship at all.
+
+## Draft the phases
+
+Each phase carries:
+
+- **What ships** — the capability that exists at the end of it, stated as something a user can do
+- **Why it stands alone** — the value it delivers even if everything after it is cancelled
+- **Exit criteria** — the observable conditions that make it done
+- **Depends on** — the earlier phases that must land first
+
+Two tests decide whether the breakdown holds. Apply both to every phase before showing it to anyone:
+
+- **The cancellation test.** If every later phase were cancelled tomorrow, is the user better off than before this phase existed? A phase that fails leaves the project stranded mid-migration, and should be merged into the phase that completes its value.
+- **Full coverage.** Every capability in the spec's scope lands in exactly one phase. Walk the spec and account for each one — work that appears in no phase is work that will surface late, and work that appears in two is a boundary drawn in the wrong place.
+
+Order the phases so each one raises the floor: the earliest phases carry the load-bearing risk and the thinnest end-to-end path, later phases widen it.
+
+Phases are coarse — a phase spans many sessions and holds several tickets. Slicing a phase into ticket-sized work is `to-tickets`, not this skill.
+
+## Quiz the user
+
+Present the phases as a numbered list, each with what ships, why it stands alone, and its exit criteria. Then ask:
+
+- Does each phase ship something they would actually release?
+- Is the ordering right — does anything valuable sit behind work that could come later?
+- Should any phase be split or merged?
+
+Iterate until the user approves.
+
+## Write the roadmap
+
+Write the approved breakdown to `docs/planning/<slug>/roadmap.md`, beside the PRD and spec.
+
+<roadmap-template>
+
+# <Effort name> — Roadmap
+
+PRD: [prd.md](./prd.md) · Spec: [spec.md](./spec.md)
+
+## Phase 1 — <name>
+
+**Ships:** what a user can do at the end of this phase.
+
+**Stands alone because:** the value that survives if everything after is cancelled.
+
+**Depends on:** earlier phases, or "Nothing — can start immediately".
+
+**Exit criteria:**
+
+- [ ] Criterion 1
+- [ ] Criterion 2
+
+</roadmap-template>
+
+## Carry it forward
+
+Phases are planned once; tickets are written per phase, at the start of that phase, against the codebase as it stands then. Writing every phase's tickets now would be planning against a codebase that no longer exists by the time the work starts.
+
+So continue in the same session with the `to-tickets` skill for **phase 1 only**, and leave the later phases as they are — each one gets its own `to-tickets` run when it begins.
