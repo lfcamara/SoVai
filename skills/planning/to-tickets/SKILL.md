@@ -46,6 +46,8 @@ Iterate until the user approves. Publish nothing before then.
 
 Read `docs/agents/issue-tracker.md` in the repo for where issues live and how this project expresses blocking. Absent that file, default to **Linear**.
 
+Linear needs a team and a project to publish into, and neither is guessable from the repo. Look for them in the repo's `CLAUDE.md`, which is where a project records the facts every session needs. Where they are not recorded anywhere, ask once and offer to write the answer into `CLAUDE.md` — a fact re-asked every run is a fact that was never captured.
+
 Publish in dependency order — blockers first — so each ticket can reference real identifiers by the time it needs them. Work the **frontier**: any ticket whose blockers are all published.
 
 - **Linear** — one issue per ticket, on the project matching the effort. Use Linear's native blocking relationship for the edges, and make each ticket a sub-issue of the phase where the tracker models phases as parent issues. If the connected Linear tools cannot create issues, say so plainly and write the tickets to the local fallback instead of silently dropping them.

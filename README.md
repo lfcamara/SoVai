@@ -39,6 +39,14 @@ Todas as skills são model-invoked: é o que permite uma alcançar a outra. Skil
 
 Tudo que um esforço produz vive em `docs/planning/<effort>/`. O `to-prd` nomeia o diretório; toda etapa seguinte o resolve a partir do filesystem — é o que permite retomar uma fase semanas depois, em sessão limpa.
 
+### Configuração por projeto
+
+O plugin não tem skill de setup, de propósito: só existe um fato que ele não consegue descobrir sozinho — o **team e o project do Linear** onde os tickets deste repo vivem.
+
+Esse fato vai no `CLAUDE.md` do repo-alvo, que já é carregado em toda sessão. Não há passo de setup para lembrar de rodar, e o orquestrador — que é quem publica ticket — já o tem em contexto.
+
+Para um projeto que fuja do padrão (outro tracker, outra forma de expressar bloqueio), escreva `docs/agents/issue-tracker.md` à mão; `to-tickets` e `open-pr` o leem quando existe e caem no default Linear quando não.
+
 Decisões de design registradas em [`docs/adr/`](docs/adr/) — vale ler antes de mexer no pipeline.
 
 ## Desenvolvimento

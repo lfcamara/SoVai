@@ -29,7 +29,7 @@ Leave file paths and code out of the body, the same reason `to-tickets` keeps th
 
 ## Link the ticket back
 
-A PR that links to its ticket but not the reverse leaves half the trail cold. Read `docs/agents/issue-tracker.md` in the repo, if present, for how this project links tickets and PRs; absent that file, default to Linear and attach the PR link to the issue. For a local-markdown ticket, append a line to the ticket file pointing at the PR.
+A PR that links to its ticket but not the reverse leaves half the trail cold. Read `docs/agents/issue-tracker.md` in the repo, if present, for how this project links tickets and PRs; absent that file, default to Linear and attach the PR link to the issue, taking the team and project from the repo's `CLAUDE.md` as `to-tickets` does. For a local-markdown ticket, append a line to the ticket file pointing at the PR.
 
 ## Draft until reviewed
 
