@@ -8,8 +8,8 @@ Plugin Claude Code com um engineering workflow de uso geral — serve para qualq
 - **Prototipagem** — ✅ implementado
 - **Desenvolvimento** — ✅ implementado
 - **Testes e review** — ✅ implementado
+- **Finalização de trabalho** — ✅ implementado
 - **Debug** — diagnóstico e correção de bugs
-- **Finalização de trabalho** — handoff, checklist de conclusão
 
 ## O pipeline
 
@@ -76,6 +76,18 @@ Cinco eixos independentes, despachados em paralelo como subagentes `reviewer` (r
 | [`test-review`](skills/review/test-review/SKILL.md) | Se os testes falhariam numa regressão real. Coverage % é sinal fraco, não alvo |
 | [`security-review`](skills/review/security-review/SKILL.md) | Superfície de ataque. Achado precisa nomear caminho concreto até o dano |
 | [`migration-review`](skills/review/migration-review/SKILL.md) | Migrations — reversibilidade, expand–contract, backfill. Aqui o modo de falha é perda de dados |
+
+## Finalização
+
+[`wrap-up`](skills/wrap-up/wrap-up/SKILL.md) — roda na sessão do orquestrador, nunca em subagente.
+
+Merge é o único ato irreversível e voltado pra fora do pipeline, então é autorizado **só pela sua aprovação explícita daquele PR**. Reviews passando e CI verde são sinais que você pesa ao aprovar — não são a aprovação. E aprovar um PR não autoriza o próximo.
+
+Ordem importa: merge → confirmar que entrou → tracker → documentos. Ticket movido pra `Done` antes de um merge que falha é tracker mentindo, e nada depois consegue detectar.
+
+A parte substantiva é reconciliar os documentos, sob uma regra: **documento segue decisão, não diff.** Código divergiu da spec porque alguém decidiu diferente durante o build → a spec está desatualizada, atualiza. Divergiu porque o código está errado → isso é defeito do `spec-review`, e reescrever a spec pra bater **transformaria o bug em requisito**. Distinguir os dois é o julgamento que a etapa existe pra fazer.
+
+Fecha o loop por fase: quando o último ticket da fase entra, os critérios de saída do `roadmap.md` são **verificados, não presumidos** — e a próxima fase ganha seu próprio `to-tickets`.
 
 ## Orquestração
 
