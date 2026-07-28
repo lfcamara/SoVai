@@ -32,6 +32,10 @@ _Avoid_: Issue, task, story (the tracker may call it an issue; the skills call i
 The surface at which a feature's behaviour can be observed from outside — where tests attach.
 _Avoid_: Boundary, interface, test hook
 
+**Brief**:
+The complete instruction set handed to a subagent: outcome, skill, inputs, done criteria, scope fence, and what to report. It is everything the subagent gets, since none of the orchestrator's conversation reaches it.
+_Avoid_: Prompt, task description, instructions
+
 **Effort**:
 One unit of planned work, from idea through tickets. Its name is the kebab-case directory under `docs/planning/` holding every document it produces — `to-prd` names it, every later stage resolves it.
 _Avoid_: Feature, project, initiative, epic

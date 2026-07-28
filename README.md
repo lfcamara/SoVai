@@ -41,6 +41,22 @@ Tudo que um esforço produz vive em `docs/planning/<effort>/`. O `to-prd` nomeia
 
 Decisões de design registradas em [`docs/adr/`](docs/adr/) — vale ler antes de mexer no pipeline.
 
+## Orquestração
+
+A sessão principal (Opus) orquestra; a execução vai para subagentes (Sonnet).
+
+| Agente | Tools | Papel |
+|---|---|---|
+| [`implementer`](agents/implementer.md) | escrita + bash | Executa tarefa especificada até o fim, verifica, reporta |
+| [`reviewer`](agents/reviewer.md) | somente leitura | Confere contra critério explícito. Não edita — reviewer que conserta destrói a evidência |
+| `Explore` | — | Busca. Já existe no ambiente, não recriamos |
+
+A skill [`delegate`](skills/orchestration/delegate/SKILL.md) define o contrato do **brief**. Subagente nasce frio e não pode perguntar, então o brief carrega: resultado, skill, caminhos absolutos dos insumos, critério de pronto checável, cerca de escopo e o que reportar de volta.
+
+Regra que evita o erro mais caro: decisão não resolvida **volta**, não é chutada localmente.
+
+Não há agentes por cargo (frontend, backend, devops) — o porquê está na [ADR-0006](docs/adr/0006-agents-split-by-execution-mode-not-by-job-title.md).
+
 Os blocos restantes serão construídos sobre a mesma base.
 
 ## Skills importadas
