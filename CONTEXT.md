@@ -31,3 +31,15 @@ _Avoid_: Issue, task, story (the tracker may call it an issue; the skills call i
 **Seam**:
 The surface at which a feature's behaviour can be observed from outside — where tests attach.
 _Avoid_: Boundary, interface, test hook
+
+**Screen**:
+One coherent view the user is looking at, whatever the platform calls it — a page on a site, a screen in an app, a step in a flow.
+_Avoid_: Page, view, route (each is platform-specific; "screen" is the neutral term)
+
+**Wireframe**:
+A low-fidelity layout of the screens and the flows between them, deliberately greyscale and unstyled so review lands on structure rather than visuals.
+_Avoid_: Mockup, sketch, design
+
+**Prototype**:
+Throwaway code that answers one design question, built without tests or abstractions and never promoted to production.
+_Avoid_: MVP, spike, proof of concept

@@ -68,6 +68,9 @@ PRD: [prd.md](./prd.md) · Spec: [spec.md](./spec.md)
 
 ## Carry it forward
 
-Phases are planned once; tickets are written per phase, at the start of that phase, against the codebase as it stands then. Writing every phase's tickets now would be planning against a codebase that no longer exists by the time the work starts.
+Phases are planned once; everything after runs **per phase**, at the start of that phase, against the codebase as it stands then. Planning a later phase's detail now means planning against a codebase that will have moved by the time the work starts.
 
-So continue in the same session with the `to-tickets` skill for **phase 1 only**, and leave the later phases as they are — each one gets its own `to-tickets` run when it begins.
+So continue in the same session for **phase 1 only**, and leave the later phases untouched — each gets its own run when it begins:
+
+- **The phase ships something a user sees** — run the `prototype` skill to validate the interface before it is broken into work, then let it carry on to design and tickets.
+- **The phase ships no interface** — run the `to-tickets` skill directly.

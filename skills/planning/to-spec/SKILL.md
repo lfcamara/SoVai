@@ -53,7 +53,8 @@ Leave specific file paths and code snippets out; they go stale faster than the s
 
 ## Carry it forward
 
-Show the user the spec and let them correct it. Then continue in the same session, taking the branch that fits the size of the work:
+Show the user the spec and let them correct it. Then continue in the same session, taking the branch that fits the work:
 
-- **The effort has intermediate points worth shipping on their own** — run the `to-phases` skill.
-- **The whole effort ships in one go** — run the `to-tickets` skill directly.
+- **The effort has a user-facing interface** — run the `to-wireframes` skill. Naming the screens before sequencing the work is what makes phase boundaries concrete, and wireframes routinely surface scope that would otherwise land after the roadmap was drawn.
+- **No interface to draw, and the effort has intermediate points worth shipping on their own** — run the `to-phases` skill.
+- **No interface, and the whole effort ships in one go** — run the `to-tickets` skill directly.
