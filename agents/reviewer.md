@@ -1,6 +1,6 @@
 ---
 name: reviewer
-description: Checks finished work against explicit criteria and reports what fails — read-only, so findings come back as findings rather than quiet edits. Use to verify a change, a document, or a skill before it lands.
+description: Checks finished work against explicit criteria and reports what fails, without the ability to edit. Use to verify a change, a document, or a skill before it lands.
 tools: Read, Glob, Grep, Bash, WebFetch
 model: sonnet
 color: red

@@ -17,13 +17,15 @@ Read the ticket in full, then the spec and roadmap under `docs/planning/<effort>
 
 Follow the `tdd` skill for the loop itself — seams, what a good test is, the rules of red before green. It's the single source of truth for that loop; this skill doesn't restate it.
 
+The seams `tdd` requires you to have agreed are the ones `to-spec` settled with the user; treat those as pre-agreed and work at them. A red test that needs a seam the spec never named is an unsettled decision, not a fact to look up — stop and report it rather than agreeing a seam with yourself.
+
 Backend and any other non-UI logic is TDD-mandatory: the red test always comes first. UI is the exception — build it, then write its tests guided by the `ui-testing` skill, because a screen's shape is still moving during implementation and a test written against it first goes brittle the moment it settles.
 
-Refactoring is not part of this loop. Land the loop at green and stop; cleanup is review's job, done against a diff a reviewer is already looking at.
+Land the loop at green and stop. Cleanup happens in review, against a diff a reviewer is already looking at.
 
 ## Commit discipline
 
-The red test is the first commit, and pushing it is the first push. That first push is what the orchestrator needs to open a draft PR that already states, via the failing test, what this ticket has to make true — so it can't wait until the ticket is green.
+The red test is the first commit, and pushing it is the first push. Immediately after that push, run the `open-pr` skill yourself to open the draft PR — you are the only thing that knows the push has happened, and the orchestrator does not hear from you again until this run ends. A draft PR opened here states, through its failing test, what the ticket has to make true; opened at the end it would say nothing that the finished diff doesn't already say.
 
 ## Verify before reporting
 
@@ -39,4 +41,6 @@ Return, in this order:
 4. **What the ticket didn't anticipate** — anything you had to resolve that wasn't written down.
 5. **What you noticed but left alone** — deliberately, because it was outside this ticket.
 
-Ticket state and opening the PR belong to the orchestrator, not this skill — implementing a ticket doesn't include moving it on the tracker or running `open-pr`.
+Ticket state belongs to the orchestrator — implementing a ticket doesn't include moving it on the tracker.
+
+What the orchestrator does with this report is move the ticket to Testing and run the `review` skill against the pushed branch. Knowing that is useful here for one reason: the report is the only thing that survives this run, so anything review would need and only you can know belongs in it.

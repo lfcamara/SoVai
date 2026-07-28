@@ -1,6 +1,6 @@
 ---
 name: review
-description: Review the diff since a fixed point (commit, branch, tag, or merge-base) across independent axes — code, spec, test, security, migration. Each selected axis runs as its own parallel reviewer subagent and is reported separately, never merged into one verdict. Use when the user wants to review a branch, a PR, work-in-progress changes, or asks to "review since X".
+description: Review the diff since a fixed point across independent axes — code, spec, test, security, migration. Use when the user wants a branch, a PR, or work-in-progress changes reviewed, asks to "review since X", or when another skill needs a change checked before it lands.
 ---
 
 # Review
@@ -31,10 +31,10 @@ Send one message with one `Agent` call per selected axis, all using the `reviewe
 
 - **Outcome** — findings for this axis against the diff, ranked by severity.
 - **Skill** — the axis skill by name (`code-review`, `spec-review`, …); point the subagent at it rather than restating its process.
-- **Inputs** — the diff command and commit list from the pin step, plus whatever that axis needs to locate its own reference (standards files, spec path, migration files) — the axis skill says what to look for.
+- **Inputs** — the diff command and commit list from the pin step, plus the paths this axis needs. Where selecting the axis already turned up its reference — the spec you found deciding whether `spec-review` runs, the migration files you matched for `migration-review` — pass those paths rather than making the agent search for what you have already located.
 - **Done** — every hunk in the diff accounted for under this axis's criteria.
 - **Fence** — read-only, which `reviewer` already enforces; no edits, no scope beyond this one axis.
-- **Report** — findings ranked by severity, each with where, what, and why it matters, plus a verdict for this axis alone.
+- **Report** — a verdict for this axis alone. The `reviewer` agent already carries the shape findings come back in; the brief only names what is specific to this axis.
 
 The `reviewer` subagent is read-only by construction, which is what lets its findings be trusted as findings rather than quiet fixes made along the way.
 
@@ -47,3 +47,9 @@ The axes are independent on purpose: a change can pass `code-review` while faili
 ## Close with per-axis verdicts
 
 End with one verdict per axis that ran — pass, or fail with its worst finding — never a single combined score. A reader who only wants to know whether the security pass is clean should get that answer without wading through style notes from `code-review`.
+
+## What happens next
+
+A failing axis goes back to the ticket's `implementer` as a fresh brief naming the findings, not fixed here — this skill and the agents it dispatches are read-only so that findings stay findings.
+
+Once every axis passes, the work is ready for the user to approve, and `wrap-up` merges it on that approval. Reviews passing is what makes the PR reviewable, never what authorizes the merge.

@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SoVai — Engineering Workflow</title>
+<style>
+:root{
+  --paper:#F2F4F5; --card:#FBFCFC; --ink:#15181C; --ink-soft:#4A525C; --ink-faint:#78838E;
+  --rule:#D9DEE2; --rule-soft:#E8ECEE;
+  --gate:#9A6A12; --gate-bg:#F6EAD2; --gate-line:#C98A16;
+  --auto:#256E68; --auto-bg:#DCEBE9; --auto-line:#2F7D77;
+  --shadow:0 1px 2px rgba(20,30,40,.05), 0 8px 24px -12px rgba(20,30,40,.18);
+  --serif:ui-serif,Georgia,"Iowan Old Style","Times New Roman",serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --paper:#101317; --card:#171B21; --ink:#E7EBEE; --ink-soft:#A6B0BA; --ink-faint:#727D88;
+    --rule:#282E36; --rule-soft:#1F252C;
+    --gate:#E0AE4E; --gate-bg:#332811; --gate-line:#C98A16;
+    --auto:#5FB5AC; --auto-bg:#0F2A28; --auto-line:#2F7D77;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#101317; --card:#171B21; --ink:#E7EBEE; --ink-soft:#A6B0BA; --ink-faint:#727D88;
+  --rule:#282E36; --rule-soft:#1F252C;
+  --gate:#E0AE4E; --gate-bg:#332811; --gate-line:#C98A16;
+  --auto:#5FB5AC; --auto-bg:#0F2A28; --auto-line:#2F7D77;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
+}
+:root[data-theme="light"]{
+  --paper:#F2F4F5; --card:#FBFCFC; --ink:#15181C; --ink-soft:#4A525C; --ink-faint:#78838E;
+  --rule:#D9DEE2; --rule-soft:#E8ECEE;
+  --gate:#9A6A12; --gate-bg:#F6EAD2; --gate-line:#C98A16;
+  --auto:#256E68; --auto-bg:#DCEBE9; --auto-line:#2F7D77;
+  --shadow:0 1px 2px rgba(20,30,40,.05), 0 8px 24px -12px rgba(20,30,40,.18);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1120px;margin:0 auto;padding:clamp(1.75rem,4vw,4rem) clamp(1.1rem,3vw,2rem) 5rem}
+
+/* ---------- masthead ---------- */
+.mast{border-bottom:1px solid var(--rule);padding-bottom:1.75rem;margin-bottom:2.5rem}
+.eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-faint);margin:0 0 .9rem}
+h1{font-family:var(--serif);font-weight:600;font-size:clamp(2.1rem,5.5vw,3.4rem);line-height:1.05;
+  letter-spacing:-.02em;margin:0 0 .7rem;text-wrap:balance}
+.standfirst{font-family:var(--serif);font-size:clamp(1.02rem,2vw,1.2rem);color:var(--ink-soft);
+  max-width:60ch;margin:0;line-height:1.5}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem .75rem;margin-top:1.4rem;align-items:center}
+.tag{font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;color:var(--ink-soft);
+  border:1px solid var(--rule);border-radius:2px;padding:.25rem .5rem;background:var(--card)}
+
+/* ---------- section furniture ---------- */
+section{margin-top:3.5rem}
+h2{font-family:var(--serif);font-size:clamp(1.4rem,3vw,1.85rem);font-weight:600;letter-spacing:-.015em;
+  margin:0 0 .5rem;text-wrap:balance}
+.lede{color:var(--ink-soft);max-width:64ch;margin:0 0 1.6rem}
+h3{font-family:var(--sans);font-size:.78rem;font-weight:650;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-faint);margin:0 0 .75rem}
+
+/* ---------- legend ---------- */
+.legend{display:flex;flex-wrap:wrap;gap:1.25rem;margin-bottom:1.5rem;
+  padding:.85rem 1rem;background:var(--card);border:1px solid var(--rule);border-radius:3px}
+.key{display:flex;align-items:center;gap:.5rem;font-size:.82rem;color:var(--ink-soft)}
+.swatch{width:.7rem;height:.7rem;border-radius:50%;flex:none}
+.swatch.g{background:var(--gate-line)} .swatch.a{background:var(--auto-line)}
+
+/* ---------- pipeline ---------- */
+.pipe{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:2rem;align-items:start}
+@media (max-width:860px){.pipe{grid-template-columns:1fr;gap:1.25rem}}
+
+.band{margin-bottom:1.5rem}
+.band-head{display:flex;align-items:baseline;gap:.6rem;margin-bottom:.6rem;
+  padding-bottom:.4rem;border-bottom:1px solid var(--rule-soft)}
+.band-name{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink)}
+.band-note{font-size:.76rem;color:var(--ink-faint)}
+.spine{display:flex;flex-direction:column;gap:.3rem}
+
+.node{display:flex;align-items:center;gap:.7rem;width:100%;text-align:left;cursor:pointer;
+  font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--rule);
+  border-left:3px solid var(--auto-line);border-radius:3px;padding:.6rem .8rem;
+  transition:border-color .12s,background .12s,transform .12s}
+.node.gate{border-left-color:var(--gate-line)}
+.node:hover{transform:translateX(2px);border-color:var(--ink-faint)}
+.node:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.node[aria-current="true"]{background:var(--auto-bg);border-color:var(--auto-line)}
+.node.gate[aria-current="true"]{background:var(--gate-bg);border-color:var(--gate-line)}
+.node-name{font-family:var(--mono);font-size:.83rem;font-weight:500}
+.node-out{margin-left:auto;font-size:.72rem;color:var(--ink-faint);font-family:var(--mono);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:11ch}
+
+/* ---------- detail ---------- */
+.detail{position:sticky;top:1.5rem;background:var(--card);border:1px solid var(--rule);
+  border-radius:3px;padding:1.4rem 1.5rem;box-shadow:var(--shadow);min-height:22rem}
+@media (max-width:860px){.detail{position:static;min-height:0}}
+.d-kicker{display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem}
+.pill{font-family:var(--mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;
+  padding:.2rem .45rem;border-radius:2px;border:1px solid}
+.pill.g{color:var(--gate);border-color:var(--gate-line);background:var(--gate-bg)}
+.pill.a{color:var(--auto);border-color:var(--auto-line);background:var(--auto-bg)}
+.d-name{font-family:var(--mono);font-size:1.18rem;font-weight:600;margin:0 0 .15rem;letter-spacing:-.01em}
+.d-q{font-family:var(--serif);font-size:1.02rem;color:var(--ink-soft);margin:0 0 1.1rem;line-height:1.45}
+.d-body p{margin:0 0 .85rem;font-size:.93rem;color:var(--ink-soft)}
+.d-body strong{color:var(--ink);font-weight:620}
+.d-out{margin-top:1.1rem;padding-top:.9rem;border-top:1px solid var(--rule-soft);
+  font-size:.82rem;color:var(--ink-faint)}
+.d-out code{font-family:var(--mono);font-size:.82rem;color:var(--ink);word-break:break-all}
+.rule-box{margin-top:1rem;padding:.8rem .9rem;border-left:2px solid var(--gate-line);
+  background:var(--gate-bg);border-radius:0 3px 3px 0}
+.rule-box p{margin:0;font-family:var(--serif);font-size:.95rem;color:var(--ink);line-height:1.45}
+
+/* ---------- states ---------- */
+.states{display:flex;flex-wrap:wrap;gap:.4rem;align-items:stretch}
+.state{flex:1 1 8rem;background:var(--card);border:1px solid var(--rule);border-radius:3px;padding:.75rem .85rem}
+.state-n{font-family:var(--mono);font-size:.8rem;font-weight:600;margin-bottom:.25rem}
+.state-w{font-size:.76rem;color:var(--ink-faint)}
+
+/* ---------- brief table ---------- */
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;min-width:34rem;font-size:.88rem}
+th,td{text-align:left;padding:.6rem .8rem;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+th{font-size:.7rem;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-faint);font-weight:650;
+  border-bottom:1px solid var(--rule)}
+td:first-child{font-family:var(--mono);font-weight:600;white-space:nowrap;width:1%}
+td:last-child{color:var(--ink-soft)}
+
+/* ---------- debug ---------- */
+.steps{counter-reset:s;display:flex;flex-direction:column;gap:.55rem;margin:0;padding:0;list-style:none}
+.steps li{counter-increment:s;display:flex;gap:.85rem;background:var(--card);border:1px solid var(--rule);
+  border-radius:3px;padding:.75rem .9rem}
+.steps li::before{content:counter(s);font-family:var(--mono);font-size:.75rem;color:var(--ink-faint);
+  flex:none;padding-top:.15rem;min-width:1.1rem}
+.steps b{display:block;font-size:.9rem;margin-bottom:.15rem}
+.steps span{font-size:.86rem;color:var(--ink-soft)}
+
+footer{margin-top:4rem;padding-top:1.5rem;border-top:1px solid var(--rule);
+  font-size:.82rem;color:var(--ink-faint);display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;justify-content:space-between}
+footer code{font-family:var(--mono)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="mast">
+  <p class="eyebrow">SoVai · v1.0.0</p>
+  <h1>Engineering Workflow</h1>
+  <p class="standfirst">How work moves from an idea someone had in the shower to code merged into main —
+    twelve stages, three cadences, and one rule about who is allowed to decide what.</p>
+  <div class="meta">
+    <span class="tag">25 skills</span>
+    <span class="tag">2 agents</span>
+    <span class="tag">9 ADRs</span>
+    <span class="tag">6 blocks</span>
+  </div>
+</header>
+
+<section>
+  <h2>The pipeline</h2>
+  <p class="lede">Everything above <span style="font-family:var(--mono)">to-phases</span> runs once.
+    Everything below runs once per phase, and the last four once per ticket — always at the moment that
+    work begins, never in advance. Detail planned against a codebase that will have moved is detail
+    that gets thrown away.</p>
+
+  <div class="legend">
+    <span class="key"><span class="swatch g"></span>You decide — the stage stops until you answer</span>
+    <span class="key"><span class="swatch a"></span>The agent runs it</span>
+  </div>
+
+  <div class="pipe">
+    <div>
+      <div class="band">
+        <div class="band-head"><span class="band-name">Once per effort</span><span class="band-note">planning</span></div>
+        <div class="spine" id="band-1"></div>
+      </div>
+      <div class="band">
+        <div class="band-head"><span class="band-name">Once per phase</span><span class="band-note">when that phase starts</span></div>
+        <div class="spine" id="band-2"></div>
+      </div>
+      <div class="band">
+        <div class="band-head"><span class="band-name">Once per ticket</span><span class="band-note">parallel across the frontier</span></div>
+        <div class="spine" id="band-3"></div>
+      </div>
+    </div>
+
+    <aside class="detail" id="detail" aria-live="polite"></aside>
+  </div>
+</section>
+
+<section>
+  <h2>The ticket lifecycle</h2>
+  <p class="lede">Every transition belongs to the orchestrator. A subagent that dies mid-task would leave
+    its ticket stranded with nothing alive to reconcile it — and an implementer marking its own work Done
+    bypasses the state that exists to have something else validate first.</p>
+  <div class="states">
+    <div class="state"><div class="state-n">To Do</div><div class="state-w">On the frontier, unclaimed</div></div>
+    <div class="state"><div class="state-n">Doing</div><div class="state-w">Set as the implementer is dispatched</div></div>
+    <div class="state"><div class="state-n">Testing</div><div class="state-w">Implementer reported done; reviews out</div></div>
+    <div class="state"><div class="state-n">Done</div><div class="state-w">Reviews passed and the PR merged</div></div>
+  </div>
+</section>
+
+<section>
+  <h2>Delegation</h2>
+  <p class="lede">The main session orchestrates and holds the decisions; execution goes to subagents.
+    A subagent starts cold — none of the conversation reaches it — and it cannot ask a question.
+    So the brief carries six things.</p>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Field</th><th>What it carries</th><th></th></tr></thead>
+      <tbody>
+        <tr><td>Outcome</td><td>What is true when this is done — a result, not steps</td><td>makes the work possible</td></tr>
+        <tr><td>Skill</td><td>Which skill to run, by name</td><td></td></tr>
+        <tr><td>Inputs</td><td>Absolute paths, and the facts it cannot look up</td><td></td></tr>
+        <tr><td>Done</td><td>Checkable criteria, with the command that proves them</td><td>makes it safe</td></tr>
+        <tr><td>Fence</td><td>What it must not touch</td><td></td></tr>
+        <tr><td>Report</td><td>The specific facts to return</td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="rule-box"><p>If you cannot write the brief, you do not understand the task well enough to delegate it.</p></div>
+</section>
+
+<section>
+  <h2>Debug</h2>
+  <p class="lede">A bug gets no special path. It gets diagnosed, and the diagnosis produces a ticket that
+    enters the same flow as everything else — implemented under TDD, reviewed, merged on your approval.</p>
+  <ol class="steps">
+    <li><div><b>Evidence</b><span>Get an instance of the bug, preferring to go and get it — the database, the browser, the logs — over accepting the report. A reported symptom is a secondhand account.</span></div></li>
+    <li><div><b>Build the feedback loop</b><span>One command, already run once, that is red-capable, deterministic, fast and agent-runnable. Reaching for a hypothesis before that command exists is the exact failure the discipline prevents.</span></div></li>
+    <li><div><b>Reproduce and minimise</b><span>Cut until every remaining element is load-bearing — removing any one of them turns the loop green.</span></div></li>
+    <li><div><b>Hypothesise</b><span>Three to five, ranked, each falsifiable with a stated prediction. A hypothesis with no prediction is a vibe.</span></div></li>
+    <li><div><b>Test them in parallel</b><span>One hypothesis per agent. They are independent by construction, and one agent testing several in sequence anchors on whichever it tried first.</span></div></li>
+    <li><div><b>File the ticket</b><span>Evidence, the reproduction command, the minimised repro, the root cause, the seam analysis, and what would have prevented the bug.</span></div></li>
+  </ol>
+</section>
+
+<footer>
+  <span>Source of truth: <code>engineering-workflow.md</code> · reasoning in <code>docs/adr/</code> · vocabulary in <code>CONTEXT.md</code></span>
+  <span>None of it has been run against a real project yet. That is the plan, not an accident.</span>
+</footer>
+
+</div>
+
+<script>
+const STAGES=[
+ {b:1,n:"brainstorm",gate:1,q:"Is this idea shaped enough to build?",
+  body:"<p>An idea arrives <strong>unshaped</strong>: you know roughly what you want and why, but not the boundaries. The test is concrete — can you already say who it is for, where it starts and stops, and what it deliberately leaves out?</p><p>The interview goes to <strong>grilling</strong>, one question at a time, always with a recommended answer. Facts get looked up in the environment; decisions get put to you.</p>",
+  out:"Terms into CONTEXT.md, decisions into docs/adr/"},
+ {b:1,n:"to-prd",gate:1,q:"What is the problem, and for whom?",
+  body:"<p>The business half of the plan: problem, solution, user stories, success, out of scope. No mechanism, no file paths.</p><p>The test for whether it sits at the right altitude — a reader who does not write code can read it end to end and recognise their own problem in it.</p><p>This stage also <strong>names the effort</strong>, the directory every later stage resolves from the filesystem. That is what lets a phase resume weeks later in a clean session.</p>",
+  out:"docs/planning/&lt;effort&gt;/prd.md"},
+ {b:1,n:"to-spec",gate:1,q:"How will it be built, and where do the tests attach?",
+  body:"<p>The engineering half. It references the PRD rather than restating it, so each fact has one home.</p><p>Its core work is finding the <strong>seams</strong> — where behaviour can be observed from outside. Prefer an existing seam to a new one, and the highest available to a lower one. The seams get agreed with you before the spec is written, because moving one later is expensive.</p>",
+  out:"docs/planning/&lt;effort&gt;/spec.md"},
+ {b:1,n:"to-wireframes",gate:1,q:"What are the screens, and how do they connect?",
+  body:"<p><strong>Fidelity is a budget.</strong> Spend it on visuals and you buy critique of visuals — give a reviewer colour and type and they discuss colour and type, while the flow missing a step goes unmentioned.</p><p>So: boxes, labels, hierarchy, real content shape, greyscale. It sits before phasing because a phase is defined by what it ships, and that stays abstract until the screens have names.</p><p>Done when every user story in the PRD reaches a screen. A story with no screen is a gap; a screen no story reaches is scope nobody asked for.</p>",
+  out:"docs/planning/&lt;effort&gt;/wireframes.md + a published artifact"},
+ {b:1,n:"to-phases",gate:1,q:"In what order does this ship?",
+  body:"<p>Phases that each <strong>ship</strong>. A phase ending with work merged but nothing a user can do is not a phase — it is a checkpoint someone drew on a plan.</p><p><strong>The cancellation test:</strong> if everything after this phase were cancelled tomorrow, is the user better off than before it existed? A phase that fails strands the project mid-migration.</p><p><strong>Full coverage:</strong> every capability in the spec lands in exactly one phase. Work in no phase surfaces late; work in two means the boundary is wrong.</p>",
+  out:"docs/planning/&lt;effort&gt;/roadmap.md"},
+ {b:2,n:"prototype",gate:1,q:"Does this actually work when you use it?",
+  body:"<p>Throwaway code answering one question — several radically different UI variations, or a state model you drive by hand. Variants must differ <strong>structurally</strong>: three lightly-tweaked card grids is wallpaper, not a prototype.</p><p>The most useful response is almost always <em>“the header from B with the sidebar from C”</em> — that recombination is the actual design.</p>",
+  out:"A throwaway branch, and a decision"},
+ {b:2,n:"frontend-design",gate:0,q:"What does it finally look like?",
+  body:"<p>Takes the validated structure to a finished visual design.</p><p>An <strong>ambient skill</strong> from the environment — deliberately not vendored into this plugin, so it stays whatever the environment provides rather than a copy that drifts.</p>",
+  out:"Design applied to the winning direction"},
+ {b:2,n:"to-tickets",gate:1,q:"What are the units of work?",
+  body:"<p>One phase becomes <strong>tracer bullets</strong> — each cutting a narrow but complete path through every layer, each declaring what blocks it.</p><p>A ticket is sized to a single fresh context window. That sizing is not incidental: it is exactly a subagent's budget, which is what makes the ticket the unit of delegation.</p><p><strong>Wide refactors are the exception</strong> — a change whose blast radius fans across the codebase runs expand–contract instead.</p>",
+  out:"Issues on the tracker, blocking edges wired"},
+ {b:3,n:"implement",gate:0,q:"Does the code exist and pass?",
+  body:"<p>One ticket, from a cold context window to a pushed, verified branch.</p><p><strong>TDD is red → green.</strong> Refactoring is not in the loop — it is relocated to review, where the tests are already green and the code is free to move. Relocated, not deleted.</p><p>TDD is mandatory for backend logic. <strong>UI is the deliberate exception</strong>, tested after implementation: a screen's shape moves while it is built, and a test against a moving shape breaks on every layout change without catching a real defect.</p><p>Lint, build and coverage run inside the subagent — their enormous output dies with the run. The boundary is the isolation.</p>",
+  out:"A pushed branch, and a report"},
+ {b:3,n:"open-pr",gate:0,q:"Is the work visible while it is still red?",
+  body:"<p>A draft PR opened right after the red-test push, stating through its failing test what the ticket must make true.</p><p>The <strong>implementer</strong> opens it, not the orchestrator — it is the only thing that knows the push happened, and it does not report back until its run ends. A stray draft PR is visible and harmless; the merge stays the orchestrator's.</p>",
+  out:"A draft PR, linked both ways to its ticket"},
+ {b:3,n:"review",gate:0,q:"Is it right, in five separate senses?",
+  body:"<p>Five independent axes as parallel read-only agents: <strong>code</strong> (standards and Fowler smells, where refactoring lives), <strong>spec</strong> (is it the right thing), <strong>test</strong> (would these fail on a real regression), <strong>security</strong> (a finding must name a concrete path to harm), <strong>migration</strong> (failure mode here is data loss).</p><p>Reported per axis, <strong>never merged or reranked</strong> — a change can pass one and fail another, and a merged list lets a clean axis bury a failing one under minor style notes.</p>",
+  out:"A verdict per axis"},
+ {b:3,n:"wrap-up",gate:1,q:"Can this be merged, and what did it teach the plan?",
+  body:"<p><strong>Merge is authorised only by your explicit approval of that specific PR.</strong> Reviews passing and CI green are signals you weigh when approving — they are not the approval. Approving one PR says nothing about the next.</p><p>Order is load-bearing: merge, confirm it landed, then the tracker, then the documents. A ticket moved to Done ahead of a merge that fails is a tracker asserting something false.</p><p>Then reconciliation, under one rule: <strong>a document follows a decision, not a diff.</strong> Code diverging because someone decided otherwise means the spec is stale. Code diverging because it is <em>wrong</em> is a defect — rewriting the spec to match would launder a bug into a requirement.</p>",
+  out:"Merged code, a closed ticket, documents that still tell the truth"}
+];
+
+const detail=document.getElementById("detail");
+let current=0;
+
+function render(i){
+  current=i;
+  const s=STAGES[i];
+  detail.innerHTML=
+    '<div class="d-kicker"><span class="pill '+(s.gate?'g':'a')+'">'+
+      (s.gate?'You decide':'Agent runs')+'</span></div>'+
+    '<p class="d-name">'+s.n+'</p>'+
+    '<p class="d-q">'+s.q+'</p>'+
+    '<div class="d-body">'+s.body+'</div>'+
+    '<div class="d-out">Leaves behind — <code>'+s.out+'</code></div>';
+  document.querySelectorAll(".node").forEach(function(n){
+    n.setAttribute("aria-current", n.dataset.i==String(i) ? "true" : "false");
+  });
+}
+
+STAGES.forEach(function(s,i){
+  const b=document.createElement("button");
+  b.type="button";
+  b.className="node"+(s.gate?" gate":"");
+  b.dataset.i=i;
+  b.innerHTML='<span class="node-name">'+s.n+'</span>';
+  b.addEventListener("click",function(){render(i)});
+  b.addEventListener("keydown",function(e){
+    if(e.key!=="ArrowDown"&&e.key!=="ArrowUp")return;
+    e.preventDefault();
+    const next=(i+(e.key==="ArrowDown"?1:-1)+STAGES.length)%STAGES.length;
+    const el=document.querySelector('.node[data-i="'+next+'"]');
+    el.focus(); render(next);
+  });
+  document.getElementById("band-"+s.b).appendChild(b);
+});
+
+render(0);
+</script>
+</body>
+</html>

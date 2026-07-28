@@ -11,7 +11,7 @@ Shipping is the whole discipline. A phase that ends with work merged but nothing
 
 ## Gather context
 
-Resolve the **effort** — the directory under `docs/planning/` holding this work's documents. Where more than one could match, ask rather than guessing.
+Resolve the **effort**. Where more than one could match, ask rather than guessing.
 
 Work from the PRD, the spec, and the wireframes under `docs/planning/<effort>/`, plus whatever the session already established. Read the codebase to see what exists today — the starting point decides how much has to happen before the first phase can ship at all.
 

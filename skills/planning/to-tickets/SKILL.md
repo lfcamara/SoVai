@@ -11,7 +11,7 @@ Scope the run to one **phase** when a roadmap exists (`docs/planning/<effort>/ro
 
 ## Gather context
 
-Resolve the **effort** first — the directory under `docs/planning/` holding this work's documents. This skill routinely runs weeks after the plan was written, in a session that knows nothing but the filesystem, so where more than one effort could match, ask instead of guessing.
+Resolve the **effort** first. This skill routinely runs weeks after the plan was written, in a session that knows nothing but the filesystem, so where more than one could match, ask instead of guessing.
 
 Work from the session, plus the spec and roadmap under `docs/planning/<effort>/` if they exist. If the user passes a reference — a path, an issue id, a URL — fetch it and read it in full.
 
@@ -73,3 +73,9 @@ Publish in dependency order — blockers first — so each ticket can reference 
 Keep file paths and code snippets out of ticket bodies — they go stale before the ticket is picked up. One exception: a prototype snippet that pins a decision more precisely than prose can, trimmed to the decision-rich part.
 
 Leave any parent issue open and unmodified.
+
+## Carry it forward
+
+Publishing ends planning. What exists now is a **frontier** — the tickets whose blockers have all closed — and each of those is workable immediately.
+
+Execution runs one ticket at a time through the `implement` skill, dispatched to an `implementer` per the `delegate` contract, and tickets on the frontier can run in parallel. Move a ticket to **Doing** as you dispatch it, before the agent starts — the frontier is computed from ticket state, so a ticket being worked while still showing To Do invites a second session to claim it. Unlike the planning stages, this does not continue in the same session: a ticket is sized to a fresh context window, and spending that window on the planning conversation that produced it defeats the sizing.

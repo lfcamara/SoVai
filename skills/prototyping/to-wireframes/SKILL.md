@@ -23,7 +23,7 @@ Visual design has its own stage later. Naming it here keeps the reviewer's atten
 
 ## Derive the screens
 
-Resolve the **effort** — the directory under `docs/planning/` holding this work's documents. Where more than one could match, ask rather than guessing.
+Resolve the **effort**. Where more than one could match, ask rather than guessing.
 
 Work from the PRD and spec under `docs/planning/<effort>/`. Walk the PRD's user stories and ask, for each one, which screen the actor is looking at when they do the thing. Stories cluster onto screens; a story that maps to no screen is a screen you have not drawn yet.
 

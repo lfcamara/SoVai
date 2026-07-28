@@ -24,8 +24,10 @@ Lint, build, test and coverage produce enormous output. That output is already c
 
 `spec-review` exists because the other four all judge how the work was done. Code that satisfies every standard while implementing the wrong thing passes all of them.
 
-## The orchestrator owns ticket state and the PR
+## The orchestrator owns ticket state and the merge
 
 States are To Do, Doing, Testing, Done. Every transition is the orchestrator's, for two reasons. A subagent that dies mid-task would otherwise leave its ticket stranded in Doing with nothing alive to reconcile it, whereas the orchestrator outlives every agent it dispatches. And an implementer that marks its own work Done is grading its own homework — the Testing state exists precisely so that something else validates first, the same reasoning that makes `reviewer` read-only.
 
 The draft PR opens after the implementer's first push rather than at ticket start. A pull request needs a commit, so opening it earlier means either an empty shell or a junk empty commit; opening it on the red-test push gives a PR that already states what the ticket must make true.
+
+The implementer opens it, not the orchestrator. The orchestrator's only channel out of a subagent is its final report, which arrives once the run is over — by then the work is green and a draft PR says nothing the finished diff does not. The reasoning that gives the orchestrator ticket state does not extend here: a stranded ticket needs something alive to reconcile it, whereas a stray draft PR is visible and harmless. The merge itself stays the orchestrator's, gated on the user's approval.

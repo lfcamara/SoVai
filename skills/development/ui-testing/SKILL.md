@@ -1,6 +1,6 @@
 ---
 name: ui-testing
-description: Write tests for a screen, component, or flow after it is implemented, derived from the effort's wireframes.md story-coverage table. Use when the user wants to test a UI that has already been built, asks for UI test coverage or regression tests for a screen, wants to verify a wireframed flow works end to end, or needs tests for a screen's empty, loading, error, or permission-denied states.
+description: Write tests for a screen, component, or flow after it is implemented, derived from the effort's wireframes. Use when a UI needs testing, or when another skill needs the interface half of a ticket covered.
 ---
 
 # UI Testing

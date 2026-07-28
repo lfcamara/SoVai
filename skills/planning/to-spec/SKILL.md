@@ -11,7 +11,7 @@ The spec owns the **how**. It references the PRD for problem and users rather th
 
 ## Resolve the effort
 
-The **effort** is the directory under `docs/planning/` holding this work's documents, named by `to-prd`. Resolve it before reading anything else. Where more than one could match, ask — writing into the wrong effort corrupts a plan silently, and the cost of one question is nothing against that.
+Resolve the **effort** before reading anything else. Where more than one could match, ask — writing into the wrong effort corrupts a plan silently, and one question costs nothing against that.
 
 ## Explore first
 
@@ -19,7 +19,7 @@ Read the codebase before writing a line of the spec. Read `CONTEXT.md` for the v
 
 ## Find the seams
 
-A **seam** is where you can observe the feature's behaviour from outside — the surface the tests attach to. Sketch the seams before the implementation, because the seam you pick decides what the tests can see.
+Sketch the **seams** before the implementation — the `tdd` skill defines them and this is where they get chosen, because the seam you pick decides what the tests can see.
 
 Prefer an existing seam to a new one, and the highest seam available to a lower one. Fewer seams across the codebase is better; one is ideal. Where a new seam is unavoidable, propose it at the highest point you can.
 

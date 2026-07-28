@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: Review how the code in a diff is written — against this repo's documented standards and a 12-item Fowler smell baseline (Refactoring, ch.3). Every finding is a labelled judgement call, never a hard violation, and a documented repo standard always overrides the baseline. Use to check code quality, structure, and convention on a branch, PR, or work-in-progress diff, or when the review skill dispatches its Standards axis.
+description: Review how the code in a diff is written, against this repo's documented standards and a Fowler smell baseline. Use to check code quality, structure, or convention on a diff, when refactoring opportunities are wanted, or when the review skill dispatches its standards axis.
 ---
 
 # Code Review

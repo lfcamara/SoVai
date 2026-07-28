@@ -9,6 +9,8 @@ description: Open a draft PR for a ticket right after its first push, and link t
 
 Open once the ticket's first push has landed — the red-test commit from the `implement` skill's commit discipline. A PR needs at least one commit to exist meaningfully; opening before that push produces an empty shell or forces a junk empty commit. Opening right after it gives reviewers a PR whose diff, from the first minute, already says what the ticket must make true.
 
+The implementer runs this, not the orchestrator: it is the only thing that knows the push has happened, and it does not report back until its run ends. Opening a draft PR is not the merge — the merge stays the orchestrator's, gated on the user's approval in `wrap-up`.
+
 ## Branch
 
 The branch carries the ticket's identifier in its name (for example, `<TICKET-ID>-<kebab-slug>`), so the branch is legible on its own without a trip to the tracker. Open the PR against that branch — it already exists from the ticket's first push.
@@ -29,7 +31,7 @@ Leave file paths and code out of the body, the same reason `to-tickets` keeps th
 
 ## Link the ticket back
 
-A PR that links to its ticket but not the reverse leaves half the trail cold. Read `docs/agents/issue-tracker.md` in the repo, if present, for how this project links tickets and PRs; absent that file, default to Linear and attach the PR link to the issue, taking the team and project from the repo's `CLAUDE.md` as `to-tickets` does. For a local-markdown ticket, append a line to the ticket file pointing at the PR.
+A PR that links to its ticket but not the reverse leaves half the trail cold. Tracker mechanics live in `to-tickets` — follow that to reach the ticket, then attach the PR link to it. For a local-markdown ticket, append a line to the ticket file pointing at the PR.
 
 ## Draft until reviewed
 

@@ -9,6 +9,10 @@ A prototype is **throwaway code that answers a question**. The question decides 
 
 Adapted from [mattpocock/skills](https://github.com/mattpocock/skills) (MIT).
 
+## Locate the work
+
+Where an effort is in play, resolve it and read the phase's entry in `docs/planning/<effort>/roadmap.md` for what this phase ships, plus `wireframes.md` and `spec.md` for the shape already agreed. This skill runs per phase, often in a fresh session weeks after the roadmap was drawn, so the plan is on disk rather than in the conversation. A prototype exploring a question the wireframes already settled is a prototype spent on nothing.
+
 ## Pick a branch
 
 Identify which question is being answered — from the user's prompt, the surrounding code, or by asking if the user is around:

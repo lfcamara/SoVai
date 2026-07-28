@@ -1,6 +1,6 @@
 ---
 name: spec-review
-description: Review whether a diff builds the right thing — requirements the spec asked for that are missing or partial, behaviour nobody asked for, and requirements that look implemented but aren't. Every finding cites the spec line it comes from. Use to check a branch, PR, or work-in-progress diff against its originating ticket, spec, or PRD, or when the review skill dispatches its Spec axis.
+description: Review whether a diff builds the right thing — missing requirements, scope creep, and requirements implemented wrongly. Use to check a diff against its originating ticket, spec, or PRD, or when the review skill dispatches its spec axis.
 ---
 
 # Spec Review
