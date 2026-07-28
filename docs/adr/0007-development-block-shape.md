@@ -1,0 +1,31 @@
+# Development block: ticket-scoped execution, red-green TDD, five-axis review
+
+The development block delegates execution per ticket, runs a two-step TDD loop, and splits review into five independent axes.
+
+## The ticket is the unit of delegation
+
+`to-tickets` already sizes a ticket to a single fresh context window, which is exactly a subagent's budget. So one ticket goes to one `implementer`. A phase is the orchestrator's sequencing unit and is never handed to an agent whole — doing so would exhaust the context it was sized against.
+
+Parallelism runs across the frontier: only tickets whose blockers have closed can run at once. Where concurrent work could touch the same files, agents run in isolated git worktrees, which makes parallelism safe by construction rather than by luck.
+
+## TDD is red → green only
+
+Refactoring is relocated to the review stage, not deleted. The loop produces a passing test and the code that satisfies it; structural cleanup happens in `code-review`, where the tests are already green and the code is free to move. This matches the upstream `tdd` skill from mattpocock/skills, which was imported unchanged.
+
+TDD is mandatory for backend and other non-UI logic. UI is the deliberate exception, tested after implementation: a UI's shape moves while it is being built, and tests written against a moving shape break on every layout change without catching real defects. `ui-testing` covers that case, deriving its test list from the wireframes rather than chasing maximum coverage — a brittle UI suite gets disabled, and a disabled suite protects nothing.
+
+## Verification stays inside the subagent
+
+Lint, build, test and coverage produce enormous output. That output is already contained: it lands in the subagent's context and dies with it, so the subagent boundary is the isolation, and no separate agent is needed. The `implementer` verifies its own slice and reports the verdict with failing lines only. Integration checks spanning several agents' work go to `reviewer`, which holds Bash and is read-only.
+
+## Review has five axes and one dispatcher
+
+`code-review`, `spec-review`, `test-review`, `security-review`, `migration-review`, dispatched in parallel by `review`. Each axis is a skill of its own because each carries distinct patterns as reference and each is worth running alone — a security pass before a release, say. Running them as separate `reviewer` subagents keeps their contexts from polluting each other, and findings are reported per axis without reranking, so a clean axis cannot mask a failing one.
+
+`spec-review` exists because the other four all judge how the work was done. Code that satisfies every standard while implementing the wrong thing passes all of them.
+
+## The orchestrator owns ticket state and the PR
+
+States are To Do, Doing, Testing, Done. Every transition is the orchestrator's, for two reasons. A subagent that dies mid-task would otherwise leave its ticket stranded in Doing with nothing alive to reconcile it, whereas the orchestrator outlives every agent it dispatches. And an implementer that marks its own work Done is grading its own homework — the Testing state exists precisely so that something else validates first, the same reasoning that makes `reviewer` read-only.
+
+The draft PR opens after the implementer's first push rather than at ticket start. A pull request needs a commit, so opening it earlier means either an empty shell or a junk empty commit; opening it on the red-test push gives a PR that already states what the ticket must make true.

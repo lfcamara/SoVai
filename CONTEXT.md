@@ -32,6 +32,14 @@ _Avoid_: Issue, task, story (the tracker may call it an issue; the skills call i
 The surface at which a feature's behaviour can be observed from outside — where tests attach.
 _Avoid_: Boundary, interface, test hook
 
+**Axis**:
+One independent dimension of review — code, spec, test, security, migration. Each runs as its own parallel `reviewer` subagent and is reported separately, never merged with the others.
+_Avoid_: Check, pass, dimension
+
+**Frontier**:
+The tickets whose blockers have all closed — the set that can be worked, and therefore parallelized, right now.
+_Avoid_: Ready set, available work, backlog
+
 **Brief**:
 The complete instruction set handed to a subagent: outcome, skill, inputs, done criteria, scope fence, and what to report. It is everything the subagent gets, since none of the orchestrator's conversation reaches it.
 _Avoid_: Prompt, task description, instructions

@@ -6,8 +6,8 @@ Plugin Claude Code com um engineering workflow de uso geral — serve para qualq
 
 - **Planejamento** — ✅ implementado
 - **Prototipagem** — ✅ implementado
-- **Desenvolvimento** — implementação guiada (TDD, domain modeling)
-- **Testes e review** — code review, estratégia de testes
+- **Desenvolvimento** — ✅ implementado
+- **Testes e review** — ✅ implementado
 - **Debug** — diagnóstico e correção de bugs
 - **Finalização de trabalho** — handoff, checklist de conclusão
 
@@ -40,6 +40,34 @@ Todas as skills são model-invoked: é o que permite uma alcançar a outra. Skil
 Tudo que um esforço produz vive em `docs/planning/<effort>/`. O `to-prd` nomeia o diretório; toda etapa seguinte o resolve a partir do filesystem — é o que permite retomar uma fase semanas depois, em sessão limpa.
 
 Decisões de design registradas em [`docs/adr/`](docs/adr/) — vale ler antes de mexer no pipeline.
+
+## Desenvolvimento
+
+Por ticket, executado por subagente. Estados no tracker: **To Do → Doing → Testing → Done** — todas as transições são do orquestrador, porque subagente que morre no meio deixaria o ticket travado, e implementer que marca o próprio `Done` corrige a própria prova.
+
+| Skill | Entrega |
+|---|---|
+| [`tdd`](skills/development/tdd/SKILL.md) | Loop red → green. Importado sem alteração — o upstream já relocava refatoração para o review, igual ao que queríamos |
+| [`implement`](skills/development/implement/SKILL.md) | Um ticket, do contexto limpo até branch pushado e verificado |
+| [`ui-testing`](skills/development/ui-testing/SKILL.md) | Testes de UI derivados da tabela story→tela do `wireframes.md` |
+| [`open-pr`](skills/development/open-pr/SKILL.md) | Draft PR após o primeiro push (o teste vermelho), ticket e PR linkados nos dois sentidos |
+
+TDD é obrigatório no backend. UI é a exceção deliberada — testada depois, porque teste escrito contra uma tela cuja forma ainda se move quebra a cada mudança de layout sem pegar defeito real.
+
+Lint, build e coverage rodam **dentro** do implementer: o output gigante morre com o subagente. A fronteira já é o escudo, não precisa de agente extra.
+
+## Review
+
+Cinco eixos independentes, despachados em paralelo como subagentes `reviewer` (read-only) e reportados separadamente — sem merge, sem reranking, para que um eixo limpo não enterre um que falhou.
+
+| Skill | Pergunta que responde |
+|---|---|
+| [`review`](skills/review/review/SKILL.md) | Despachante: fixa o diff, seleciona os eixos aplicáveis, agrega |
+| [`code-review`](skills/review/code-review/SKILL.md) | **Como** foi escrito — padrões do repo + 12 code smells do Fowler. É onde a refatoração vive |
+| [`spec-review`](skills/review/spec-review/SKILL.md) | Se foi construída **a coisa certa** — o eixo que os outros quatro não pegam |
+| [`test-review`](skills/review/test-review/SKILL.md) | Se os testes falhariam numa regressão real. Coverage % é sinal fraco, não alvo |
+| [`security-review`](skills/review/security-review/SKILL.md) | Superfície de ataque. Achado precisa nomear caminho concreto até o dano |
+| [`migration-review`](skills/review/migration-review/SKILL.md) | Migrations — reversibilidade, expand–contract, backfill. Aqui o modo de falha é perda de dados |
 
 ## Orquestração
 
