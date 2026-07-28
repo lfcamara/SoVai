@@ -32,6 +32,10 @@ _Avoid_: Issue, task, story (the tracker may call it an issue; the skills call i
 The surface at which a feature's behaviour can be observed from outside — where tests attach.
 _Avoid_: Boundary, interface, test hook
 
+**Feedback loop**:
+One command that goes red on a specific bug and green once it is fixed — red-capable, deterministic, fast, and runnable unattended. Building it is what finds a bug; hypothesising before it exists is the failure the debug block prevents.
+_Avoid_: Repro, test case, harness
+
 **Axis**:
 One independent dimension of review — code, spec, test, security, migration. Each runs as its own parallel `reviewer` subagent and is reported separately, never merged with the others.
 _Avoid_: Check, pass, dimension

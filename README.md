@@ -9,7 +9,7 @@ Plugin Claude Code com um engineering workflow de uso geral — serve para qualq
 - **Desenvolvimento** — ✅ implementado
 - **Testes e review** — ✅ implementado
 - **Finalização de trabalho** — ✅ implementado
-- **Debug** — diagnóstico e correção de bugs
+- **Debug** — ✅ implementado
 
 ## O pipeline
 
@@ -76,6 +76,20 @@ Cinco eixos independentes, despachados em paralelo como subagentes `reviewer` (r
 | [`test-review`](skills/review/test-review/SKILL.md) | Se os testes falhariam numa regressão real. Coverage % é sinal fraco, não alvo |
 | [`security-review`](skills/review/security-review/SKILL.md) | Superfície de ataque. Achado precisa nomear caminho concreto até o dano |
 | [`migration-review`](skills/review/migration-review/SKILL.md) | Migrations — reversibilidade, expand–contract, backfill. Aqui o modo de falha é perda de dados |
+
+## Debug
+
+[`diagnose`](skills/debug/diagnose/SKILL.md) — adaptado do `diagnosing-bugs` do mattpocock, com dois deltas.
+
+**Termina no ticket de bug, não no fix.** O fix entra pelo pipeline normal — `implement` com TDD, `review`, `wrap-up`. Um caminho só para todo código, e o diagnóstico vira durável em vez de morrer com a sessão que o produziu.
+
+**Começa na evidência.** O original já começa no loop de feedback; aqui, primeiro se obtém a evidência — preferencialmente indo buscar (base, browser, logs) em vez de confiar no relato, porque relato é versão de segunda mão.
+
+O núcleo é preservado: **o loop de feedback é a skill**. Um comando tight, red-capable e determinístico é o que acha o bug — e *"reaching for a hypothesis before this command exists is the exact failure this skill prevents."*
+
+Hipóteses (3–5, ranqueadas, falsificáveis) são testadas por **subagentes em paralelo**, uma por agente: são independentes por construção, e um agente testando várias em sequência ancora na primeira.
+
+O ticket carrega evidência, comando de repro, repro minimizado, causa raiz, **análise de seam** para o teste de regressão — e quando não existe seam correto, essa ausência é ela própria um achado.
 
 ## Finalização
 
