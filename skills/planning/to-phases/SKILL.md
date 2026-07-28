@@ -11,7 +11,9 @@ Shipping is the whole discipline. A phase that ends with work merged but nothing
 
 ## Gather context
 
-Work from the PRD and the spec under `docs/planning/<slug>/`, plus whatever the session already established. Read the codebase to see what exists today — the starting point decides how much has to happen before the first phase can ship at all.
+Resolve the **effort** — the directory under `docs/planning/` holding this work's documents. Where more than one could match, ask rather than guessing.
+
+Work from the PRD, the spec, and the wireframes under `docs/planning/<effort>/`, plus whatever the session already established. Read the codebase to see what exists today — the starting point decides how much has to happen before the first phase can ship at all.
 
 ## Draft the phases
 
@@ -43,13 +45,13 @@ Iterate until the user approves.
 
 ## Write the roadmap
 
-Write the approved breakdown to `docs/planning/<slug>/roadmap.md`, beside the PRD and spec.
+Write the approved breakdown to `docs/planning/<effort>/roadmap.md`, beside the PRD and spec.
 
 <roadmap-template>
 
 # <Effort name> — Roadmap
 
-PRD: [prd.md](./prd.md) · Spec: [spec.md](./spec.md)
+PRD: [prd.md](./prd.md) · Spec: [spec.md](./spec.md) · Wireframes: [wireframes.md](./wireframes.md)
 
 ## Phase 1 — <name>
 

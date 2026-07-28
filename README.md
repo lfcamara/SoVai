@@ -29,13 +29,15 @@ Tudo antes de `to-phases` roda uma vez. Tudo depois roda uma vez **por fase**, q
 | [`brainstorm`](skills/planning/brainstorm/SKILL.md) | Planejamento | Reconhece uma ideia não-moldada e a molda via `grilling` + `domain-modeling` até haver entendimento compartilhado |
 | [`to-prd`](skills/planning/to-prd/SKILL.md) | Planejamento | `docs/planning/<slug>/prd.md` — problema, solução, user stories, em linguagem de negócio |
 | [`to-spec`](skills/planning/to-spec/SKILL.md) | Planejamento | `docs/planning/<slug>/spec.md` — decisões de implementação, seams de teste, escopo técnico |
-| [`to-wireframes`](skills/prototyping/to-wireframes/SKILL.md) | Prototipagem | Artifact HTML — todas as telas e os fluxos, em baixa fidelidade de propósito |
+| [`to-wireframes`](skills/prototyping/to-wireframes/SKILL.md) | Prototipagem | `docs/planning/<effort>/wireframes.md` + artifact HTML — todas as telas e os fluxos, em baixa fidelidade de propósito |
 | [`to-phases`](skills/planning/to-phases/SKILL.md) | Planejamento | `docs/planning/<slug>/roadmap.md` — fases que entregam valor isoladamente (teste do cancelamento) |
 | [`prototype`](skills/prototyping/prototype/SKILL.md) | Prototipagem | Protótipo descartável — variações de UI para escolher, ou modelo de estado para dirigir na mão |
 | `frontend-design` | — | Design visual final. Skill ambiente, não é deste plugin — apenas apontamos para ela |
 | [`to-tickets`](skills/planning/to-tickets/SKILL.md) | Planejamento | Tickets tracer-bullet no tracker (Linear por padrão) |
 
 Todas as skills são model-invoked: é o que permite uma alcançar a outra. Skill user-invoked não pode ser chamada por outra skill.
+
+Tudo que um esforço produz vive em `docs/planning/<effort>/`. O `to-prd` nomeia o diretório; toda etapa seguinte o resolve a partir do filesystem — é o que permite retomar uma fase semanas depois, em sessão limpa.
 
 Decisões de design registradas em [`docs/adr/`](docs/adr/) — vale ler antes de mexer no pipeline.
 

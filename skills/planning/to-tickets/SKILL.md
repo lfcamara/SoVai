@@ -7,11 +7,13 @@ description: Break a phase, spec, or conversation into tracer-bullet tickets wit
 
 Break work into **tickets** — tracer bullets, each cutting a narrow but complete path through every layer, each declaring what **blocks** it.
 
-Scope the run to one **phase** when a roadmap exists (`docs/planning/<slug>/roadmap.md`). Ticketing phases that have not started plans against a codebase that will have moved by the time they do.
+Scope the run to one **phase** when a roadmap exists (`docs/planning/<effort>/roadmap.md`). Ticketing phases that have not started plans against a codebase that will have moved by the time they do.
 
 ## Gather context
 
-Work from the session, plus the spec and roadmap under `docs/planning/<slug>/` if they exist. If the user passes a reference — a path, an issue id, a URL — fetch it and read it in full.
+Resolve the **effort** first — the directory under `docs/planning/` holding this work's documents. This skill routinely runs weeks after the plan was written, in a session that knows nothing but the filesystem, so where more than one effort could match, ask instead of guessing.
+
+Work from the session, plus the spec and roadmap under `docs/planning/<effort>/` if they exist. If the user passes a reference — a path, an issue id, a URL — fetch it and read it in full.
 
 Explore the codebase before slicing. Ticket titles and bodies use the vocabulary in `CONTEXT.md`, and respect the ADRs covering the area. Look for prefactoring that would make the real change simple: make the change easy, then make the easy change — and give the prefactoring its own ticket, first.
 
@@ -47,7 +49,7 @@ Read `docs/agents/issue-tracker.md` in the repo for where issues live and how th
 Publish in dependency order — blockers first — so each ticket can reference real identifiers by the time it needs them. Work the **frontier**: any ticket whose blockers are all published.
 
 - **Linear** — one issue per ticket, on the project matching the effort. Use Linear's native blocking relationship for the edges, and make each ticket a sub-issue of the phase where the tracker models phases as parent issues. If the connected Linear tools cannot create issues, say so plainly and write the tickets to the local fallback instead of silently dropping them.
-- **Local markdown** — one file per ticket at `docs/planning/<slug>/tickets/<NN>-<slug>.md`, numbered from `01` in dependency order. One ticket per file, never a combined file.
+- **Local markdown** — one file per ticket at `docs/planning/<effort>/tickets/<NN>-<ticket-slug>.md`, numbered from `01` in dependency order. One ticket per file, never a combined file.
 
 <ticket-template>
 

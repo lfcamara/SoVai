@@ -9,11 +9,17 @@ Synthesize what the session already established into a **PRD**: the business-fac
 
 The PRD owns the **what** and the **why**. The **how** belongs to the spec (`to-spec`), which is written next and references this document. Leaving implementation out is what keeps the two documents from drifting apart.
 
+## Name the effort
+
+Everything this work produces — spec, wireframes, roadmap, tickets — lives in one directory: `docs/planning/<effort>/`, where `<effort>` is a kebab-case slug naming the work.
+
+Name it here, before writing anything. Every later stage finds its inputs by resolving that directory, and stages run weeks apart in fresh sessions with nothing but the filesystem to go on. The name is the anchor the whole pipeline hangs from, so prefer one that will still be recognizable when the session that chose it is long gone.
+
 ## Write it
 
 Use the project's domain glossary (`CONTEXT.md`) for every term, so the PRD, the code, and the conversation stay in one vocabulary.
 
-Write to `docs/planning/<slug>/prd.md`, where `<slug>` names the effort in kebab-case. Create the directory if it does not exist.
+Write to `docs/planning/<effort>/prd.md`, creating the directory if it does not exist.
 
 <prd-template>
 

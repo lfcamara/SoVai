@@ -9,6 +9,10 @@ Turn a PRD into the **spec**: the engineering half of the plan. Do not re-interv
 
 The spec owns the **how**. It references the PRD for problem and users rather than restating them, so each fact has one home.
 
+## Resolve the effort
+
+The **effort** is the directory under `docs/planning/` holding this work's documents, named by `to-prd`. Resolve it before reading anything else. Where more than one could match, ask — writing into the wrong effort corrupts a plan silently, and the cost of one question is nothing against that.
+
 ## Explore first
 
 Read the codebase before writing a line of the spec. Read `CONTEXT.md` for the vocabulary and any ADRs covering the area you are touching — an ADR records a decision already made, so respect it rather than reopening it. If the spec genuinely needs to contradict one, say so explicitly and say why.
@@ -23,7 +27,7 @@ Put the proposed seams to the user and get agreement before writing the spec —
 
 ## Write it
 
-Write to `docs/planning/<slug>/spec.md`, beside the PRD it belongs to.
+Write to `docs/planning/<effort>/spec.md`, beside the PRD it belongs to.
 
 <spec-template>
 
