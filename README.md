@@ -161,6 +161,15 @@ Importadas sem alteração. Mantêm o `agents/openai.yaml` original (compatibili
 | [`to-tickets`](skills/planning/to-tickets/SKILL.md) | Regras de vertical slice e expand–contract preservadas. Removida a dependência do skill de setup do repo original; escopo passou a ser por fase. |
 | [`to-spec`](skills/planning/to-spec/SKILL.md) | Metade técnica do `to-spec` original (a metade de negócio virou `to-prd`). O raciocínio de **seams** foi preservado — é o núcleo da skill. |
 
+## Instalação
+
+```
+/plugin marketplace add lfcamara/SoVai
+/plugin install sovai@sovai
+```
+
+Os agentes `implementer` e `reviewer` só ficam disponíveis **depois** da instalação — enquanto o repo é só uma pasta, eles são arquivos que ninguém carrega.
+
 ## Uso
 
 Não é preciso invocar nada por nome: descreva uma ideia nova e o `brainstorm` reconhece, molda, e o pipeline segue sozinho.
