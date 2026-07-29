@@ -19,7 +19,7 @@ Name it here, before writing anything. Every later stage finds its inputs by res
 
 Use the project's domain glossary (`CONTEXT.md`) for every term, so the PRD, the code, and the conversation stay in one vocabulary.
 
-Write to `docs/planning/<effort>/prd.md`, creating the directory if it does not exist.
+Write to `docs/planning/<effort>/<effort> — PRD.md`, creating the directory if it does not exist.
 
 <prd-template>
 

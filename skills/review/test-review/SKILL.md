@@ -47,3 +47,7 @@ A test name should say what capability exists, in terms someone outside the diff
 ## Coverage percentage is a weak signal
 
 Do not use a coverage percentage, in the diff or in CI output, as evidence this axis passes. A percentage counts lines executed, not behavior verified — a suite full of the false-confidence tests described above can hit 100% while catching nothing, and a suite testing every error path and boundary on the code that matters can sit well below it. Look at what the tests actually assert and which cases they exercise instead; treat a percentage claim in a PR description as unverified until you've checked the tests behind it.
+
+## Severity
+
+Assign each finding a severity per `review`'s ladder. On this axis, high is a test that would not fail on a real regression to a path the code claims to guarantee — a tautological or implementation-coupled test standing in for real coverage. Critical is reserved for a gap in coverage that is itself the reason a data-loss or security defect could reach production undetected.

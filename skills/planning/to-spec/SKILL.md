@@ -27,13 +27,13 @@ Put the proposed seams to the user and get agreement before writing the spec —
 
 ## Write it
 
-Write to `docs/planning/<effort>/spec.md`, beside the PRD it belongs to.
+Write to `docs/planning/<effort>/<effort> — Spec.md`, beside the PRD it belongs to.
 
 <spec-template>
 
 # <Effort name> — Spec
 
-PRD: [prd.md](./prd.md)
+PRD: [[<effort> — PRD]]
 
 ## Implementation decisions
 

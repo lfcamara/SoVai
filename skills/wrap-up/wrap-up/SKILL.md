@@ -13,7 +13,7 @@ A merge is authorized by the user's explicit approval of *this* pull request —
 
 ## Check the preconditions
 
-Before merging, confirm and report: the PR is not a draft, its reviews have passed, CI is green, and the branch has no conflicts with its base. The user approved a merge of work they believed was ready — where any precondition fails, their approval was given on a false premise. Report the failing one and stop; do not merge around it.
+Before merging, confirm and report: the PR is not a draft, its reviews have passed, CI is green, the branch has no conflicts with its base, and the review record at `docs/reviews/<YYYY-MM-DD> — <ticket or branch>.md` carries no unresolved finding at **critical** or **high** severity. The user approved a merge of work they believed was ready — where any precondition fails, their approval was given on a false premise. A critical or high finding is never one the user's approval can wave through; it gets fixed, full stop, regardless of how firmly the PR was approved. Report the failing one and stop; do not merge around it.
 
 ## Merge, then verify it landed
 
@@ -23,6 +23,20 @@ Merge with `gh`. Then confirm the merge actually landed before touching the trac
 
 Move the ticket to Done. Tracker mechanics and the Linear team/project convention live in `to-tickets` — follow that, not a restatement of it here.
 
+## Write the troubleshooting note
+
+Check whether the ticket just moved to Done is a bug fix — it carries `diagnose`'s fields: a confirmed root cause, a reproduction command, a minimised repro. `diagnose` deliberately stops at the ticket, before anyone knows how the bug was actually fixed; the resolution only exists now that the fix has landed, which is why this note is written here and not there.
+
+Write `docs/troubleshooting/<YYYY-MM-DD> — <short bug title>.md`, wikilinked to the ticket and to whichever effort documents the fix touches. Carry:
+
+- **The symptom**, in the words it was actually observed — the error message, the wrong output, what the user or the report saw. A future reader arrives searching on what they're seeing, not on what caused it, so lead with their words, not the diagnosis's.
+- **The root cause**, from the ticket.
+- **The fix** — what changed and why it addresses the root cause rather than the symptom.
+- **The reproduction command that went red**, and what it does now.
+- **What would have prevented it** — carried over from the ticket's own answer to that question, sharpened if the fix revealed more than the diagnosis knew.
+
+The note's entire value is being found again by someone hitting the same symptom later. Write it for that reader, not for the record.
+
 ## Reconcile the documents
 
 An implementation routinely learns something the plan didn't know, and the documents under `docs/planning/<effort>/` go stale silently unless something closes the loop. This is that something.
@@ -31,14 +45,14 @@ The governing rule: **a document follows a decision, not a diff.** Where the cod
 
 Check each of the following and state what you found, updating only where a decision moved:
 
-- `spec.md` — implementation decisions that turned out differently than planned.
-- `prd.md` — scope that genuinely changed. This should be rare; question it when it happens.
-- `wireframes.md` — screens or states that changed shape.
-- `roadmap.md` — phase exit criteria now met.
+- `<effort> — Spec.md` — implementation decisions that turned out differently than planned.
+- `<effort> — PRD.md` — scope that genuinely changed. This should be rare; question it when it happens.
+- `<effort> — Wireframes.md` — screens or states that changed shape.
+- `<effort> — Roadmap.md` — phase exit criteria now met.
 - `CONTEXT.md` and ADRs — a new domain term, or a decision made during implementation that meets the bar for an ADR. Run `domain-modeling` for these; it owns both files and the test for when an ADR is warranted.
 
 ## Close the phase when it closes
 
-When the ticket just moved to Done was the last open one in its phase, the phase is complete — but only if its exit criteria in `roadmap.md` actually hold. Verify each one and report which you checked; a phase whose tickets all closed but whose exit criteria don't hold is not done, and catching that now is far cheaper than catching it a phase later.
+When the ticket just moved to Done was the last open one in its phase, the phase is complete — but only if its exit criteria in `<effort> — Roadmap.md` actually hold. Verify each one and report which you checked; a phase whose tickets all closed but whose exit criteria don't hold is not done, and catching that now is far cheaper than catching it a phase later.
 
 Once the phase genuinely closes, the next phase needs its own `to-tickets` run, against the codebase as it now stands — that run is the next step, not part of this one.

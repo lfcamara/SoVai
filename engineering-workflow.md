@@ -13,10 +13,10 @@ IDEA
  │
  ├─ brainstorm ──── shape it until the understanding is shared
  │
- ├─ to-prd ─────────────────────────► docs/planning/<effort>/prd.md
- ├─ to-spec ────────────────────────► docs/planning/<effort>/spec.md
- ├─ to-wireframes ──────────────────► docs/planning/<effort>/wireframes.md
- ├─ to-phases ──────────────────────► docs/planning/<effort>/roadmap.md
+ ├─ to-prd ─────────────────────────► <effort> — PRD.md
+ ├─ to-spec ────────────────────────► <effort> — Spec.md
+ ├─ to-wireframes ──────────────────► <effort> — Wireframes.md
+ ├─ to-phases ──────────────────────► <effort> — Roadmap.md
  │
  └─ PER PHASE, when that phase begins:
       │
@@ -66,7 +66,7 @@ The spec's core work is finding the **seams**: where behaviour can be observed f
 
 ### to-wireframes
 
-Every screen and the flows between them, at deliberately low fidelity, published as an artifact and recorded in `wireframes.md`.
+Every screen and the flows between them, at deliberately low fidelity, published as an artifact and recorded in the effort's Wireframes note.
 
 **Fidelity is a budget.** Spend it on visuals and you buy critique of visuals — give a reviewer colour and type and they discuss colour and type, while the flow missing a step goes unmentioned. So: boxes, labels, hierarchy, real content shape, greyscale.
 
@@ -218,6 +218,51 @@ The standing rule both carry: **an unsettled decision goes back, it does not get
 And what comes back is a claim, not a fact. Read the diff, not just the report — a confident summary of a broken change reads exactly like a confident summary of a working one.
 
 ---
+
+## The vault, and the loop that feeds itself
+
+The project's `docs/` folder **is** an Obsidian vault — a vault is just a folder of markdown, so nothing needs scaffolding and nothing moves out of the repo. Documents link each other with wikilinks, and those links are what make it a graph rather than a pile.
+
+Filenames carry the effort — `checkout-flow — Spec.md`, not `spec.md` — because the graph shows the note's name and nothing else. Fifteen efforts would otherwise render fifteen nodes labelled "spec", which costs something to draw and returns nothing.
+
+Links are spent, not sprayed: a ticket to its phase, a spec to the PRD it serves. Linking everything a document touches produces a graph as useless as none.
+
+### Severity decides obligation
+
+Review findings are ranked by the axis that found them, because severity depends on what that axis knows:
+
+| | |
+|---|---|
+| **critical** | data loss, a security breach, or a broken production path |
+| **high** | incorrect behaviour a user meets, or a broken guarantee the code claims |
+| **medium** | a real defect with bounded blast radius, or a standard breach that costs later |
+| **low** | worth fixing, cheap to leave |
+
+**Critical and high are always fixed** — `wrap-up` will not merge with either unresolved, no matter how firmly the PR was approved. **Medium and low are fixed only when you say so.** The boundary between high and medium is the one that carries weight: it is where a fix stops being optional.
+
+### Every finding records why it was not prevented
+
+A finding is a defect caught. A **cause** that repeats is a hole in the process — and the two are not the same thing.
+
+So each finding carries a short cause, and the review record persists in the vault. This is the one part of the loop that cannot be reconstructed later: without a written cause in a form later reviews can be matched against, recurrence is invisible and the vault accumulates incidents instead of lessons.
+
+Causes name the gap — *"the spec never said which seam"*, *"no rule in code-review covers this"* — not the moment or the person. A cause phrased as "missed it" is unmatchable and unfixable.
+
+### harden turns recurrence into a rule
+
+`harden` reads accumulated review records, groups findings **by cause rather than symptom** — two findings that look unrelated can share one hole — weights the clusters by severity, and amends whichever skill should have prevented the defect.
+
+Picking the owner uses one test: *what single artifact, present when the defect was introduced, would have stopped it?* A missing axis rule points at the axis; a loose completion criterion points at the skill that let it pass as done; a permitted action points at the agent definition.
+
+The amendment **competes with what is already there**. Where an existing rule was almost right, it gets sharpened rather than joined by a second one nearby — a rule added per incident is exactly the sediment `writing-great-skills` warns against, and is how the original rule stayed weak enough to miss this in the first place.
+
+It runs periodically, never per review — one occurrence is not a pattern. It runs in the SoVai repo, where the skills live, reading vaults from whichever projects you point it at: a cause appearing once in each of three projects is invisible from inside any one of them, and that is the pattern most worth catching. And it **proposes rather than applies**, because a skill change alters every future run.
+
+### Troubleshooting notes
+
+When a bug fix merges, `wrap-up` writes the note — not `diagnose`, which stops at the ticket before anyone knows how the bug was actually fixed.
+
+It carries the symptom, the root cause, the fix, the reproduction command, and what would have prevented it. Written **in the words of the symptom**, not the diagnosis: its whole value is being found again by someone hitting the same behaviour later, and the name of the root cause is precisely what that person does not yet have to search on.
 
 ## Per-project configuration
 

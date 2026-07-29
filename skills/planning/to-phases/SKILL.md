@@ -45,13 +45,13 @@ Iterate until the user approves.
 
 ## Write the roadmap
 
-Write the approved breakdown to `docs/planning/<effort>/roadmap.md`, beside the PRD and spec.
+Write the approved breakdown to `docs/planning/<effort>/<effort> — Roadmap.md`, beside the PRD and spec.
 
 <roadmap-template>
 
 # <Effort name> — Roadmap
 
-PRD: [prd.md](./prd.md) · Spec: [spec.md](./spec.md) · Wireframes: [wireframes.md](./wireframes.md)
+PRD: [[<effort> — PRD]] · Spec: [[<effort> — Spec]] · Wireframes: [[<effort> — Wireframes]]
 
 ## Phase 1 — <name>
 

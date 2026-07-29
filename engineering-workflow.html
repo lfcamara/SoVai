@@ -154,9 +154,9 @@ footer code{font-family:var(--mono)}
   <p class="standfirst">How work moves from an idea someone had in the shower to code merged into main —
     twelve stages, three cadences, and one rule about who is allowed to decide what.</p>
   <div class="meta">
-    <span class="tag">25 skills</span>
+    <span class="tag">26 skills</span>
     <span class="tag">2 agents</span>
-    <span class="tag">9 ADRs</span>
+    <span class="tag">10 ADRs</span>
     <span class="tag">6 blocks</span>
   </div>
 </header>
@@ -225,6 +225,38 @@ footer code{font-family:var(--mono)}
     </table>
   </div>
   <div class="rule-box"><p>If you cannot write the brief, you do not understand the task well enough to delegate it.</p></div>
+</section>
+
+<section>
+  <h2>The vault, and the loop that feeds itself</h2>
+  <p class="lede">The project's <code style="font-family:var(--mono);font-size:.9em">docs/</code> folder is an Obsidian vault. Documents link each other with wikilinks, and those links are what make it a graph rather than a pile. Filenames carry the effort — <code style="font-family:var(--mono);font-size:.9em">checkout-flow — Spec.md</code>, not <code style="font-family:var(--mono);font-size:.9em">spec.md</code> — because the graph shows the note's name and nothing else.</p>
+
+  <h3>Severity decides obligation</h3>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Severity</th><th>What it means</th><th>Obligation</th></tr></thead>
+      <tbody>
+        <tr><td>critical</td><td>Data loss, a security breach, or a broken production path</td><td>Always fixed</td></tr>
+        <tr><td>high</td><td>Incorrect behaviour a user meets, or a broken guarantee the code claims</td><td>Always fixed</td></tr>
+        <tr><td>medium</td><td>A real defect with bounded blast radius, or a standard breach that costs later</td><td>Only if you say so</td></tr>
+        <tr><td>low</td><td>Worth fixing, cheap to leave</td><td>Only if you say so</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="lede" style="margin-top:1rem">The boundary between high and medium is the one that carries weight — it is where a fix stops being optional. <code style="font-family:var(--mono);font-size:.9em">wrap-up</code> will not merge with a critical or high finding unresolved, no matter how firmly the PR was approved.</p>
+
+  <div class="rule-box"><p>A finding is a defect caught. A <strong>cause</strong> that repeats is a hole in the process — and the two are not the same thing.</p></div>
+
+  <p class="lede" style="margin-top:1.4rem">So every finding records why it was not prevented, and the review record persists in the vault. This is the one part of the loop that cannot be reconstructed later: without a written cause, recurrence is invisible and the vault accumulates incidents instead of lessons. Causes name the gap — <em>“the spec never said which seam”</em> — not the moment or the person. “Missed it” is unmatchable and unfixable.</p>
+
+  <h3 style="margin-top:1.8rem">harden turns recurrence into a rule</h3>
+  <ol class="steps">
+    <li><div><b>Group by cause, not symptom</b><span>Two findings that look unrelated can share one hole in the process. Clusters are weighted by severity — recurrence at critical earns an amendment sooner than recurrence at low.</span></div></li>
+    <li><div><b>Find the owner</b><span>One test: what single artifact, present when the defect was introduced, would have stopped it? A missing rule points at the axis; a loose completion criterion at the skill that let it pass as done; a permitted action at the agent definition.</span></div></li>
+    <li><div><b>Sharpen, don't append</b><span>Where an existing rule was almost right, it gets rewritten rather than joined by a second one nearby. A rule added per incident is sediment — and is how the original rule stayed weak enough to miss this.</span></div></li>
+    <li><div><b>Propose, don't apply</b><span>A skill change alters every future run, so nothing lands from a pattern you have not seen. Runs periodically, never per review — one occurrence is not a pattern.</span></div></li>
+  </ol>
+  <p class="lede" style="margin-top:1.2rem">It runs in the SoVai repo, where the skills live, reading vaults from whichever projects you point it at. A cause appearing once in each of three projects is invisible from inside any one of them — and that is the pattern most worth catching.</p>
 </section>
 
 <section>

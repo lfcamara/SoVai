@@ -13,11 +13,11 @@ TDD is mandatory for backend work, but a UI is the deliberate exception: test it
 
 The target is covering the wireframes, not finding every scenario a UI could theoretically hit. A suite chasing maximum coverage on a UI grows slow and brittle, gets disabled at the first flaky run, and a disabled suite protects nothing — which is worse than a smaller suite the team trusts.
 
-`docs/planning/<effort>/wireframes.md` already names exactly what matters: every screen, the states each one has, and a story-coverage table mapping each PRD user story to the screen where it happens. That table is a ready-made, checkable spec — derive the test list from it rather than from what you can imagine going wrong.
+`docs/planning/<effort>/<effort> — Wireframes.md` already names exactly what matters: every screen, the states each one has, and a story-coverage table mapping each PRD user story to the screen where it happens. That table is a ready-made, checkable spec — derive the test list from it rather than from what you can imagine going wrong.
 
 ## Derive the test list
 
-Resolve the effort and read `docs/planning/<effort>/wireframes.md`. For each row of the story-coverage table, write down the story and the screen it maps to — this is your minimum test list, one item per row. Then walk each screen's **States** entry and add one item per state listed (empty, loading, error, permission denied, first run, or whatever else that screen names).
+Resolve the effort and read `docs/planning/<effort>/<effort> — Wireframes.md`. For each row of the story-coverage table, write down the story and the screen it maps to — this is your minimum test list, one item per row. Then walk each screen's **States** entry and add one item per state listed (empty, loading, error, permission denied, first run, or whatever else that screen names).
 
 Where no wireframes exist — work that predates the pipeline, or a screen that arrived without one — derive the same two lists from the screen itself: what a user can do on it, and the states it can be in. Say that you did this, because a list read off an implementation inherits its blind spots, while one read off wireframes was agreed before the code existed.
 

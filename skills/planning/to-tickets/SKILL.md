@@ -7,7 +7,7 @@ description: Break a phase, spec, or conversation into tracer-bullet tickets wit
 
 Break work into **tickets** — tracer bullets, each cutting a narrow but complete path through every layer, each declaring what **blocks** it.
 
-Scope the run to one **phase** when a roadmap exists (`docs/planning/<effort>/roadmap.md`). Ticketing phases that have not started plans against a codebase that will have moved by the time they do.
+Scope the run to one **phase** when a roadmap exists (`docs/planning/<effort>/<effort> — Roadmap.md`). Ticketing phases that have not started plans against a codebase that will have moved by the time they do.
 
 ## Gather context
 
@@ -51,13 +51,15 @@ Linear needs a team and a project to publish into, and neither is guessable from
 Publish in dependency order — blockers first — so each ticket can reference real identifiers by the time it needs them. Work the **frontier**: any ticket whose blockers are all published.
 
 - **Linear** — one issue per ticket, on the project matching the effort. Use Linear's native blocking relationship for the edges, and make each ticket a sub-issue of the phase where the tracker models phases as parent issues. If the connected Linear tools cannot create issues, say so plainly and write the tickets to the local fallback instead of silently dropping them.
-- **Local markdown** — one file per ticket at `docs/planning/<effort>/tickets/<NN>-<ticket-slug>.md`, numbered from `01` in dependency order. One ticket per file, never a combined file.
+- **Local markdown** — one file per ticket at `docs/planning/<effort>/tickets/<NN> — <Ticket title>.md`, numbered from `01` in dependency order. One ticket per file, never a combined file.
+
+A link exists to be traversed, so spend it on the jump a reader would actually make: a ticket to the phase it belongs to, a ticket to the spec decision it implements, a spec to the PRD it serves. Linking everything a document touches produces a graph as useless as no graph — resist the urge to add a "related notes" list.
 
 <ticket-template>
 
 # <Title>
 
-**Phase:** the phase this belongs to, linked, or omitted when there is no roadmap.
+**Phase:** the phase this belongs to, linked as `[[<effort> — Roadmap#Phase <N> — <name>]]`, or omitted when there is no roadmap.
 
 **What to build:** the end-to-end behaviour this ticket makes work, from the user's perspective — not a layer-by-layer implementation list.
 

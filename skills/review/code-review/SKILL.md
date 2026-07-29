@@ -18,6 +18,10 @@ Two rules bind everything below, including the baseline:
 
 Skip anything a linter or formatter already catches — restating tooling output is noise in a review a human has to read.
 
+## Severity
+
+Assign each finding a severity per `review`'s ladder. On this axis, critical is rare — structure costs later, not now. A finding reaches high only when the structure itself produces wrong behaviour, such as a documented standard breach the diff violates outright; a smell from the baseline alone tops out at medium.
+
 ## Where refactoring lives
 
 The `tdd` loop is deliberately red → green only; refactoring is not part of that cycle, it's relocated here. This is where the structural cleanup happens — not a step that got dropped, a step that got moved, so it runs with the tests already green and able to catch a regression immediately. Treat a smell you find here as work still owed, not as optional polish.

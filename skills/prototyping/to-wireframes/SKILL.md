@@ -31,7 +31,7 @@ Cover the unglamorous states too — empty, loading, error, permission denied, f
 
 ## Record the screens
 
-Write `docs/planning/<effort>/wireframes.md`, beside the PRD and spec. This file is the record; the artifact built from it is the presentation.
+Write `docs/planning/<effort>/<effort> — Wireframes.md`, beside the PRD and spec. This file is the record; the artifact built from it is the presentation.
 
 Both exist for a reason. The artifact is what the user reacts to and it lives outside the repo, so a plan that kept only the artifact would leave the roadmap referencing screens nobody can find once the link is lost. The file is what every later stage reads.
 
@@ -39,7 +39,7 @@ Both exist for a reason. The artifact is what the user reacts to and it lives ou
 
 # <Effort name> — Wireframes
 
-PRD: [prd.md](./prd.md) · Spec: [spec.md](./spec.md) · Artifact: <url, once published>
+PRD: [[<effort> — PRD]] · Spec: [[<effort> — Spec]] · Artifact: <url, once published>
 
 ## Flow
 
@@ -75,7 +75,7 @@ The page holds two things:
 - **A flow diagram** — the screens as nodes, the transitions as labelled edges. Artifacts render Mermaid natively, so a `<pre class="mermaid">` block is enough.
 - **Every screen, laid out** — each with its name, its purpose in one line, and the states it has. Size the frames to the target platform's proportions so density reads honestly; a layout that works wide often fails narrow.
 
-Write the published URL back into `wireframes.md` so the record points at its own presentation.
+Write the published URL back into `<effort> — Wireframes.md` so the record points at its own presentation.
 
 ## Completion
 

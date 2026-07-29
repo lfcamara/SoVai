@@ -44,3 +44,7 @@ A backfill needs three properties, and the diff should be checked against all th
 ## Tested against realistic data
 
 Check whether the migration was actually run against a copy of production-shaped data — realistic row counts, realistic null patterns, realistic duplicate or malformed values — rather than only an empty local database. An empty database can't surface a lock that takes too long, a constraint that existing rows violate, or a backfill that times out. Ask for evidence of this rather than assuming it happened; a migration diff with no mention of how it was tested is a gap, not a pass.
+
+## Severity
+
+Assign each finding a severity per `review`'s ladder. On this axis, critical is a migration that can silently destroy or corrupt data already in production — an irreversible drop with no reconstruction path, a backfill that isn't idempotent or safe against concurrent writes. High is one that breaks the deploy itself without touching data permanently — a lock that outlasts the deployment window, or a sequencing gap that breaks code still running against the old schema.

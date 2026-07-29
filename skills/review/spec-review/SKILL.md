@@ -12,7 +12,7 @@ Reviews WHETHER THE RIGHT THING was built, not how it's written — that split i
 Check in this order and stop at the first hit:
 
 1. The **ticket** the work came from — a reference in the commit messages or the diff's branch name.
-2. `docs/planning/<effort>/spec.md` and `prd.md` for the effort this work belongs to.
+2. `docs/planning/<effort>/<effort> — Spec.md` and `<effort> — PRD.md` for the effort this work belongs to.
 3. A path the user supplies directly.
 
 If none of the three turn up anything, say so plainly and stop — report "no spec available" rather than inventing a standard to judge the diff against. A finding without a spec behind it is a preference wearing this axis's clothes.
@@ -26,3 +26,7 @@ Every finding quotes the spec line it comes from. A finding with no citation is 
 - **Implemented wrong** — a requirement that looks handled but whose behaviour diverges from what the spec actually says.
 
 Where the spec is a PRD (business-facing: problem, solution, user stories) rather than a technical spec, hold the diff to the behaviour those stories imply, not to implementation details the PRD never had — that's `code-review`'s ground.
+
+## Severity
+
+Assign each finding a severity per `review`'s ladder. On this axis, high is a requirement missing, partial, or implemented wrong that a user will run into; critical is reserved for the case where that gap is itself what leaves data loss or a security breach unguarded — a requirement the spec stated precisely to prevent one.

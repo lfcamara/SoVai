@@ -27,10 +27,10 @@ Tudo antes de `to-phases` roda uma vez. Tudo depois roda uma vez **por fase**, q
 | Skill | Bloco | Entrega |
 |---|---|---|
 | [`brainstorm`](skills/planning/brainstorm/SKILL.md) | Planejamento | Reconhece uma ideia não-moldada e a molda via `grilling` + `domain-modeling` até haver entendimento compartilhado |
-| [`to-prd`](skills/planning/to-prd/SKILL.md) | Planejamento | `docs/planning/<slug>/prd.md` — problema, solução, user stories, em linguagem de negócio |
-| [`to-spec`](skills/planning/to-spec/SKILL.md) | Planejamento | `docs/planning/<slug>/spec.md` — decisões de implementação, seams de teste, escopo técnico |
-| [`to-wireframes`](skills/prototyping/to-wireframes/SKILL.md) | Prototipagem | `docs/planning/<effort>/wireframes.md` + artifact HTML — todas as telas e os fluxos, em baixa fidelidade de propósito |
-| [`to-phases`](skills/planning/to-phases/SKILL.md) | Planejamento | `docs/planning/<slug>/roadmap.md` — fases que entregam valor isoladamente (teste do cancelamento) |
+| [`to-prd`](skills/planning/to-prd/SKILL.md) | Planejamento | `<effort> — PRD.md` — problema, solução, user stories, em linguagem de negócio |
+| [`to-spec`](skills/planning/to-spec/SKILL.md) | Planejamento | `<effort> — Spec.md` — decisões de implementação, seams de teste, escopo técnico |
+| [`to-wireframes`](skills/prototyping/to-wireframes/SKILL.md) | Prototipagem | `<effort> — Wireframes.md` + artifact HTML — todas as telas e os fluxos, em baixa fidelidade de propósito |
+| [`to-phases`](skills/planning/to-phases/SKILL.md) | Planejamento | `<effort> — Roadmap.md` — fases que entregam valor isoladamente (teste do cancelamento) |
 | [`prototype`](skills/prototyping/prototype/SKILL.md) | Prototipagem | Protótipo descartável — variações de UI para escolher, ou modelo de estado para dirigir na mão |
 | `frontend-design` | — | Design visual final. Skill ambiente, não é deste plugin — apenas apontamos para ela |
 | [`to-tickets`](skills/planning/to-tickets/SKILL.md) | Planejamento | Tickets tracer-bullet no tracker (Linear por padrão) |
@@ -57,7 +57,7 @@ Por ticket, executado por subagente. Estados no tracker: **To Do → Doing → T
 |---|---|
 | [`tdd`](skills/development/tdd/SKILL.md) | Loop red → green. Importado sem alteração — o upstream já relocava refatoração para o review, igual ao que queríamos |
 | [`implement`](skills/development/implement/SKILL.md) | Um ticket, do contexto limpo até branch pushado e verificado |
-| [`ui-testing`](skills/development/ui-testing/SKILL.md) | Testes de UI derivados da tabela story→tela do `wireframes.md` |
+| [`ui-testing`](skills/development/ui-testing/SKILL.md) | Testes de UI derivados da tabela story→tela da nota de Wireframes |
 | [`open-pr`](skills/development/open-pr/SKILL.md) | Draft PR após o primeiro push (o teste vermelho), ticket e PR linkados nos dois sentidos |
 
 TDD é obrigatório no backend. UI é a exceção deliberada — testada depois, porque teste escrito contra uma tela cuja forma ainda se move quebra a cada mudança de layout sem pegar defeito real.
@@ -76,6 +76,24 @@ Cinco eixos independentes, despachados em paralelo como subagentes `reviewer` (r
 | [`test-review`](skills/review/test-review/SKILL.md) | Se os testes falhariam numa regressão real. Coverage % é sinal fraco, não alvo |
 | [`security-review`](skills/review/security-review/SKILL.md) | Superfície de ataque. Achado precisa nomear caminho concreto até o dano |
 | [`migration-review`](skills/review/migration-review/SKILL.md) | Migrations — reversibilidade, expand–contract, backfill. Aqui o modo de falha é perda de dados |
+
+Achados são rankeados pelo eixo que os encontrou: **critical, high, medium, low**. Critical e high são **sempre** corrigidos — o `wrap-up` não mergeia com nenhum deles aberto, por mais firme que tenha sido a aprovação. Medium e low só se você mandar.
+
+Cada achado registra **por que não foi prevenido** — o *cause*. Achado é defeito pego; cause que se repete é buraco no processo, e são coisas diferentes. O registro fica no vault do projeto.
+
+## Vault e retroalimentação
+
+O `docs/` do projeto **é** um vault Obsidian — vault é só uma pasta de markdown, então nada precisa ser criado e nada sai do repo. Documentos se linkam com wikilinks, e é isso que forma o grafo. Nomes carregam o effort (`checkout-flow — Spec.md`) porque o grafo só mostra o nome do nó: quinze efforts renderizariam quinze nós chamados "spec".
+
+| Skill | Entrega |
+|---|---|
+| [`harden`](skills/knowledge/harden/SKILL.md) | Lê registros de review, agrupa por *cause*, e transforma recorrência em emenda na skill que deveria ter prevenido |
+
+O `harden` roda **periodicamente, nunca por review** — uma ocorrência não é padrão. Roda no repo do SoVai (onde as skills vivem) lendo vaults dos projetos que você apontar: um cause que aparece uma vez em cada um de três projetos é invisível de dentro de qualquer um deles.
+
+A emenda **compete com o que já existe**: regra quase certa é afiada, não acompanhada de uma segunda ao lado — regra adicionada por incidente é o *sediment* que o `writing-great-skills` alerta, e é justamente como a regra original ficou fraca o bastante para deixar passar.
+
+E **propõe, não aplica**: mudança de skill altera toda execução futura.
 
 ## Debug
 
@@ -101,7 +119,7 @@ Ordem importa: merge → confirmar que entrou → tracker → documentos. Ticket
 
 A parte substantiva é reconciliar os documentos, sob uma regra: **documento segue decisão, não diff.** Código divergiu da spec porque alguém decidiu diferente durante o build → a spec está desatualizada, atualiza. Divergiu porque o código está errado → isso é defeito do `spec-review`, e reescrever a spec pra bater **transformaria o bug em requisito**. Distinguir os dois é o julgamento que a etapa existe pra fazer.
 
-Fecha o loop por fase: quando o último ticket da fase entra, os critérios de saída do `roadmap.md` são **verificados, não presumidos** — e a próxima fase ganha seu próprio `to-tickets`.
+Fecha o loop por fase: quando o último ticket da fase entra, os critérios de saída do Roadmap são **verificados, não presumidos** — e a próxima fase ganha seu próprio `to-tickets`.
 
 ## Orquestração
 

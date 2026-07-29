@@ -32,6 +32,18 @@ _Avoid_: Issue, task, story (the tracker may call it an issue; the skills call i
 The surface at which a feature's behaviour can be observed from outside — where tests attach.
 _Avoid_: Boundary, interface, test hook
 
+**Vault**:
+The project repo's `docs/` folder, which is also an Obsidian vault. Documents link each other with wikilinks, and those links are what make it a graph rather than a pile.
+_Avoid_: Knowledge base, wiki, docs folder
+
+**Severity**:
+The weight of a review finding — critical, high, medium, or low — assigned by the axis that found it. Critical and high are always fixed; medium and low only when the user says so.
+_Avoid_: Priority, importance, level
+
+**Cause**:
+Why a finding was not prevented, recorded on the finding itself. A cause names the gap in the process ("no rule covers this"), never the moment or the person ("missed it") — a cause that repeats is what `harden` acts on.
+_Avoid_: Reason, root cause (reserve that for the bug being diagnosed, not the process gap)
+
 **Feedback loop**:
 One command that goes red on a specific bug and green once it is fixed — red-capable, deterministic, fast, and runnable unattended. Building it is what finds a bug; hypothesising before it exists is the failure the debug block prevents.
 _Avoid_: Repro, test case, harness

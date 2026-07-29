@@ -50,3 +50,7 @@ Anything the diff makes reachable without authentication — a new route, a new 
 Order findings by exploitability and blast radius: how easily an attacker reaches the flaw (no auth required outranks authenticated-only; a public endpoint outranks an admin-only tool) crossed with what they gain if it lands (full data access or code execution outranks a single field leak). Do not rank by category — a "secrets" finding that's a low-privilege internal token in a dead code path is a lower finding than a "data exposure" finding that leaks every user's email on an unauthenticated endpoint.
 
 This applies the same way regardless of target — web, mobile, or backend service — the interpreters and trust boundaries differ, the reasoning about reachability and blast radius does not.
+
+## Severity
+
+Assign each finding a severity per `review`'s ladder, using the ranking above to sort it: critical is an unauthenticated path to full data access or code execution; high is the same reachable only with an authenticated session, or an unauthenticated path to a narrower gain.

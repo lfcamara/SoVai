@@ -1,6 +1,6 @@
 {
   "name": "sovai",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Engineering workflow plugin — skills and agents organized by workflow block (planning, development, testing/review, debugging, wrap-up, prototyping).",
   "author": {
     "name": "Leonardo Câmara"
@@ -31,6 +31,7 @@
     "./skills/review/security-review",
     "./skills/review/migration-review",
     "./skills/wrap-up/wrap-up",
-    "./skills/debug/diagnose"
+    "./skills/debug/diagnose",
+    "./skills/knowledge/harden"
   ]
 }

@@ -11,7 +11,7 @@ Adapted from [mattpocock/skills](https://github.com/mattpocock/skills) (MIT).
 
 ## Locate the work
 
-Where an effort is in play, resolve it and read the phase's entry in `docs/planning/<effort>/roadmap.md` for what this phase ships, plus `wireframes.md` and `spec.md` for the shape already agreed. This skill runs per phase, often in a fresh session weeks after the roadmap was drawn, so the plan is on disk rather than in the conversation. A prototype exploring a question the wireframes already settled is a prototype spent on nothing.
+Where an effort is in play, resolve it and read the phase's entry in `docs/planning/<effort>/<effort> — Roadmap.md` for what this phase ships, plus the effort's Wireframes and Spec notes for the shape already agreed. This skill runs per phase, often in a fresh session weeks after the roadmap was drawn, so the plan is on disk rather than in the conversation. A prototype exploring a question the wireframes already settled is a prototype spent on nothing.
 
 ## Pick a branch
 
