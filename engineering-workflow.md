@@ -134,6 +134,10 @@ One ticket, from a cold context window to a pushed, verified branch.
 
 **TDD is red → green.** The failing test first, then the code that satisfies it. Refactoring is not part of the loop — it is relocated to review, where the tests are already green and the code is free to move. Relocated, not deleted: the structural cleanup is still owed.
 
+**You can approve the test list first.** Tests are the behaviour contract at its finest grain, so a wrong one produces correct code implementing the wrong thing — cheap to catch now, expensive once the implementation exists. Switch it on and the implementer returns a list of the behaviours it intends to verify, one line each, and stops until you approve.
+
+What you approve is the *list*, never a set of written tests. Writing them all up front is the horizontal slicing `tdd` warns against, and the full set isn't knowable anyway — the third cycle's test comes from what the second one exposed. Cases the loop discovers later get reported rather than suppressed for sitting outside the list.
+
 TDD is mandatory for backend and other non-UI logic. **UI is the deliberate exception**, tested after implementation, because a screen's shape moves while it is being built and a test written against a moving shape breaks on every layout change without ever catching a real defect.
 
 The red test is the first commit and the first push — which is what lets a draft PR exist that already states, through its failing test, what the ticket must make true.

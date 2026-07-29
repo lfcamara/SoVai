@@ -13,6 +13,18 @@ Exactly one **ticket**. A ticket is sized to one context window by construction 
 
 Read the ticket in full, then the spec and roadmap under `docs/planning/<effort>/` for the decisions that shaped it, `CONTEXT.md` for the domain vocabulary tests and code should use, and the ADRs covering the area you're touching. A ticket that references something not on disk where it says it should be is a fact to report, not a gap to fill by guessing.
 
+## Agree the test list, when the brief asks for it
+
+The brief says whether the developer wants to approve what will be tested before any of it is written. Where it does, this is the first thing you do.
+
+Produce the **test list**: one line per behaviour you intend to verify, at the seams the spec agreed, in the language of what the user can do rather than what the code calls. Then stop and report it — you have no way to ask, so the list going back is the whole step.
+
+List the behaviours, not the tests. Writing every test before any implementation is the horizontal slicing `tdd` warns against: it commits to a test structure before the implementation has taught you anything, and the resulting tests verify a shape you imagined rather than behaviour anyone meets. The list is knowable up front; the tests are not, and a list of behaviours is far quicker to judge than a wall of test bodies.
+
+Say plainly that the list is what you can see from here, and that the loop will surface cases it did not anticipate. Report those when they appear rather than treating the approved list as the ceiling.
+
+Where the brief does not ask for approval, skip this and start the loop.
+
 ## Build: red, then green
 
 Follow the `tdd` skill for the loop itself — seams, what a good test is, the rules of red before green. It's the single source of truth for that loop; this skill doesn't restate it.

@@ -68,6 +68,8 @@ Six blocks, 26 skills, 2 agents.
 | **Debug** | `diagnose` — evidence, a reproduction loop, ranked hypotheses, a bug ticket |
 | **Knowledge** | `harden` — recurring review findings become skill rules |
 
+**You can approve the test list before any code is written.** Switch it on and the implementer returns the behaviours it intends to verify — one line each — and waits. You approve the contract, not a wall of test bodies, and the loop still runs one test at a time.
+
 **TDD is mandatory for backend logic**, and refactoring deliberately isn't part of the loop — it moves to review, where the tests are already green. UI is the exception: tested after it's built, because a screen whose shape is still moving produces tests that break on every layout change without catching a real bug.
 
 ---
