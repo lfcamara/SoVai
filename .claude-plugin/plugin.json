@@ -35,6 +35,7 @@
     "./skills/review/goal-review",
     "./skills/wrap-up/wrap-up",
     "./skills/debug/diagnose",
-    "./skills/knowledge/harden"
+    "./skills/knowledge/harden",
+    "./skills/knowledge/lint-references"
   ]
 }
