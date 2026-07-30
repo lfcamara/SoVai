@@ -32,6 +32,8 @@
     "./skills/review/migration-review",
     "./skills/wrap-up/wrap-up",
     "./skills/debug/diagnose",
-    "./skills/knowledge/harden"
+    "./skills/knowledge/harden",
+    "./skills/engineering/verify-before-claiming",
+    "./skills/review/goal-review"
   ]
 }
