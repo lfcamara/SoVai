@@ -1,4 +1,5 @@
 {
+  "$schema": "https://json.schemastore.org/claude-code-plugin-marketplace.json",
   "name": "sovai",
   "owner": {
     "name": "Leonardo Câmara",
@@ -9,7 +10,7 @@
     {
       "name": "sovai",
       "source": "./",
-      "description": "A general-purpose engineering workflow — planning, prototyping, TDD development, five-axis review, debugging, and wrap-up — with orchestrator/subagent delegation and a review-to-skill feedback loop.",
+      "description": "A general-purpose engineering workflow — planning, prototyping, TDD development, six-axis review, debugging, and wrap-up — with orchestrator/subagent delegation, an enforcement layer of hooks, and a review-to-skill feedback loop.",
       "category": "engineering",
       "keywords": [
         "engineering",

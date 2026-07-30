@@ -1,5 +1,7 @@
 # Agents split by execution mode, not by job title
 
+**Superseded in part by [ADR-0016](0016-screen-verification-is-a-third-agent.md), 2026-07-30: the plugin now ships three agents.** `screen-verifier` was added on the test this ADR itself set — a role earns an agent once it implies a distinct standing context pack — and it sits on this ADR's axis rather than across it, since observing a running system through a browser is a third execution mode, not a job title. The reasoning below stands unchanged, including why a roster of role agents was rejected.
+
 The plugin ships two custom agents — `implementer` (writes) and `reviewer` (read-only) — rather than a roster of role agents such as frontend developer, backend developer, or devops engineer.
 
 Role labels were considered and rejected. Telling a capable model "you are a backend developer" barely changes its behaviour; what changes outcomes is which files it can see, which tools it holds, which skill it must follow, and what counts as done. A role taxonomy would also sit orthogonal to the existing organization by workflow block, forcing every task through two unrelated classifications with an arbitrary mapping — a React component that calls an API belongs to neither "frontend" nor "backend" cleanly. Human role boundaries exist because people cannot context-switch cheaply and need career specialization; neither constraint applies here.

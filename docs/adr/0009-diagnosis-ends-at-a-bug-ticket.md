@@ -1,5 +1,7 @@
 # Diagnosis ends at a bug ticket, not at a fix
 
+**Superseded in part by [ADR-0015](0015-review-has-a-goal-axis.md), 2026-07-30: review now has six axes.** "The five axes" below records the count at the time of this decision; nothing else about it changed — a bug ticket still enters the normal flow and is still reviewed by every axis that applies.
+
 The debug block diagnoses a bug and files a ticket. Fixing it is not part of it — the ticket enters the normal flow, implemented under TDD, reviewed across the five axes, landed by wrap-up.
 
 This adapts the upstream `diagnosing-bugs` skill from mattpocock/skills, which runs through the fix and its regression test. Stopping earlier buys two things. Every line of production code then reaches main by one path, rather than fixes taking a shortcut that skips the review axes precisely when the code is being changed under time pressure. And the diagnosis becomes durable: root cause, reproduction command and minimised repro survive on the ticket instead of dying with the session that produced them, which matters because the fix is often not written by the session that found the cause.

@@ -1,7 +1,9 @@
 {
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "sovai",
-  "version": "1.0.0",
-  "description": "Engineering workflow plugin — skills and agents organized by workflow block (planning, development, testing/review, debugging, wrap-up, prototyping).",
+  "displayName": "SoVai",
+  "version": "1.1.0",
+  "description": "Engineering workflow plugin — 28 skills and 3 agents organized by workflow block (planning, prototyping, development, review, wrap-up, debug, engineering, orchestration, knowledge, productivity), with an enforcement layer of hooks.",
   "author": {
     "name": "Leonardo Câmara"
   },
@@ -16,9 +18,9 @@
     "./skills/prototyping/prototype",
     "./skills/productivity/writing-great-skills",
     "./skills/productivity/grilling",
-    "./skills/productivity/grill-me",
     "./skills/engineering/grill-with-docs",
     "./skills/engineering/domain-modeling",
+    "./skills/engineering/verify-before-claiming",
     "./skills/orchestration/delegate",
     "./skills/development/tdd",
     "./skills/development/implement",
@@ -30,8 +32,10 @@
     "./skills/review/test-review",
     "./skills/review/security-review",
     "./skills/review/migration-review",
+    "./skills/review/goal-review",
     "./skills/wrap-up/wrap-up",
     "./skills/debug/diagnose",
-    "./skills/knowledge/harden"
+    "./skills/knowledge/harden",
+    "./skills/knowledge/lint-references"
   ]
 }

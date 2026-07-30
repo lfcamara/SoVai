@@ -26,12 +26,13 @@ Six things, every time. The first three make the work possible; the last three m
 5. **Fence** — what it must not touch. Bound the blast radius explicitly; silence reads as permission.
 6. **Report** — the specific facts to return. The subagent's report reaches you and not the user, so whatever you fail to ask for is lost.
 
-State explicitly that unsettled decisions come back rather than getting resolved locally. The agents carry this rule, and repeating it in the brief costs a line and removes the most expensive failure.
+Two standing rules go in every brief. Unsettled decisions come back rather than getting resolved locally. And the report is bound by `verify-before-claiming` — done means each criterion was checked against a run, and the output that settles it travels with the claim. The agents carry both; repeating them costs a line each and removes the two most expensive failures, a guess arriving as a decision and a claim arriving as evidence.
 
 ## Pick the agent
 
 - **`implementer`** — writes. Runs a task to completion, with the tools to build and verify.
 - **`reviewer`** — reads only. Checks work against criteria and reports findings, so it cannot quietly fix what it should be surfacing.
+- **`screen-verifier`** — observes. Drives a browser against the running app and reports whether a screen renders, with the artifacts behind the verdict. Send it a claim about an interface; a passing test and a working screen are independent facts.
 - **`Explore`** — finding things. Locating files, symbols, or usages across a codebase.
 
 Independent briefs run at once. Where two pieces of work do not touch the same files and neither needs the other's result, dispatch them together.
