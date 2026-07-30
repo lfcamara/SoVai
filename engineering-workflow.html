@@ -114,6 +114,11 @@ h3{font-family:var(--sans);font-size:.78rem;font-weight:650;letter-spacing:.1em;
 .rule-box{margin-top:1rem;padding:.8rem .9rem;border-left:2px solid var(--gate-line);
   background:var(--gate-bg);border-radius:0 3px 3px 0}
 .rule-box p{margin:0;font-family:var(--serif);font-size:.95rem;color:var(--ink);line-height:1.45}
+/* same box on the automatic axis — the hooks are machinery, not a decision put to you */
+.auto-box{margin-top:1rem;padding:.8rem .9rem;border-left:2px solid var(--auto-line);
+  background:var(--auto-bg);border-radius:0 3px 3px 0}
+.auto-box p{margin:0;font-family:var(--serif);font-size:.95rem;color:var(--ink);line-height:1.45}
+code{font-family:var(--mono);font-size:.92em}
 
 /* ---------- states ---------- */
 .states{display:flex;flex-wrap:wrap;gap:.4rem;align-items:stretch}
@@ -149,15 +154,17 @@ footer code{font-family:var(--mono)}
 <div class="wrap">
 
 <header class="mast">
-  <p class="eyebrow">SoVai · v1.0.0</p>
+  <p class="eyebrow">SoVai · v1.1.0</p>
   <h1>Engineering Workflow</h1>
   <p class="standfirst">How work moves from an idea someone had in the shower to code merged into main —
-    twelve stages, three cadences, and one rule about who is allowed to decide what.</p>
+    twelve stages, three cadences, one rule about who is allowed to decide what, and four hooks
+    that stop the rest of it being optional.</p>
   <div class="meta">
-    <span class="tag">26 skills</span>
-    <span class="tag">2 agents</span>
-    <span class="tag">10 ADRs</span>
-    <span class="tag">6 blocks</span>
+    <span class="tag">28 skills</span>
+    <span class="tag">3 agents</span>
+    <span class="tag">4 hooks</span>
+    <span class="tag">17 ADRs</span>
+    <span class="tag">10 blocks</span>
   </div>
 </header>
 
@@ -207,6 +214,40 @@ footer code{font-family:var(--mono)}
 </section>
 
 <section>
+  <h2>The six review axes</h2>
+  <p class="lede">Independent skills, dispatched as parallel read-only agents and reported per axis,
+    never merged or reranked — a change can pass one and fail another, and a merged list lets a clean
+    axis bury a failing one under a wash of minor style notes.</p>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Axis</th><th>The question it answers</th><th>Selected when</th></tr></thead>
+      <tbody>
+        <tr><td>code-review</td><td>Is it written well? Repo standards plus 12 Fowler smells — where refactoring lives</td><td>Always</td></tr>
+        <tr><td>spec-review</td><td>Is it the right thing? Missing requirements, scope creep, wrong implementations</td><td>A spec exists to hold the diff to</td></tr>
+        <tr><td>test-review</td><td>Would the tests fail on a real regression?</td><td>Always</td></tr>
+        <tr><td>security-review</td><td>What does it expose? A finding must name a concrete path to harm</td><td>The diff touches a security surface</td></tr>
+        <tr><td>migration-review</td><td>Reversibility, destructive operations, backfills — failure mode here is data loss</td><td>The diff touches a schema or a migration</td></tr>
+        <tr><td>goal-review</td><td>Does the outcome hold? Merged, switched on, delivered in full — not merely built well</td><td>A ticket and a readable PR both exist</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="lede" style="margin-top:1.2rem">The sixth closes a structural gap rather than a thoroughness
+    one. The other five all judge the diff, and a diff looks identical whether the change was merged,
+    held behind a flag still switched off, or two thirds of its ticket. Well written, on spec, well
+    tested and inert is the false-done nothing else on the run can see — so this axis reads the state
+    of the world the ticket wanted changed instead.</p>
+  <p class="lede">Mid-ticket it still runs, and that is the subtle part. A draft PR exists from the
+    red-test push, so <em>not merged</em> is then the <strong>expected</strong> state, and reporting it
+    as a problem is pure noise — an axis trained away as noise has stopped working. Gating the whole
+    axis on a claim of done would have been the easy answer and the wrong one: it discards the two
+    sub-checks that are most actionable exactly then, scope quietly deferred and a flag shipped
+    switched off. So the noise is suppressed one level down instead.</p>
+  <div class="rule-box"><p>Four states — merged, enforced, scope covered, tracker consistent — are
+    reported as <strong>facts</strong>, whatever they say. A fact becomes a <strong>finding</strong>
+    only where it contradicts a claim that the work is done.</p></div>
+</section>
+
+<section>
   <h2>Delegation</h2>
   <p class="lede">The main session orchestrates and holds the decisions; execution goes to subagents.
     A subagent starts cold — none of the conversation reaches it — and it cannot ask a question.
@@ -225,6 +266,113 @@ footer code{font-family:var(--mono)}
     </table>
   </div>
   <div class="rule-box"><p>If you cannot write the brief, you do not understand the task well enough to delegate it.</p></div>
+
+  <h3 style="margin-top:1.8rem">Three agents, split by execution mode</h3>
+  <div class="states">
+    <div class="state"><div class="state-n">implementer</div><div class="state-w">Writes and verifies</div></div>
+    <div class="state"><div class="state-n">reviewer</div><div class="state-w">Reads only, so findings stay findings</div></div>
+    <div class="state"><div class="state-n">screen-verifier</div><div class="state-w">Observes a running system through a browser, and fixes nothing</div></div>
+  </div>
+  <p class="lede" style="margin-top:1rem">Not job titles. A role label barely changes a capable model's
+    behaviour, while tool grants and completion criteria change everything — and the third sits
+    <em>on</em> that axis rather than across it, since observing a running system is a third execution
+    mode beside writes and reads-only. Widening <strong>reviewer</strong>'s grant instead was the
+    leading alternative and was rejected because <strong>a browser can click</strong>: an agent able to
+    submit a form or press a delete control is not read-only against the running system, however
+    read-only it stays against the repo.</p>
+  <p class="lede">The trade is stated rather than hidden — no fixed tool allowlist can name browser
+    tooling whose names vary by environment, so <strong>screen-verifier</strong> is read-only by
+    discipline where <strong>reviewer</strong> is read-only by construction. The boundary with the test
+    suite is clean: <strong>ui-testing</strong> writes the tests for a screen after it is built, derived
+    from the effort's wireframes, and <strong>screen-verifier</strong> observes that screen running and
+    writes none.</p>
+</section>
+
+<section>
+  <h2>What makes it non-optional</h2>
+  <p class="lede">Everything above describes a process. Until these hooks existed, all of it was
+    advisory — a skill the agent could reach for, or not, with nothing downstream noticing the
+    difference. Two of the plugin's own decisions turned out to assume a mechanism nobody had built:
+    that the planning pipeline auto-continues, and that TDD is mandatory for non-UI logic.</p>
+  <ol class="steps">
+    <li><div><b>SessionStart — the bootstrap</b><span>Three things and nothing else: the orchestration
+      mandate, the statement that invoking the matching skill is mandatory rather than optional, and one
+      line per block of the pipeline. The mandate lives here because <strong>a plugin does not ship its
+      <code>CLAUDE.md</code></strong> — that file governs work on SoVai itself and never loads in a
+      consuming project, which is the only place the rule has anything to govern. It stays short as a
+      constraint rather than a preference: every line loads into every session, forever.</span></div></li>
+    <li><div><b>The pre-edit gate</b><span>Fires on the first edit of each class per session. A
+      production-logic path is pointed at <strong>tdd</strong> before the edit lands; a UI path is
+      pointed at <strong>ui-testing</strong> for once the screen is built, and told not to open with a
+      test.</span></div></li>
+    <li><div><b>The phase tracker</b><span>Records that <strong>tdd</strong> was entered. The pre-edit
+      gate reads it to switch a production edit into Green-minimal — telling a session mid-Green to go
+      and fetch a skill it is already running pollutes Green with exactly the work <strong>tdd</strong>
+      defers to <strong>code-review</strong>. The Stop gate reads it as the evidence that TDD happened at
+      all.</span></div></li>
+    <li><div><b>The Stop gate</b><span>Refuses to end a session that edited production logic without
+      ever invoking <strong>tdd</strong>. Honest about being a heuristic: it detects TDD skipped
+      entirely, never red-before-green ordering, which nothing observable at the end of a session can
+      establish. <strong>UI is never gated here</strong> — it is the deliberate exception, so the gate
+      reads only the production signal and a UI-only session ends clean. Three escape paths, and it
+      prints the exact override command for legitimate non-TDD work.</span></div></li>
+  </ol>
+  <div class="auto-box"><p><strong>Enforcement survives delegation.</strong> Hooks fire inside
+    subagents, and the session id is identical in a subagent and in the session that dispatched it —
+    subagents are told apart by a separate agent id. So a production edit made inside an
+    <strong>implementer</strong> writes the same signal the main session's Stop gate reads once that run
+    is over. Had the id been per-agent the layer would have been decorative: the orchestrator writes
+    almost no production code itself.</p></div>
+
+  <h3 style="margin-top:1.8rem">What was deliberately not built</h3>
+  <p class="lede">No hook forces delegation. Counting the orchestrator's own edits and complaining
+    would have been easy, and wrong: mandatory TDD is a property of the work, while whether to delegate
+    is a judgement about context economy — a two-line fix costs more to brief than to make. Only the
+    first kind of rule belongs in a gate.</p>
+
+  <h3 style="margin-top:1.8rem">Evidence before the claim</h3>
+  <p class="lede">A hook can observe that an edit happened, that a skill was entered, that a session is
+    ending. It cannot observe whether the sentence about to be written carries evidence — and the failure
+    that matters most is a report asserting more than its run supports, or with no run behind it at all.
+    So that one is a rule the agent holds while it writes — <strong>verify-before-claiming</strong>,
+    binding every <em>done</em>, <em>fixed</em>, <em>passing</em> and <em>working</em>, and binding a
+    subagent exactly as it binds the orchestrator.</p>
+  <div class="rule-box"><p>Run the check that would contradict the claim, and show what it said. Where
+    no command stands behind a claim, name what you could not verify.</p></div>
+  <p class="lede" style="margin-top:1.4rem">One always-on rule rather than a criterion inside each
+    skill, because a rule living in a skill is silent for exactly the runs where no skill was invoked —
+    the quick fix, the ad-hoc edit, the question that turned into a change — which are the runs where an
+    unverified <em>done</em> is likeliest. Where the subagent boundary compresses the log, what crosses
+    is still the command, its result, and the lines that failed.</p>
+</section>
+
+<section>
+  <h2>Per-project configuration</h2>
+  <p class="lede">Two facts cannot be discovered from a repo. Where its tickets go — the tracker team
+    and project, named in the target repo's own <code>CLAUDE.md</code>, with local markdown as the floor
+    that always works. And what a file <em>is</em>: the fact the hooks run on, declared in a
+    <code>sovai.config.json</code> at the project root and found by walking up from the edited file.</p>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Key</th><th>Example patterns</th><th>What it means</th></tr></thead>
+      <tbody>
+        <tr><td>productionLogic</td><td><code>src/**</code>, <code>lib/**</code></td><td>TDD is mandatory — both gates read this</td></tr>
+        <tr><td>ui</td><td><code>src/components/**</code>, <code>src/app/**</code></td><td>The deliberate exception: covered after it is built, never gated at Stop</td></tr>
+        <tr><td>tests</td><td><code>*.test.*</code>, <code>test/**</code></td><td>Gated by nothing</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="lede" style="margin-top:1rem">Three lists of shell globs, not a stack enum:
+    <code>src/components</code> is UI in one project and a component library dense with logic in the
+    next, and the only party that knows is the project. Precedence runs tests, then ui, then
+    productionLogic, so a UI path nested under a production path wins and nobody writes exclusions.
+    Onboarding is a one-file drop, never a change to the plugin — and because the file sits at the root
+    and is found by ancestry, worktrees and clones inherit it for free.</p>
+  <div class="auto-box"><p><strong>Everything fails open, so a project with no config is not gated at
+    all.</strong> No config, or a malformed one, classifies nothing: no reminders, and a Stop gate that
+    never fires. The direction is chosen — under-gating costs a missed reminder, while over-gating costs
+    a developer who cannot finish a session, and a hook that breaks work over its own configuration gets
+    uninstalled, taking every rule it was carrying with it.</p></div>
 </section>
 
 <section>
@@ -257,6 +405,20 @@ footer code{font-family:var(--mono)}
     <li><div><b>Propose, don't apply</b><span>A skill change alters every future run, so nothing lands from a pattern you have not seen. Runs periodically, never per review — one occurrence is not a pattern.</span></div></li>
   </ol>
   <p class="lede" style="margin-top:1.2rem">It runs in the SoVai repo, where the skills live, reading vaults from whichever projects you point it at. A cause appearing once in each of three projects is invisible from inside any one of them — and that is the pattern most worth catching.</p>
+
+  <h3 style="margin-top:1.8rem">lint-references checks it still holds together</h3>
+  <p class="lede"><strong>harden</strong> amends the plugin from what reviews found;
+    <strong>lint-references</strong> checks that what came out the other side still resolves. The
+    cross-references here are almost all bare names in prose — a skill naming a skill, an ADR citing an
+    agent — and nothing reads them back: not the filesystem, not Claude Code, not any other tool. A
+    rename leaves the old name reading exactly as live as the day it worked, and a dead one raises no
+    error. It silently does not happen, in a session belonging to someone with no way to know the
+    reference was ever meant to resolve.</p>
+  <p class="lede">Five checks: bare names, the manifest's declared paths, the reverse direction (on disk
+    but undeclared, which never loads), relative links, and the hook wiring. It refuses to print clean
+    on a run that checked nothing — a linter that scans zero references must fail loud. It is step 2 of
+    cutting a release, which is the last moment a dead reference is cheap to catch; each release and the
+    reasoning behind it live in <code>CHANGELOG.md</code>.</p>
 </section>
 
 <section>
@@ -274,8 +436,8 @@ footer code{font-family:var(--mono)}
 </section>
 
 <footer>
-  <span>Source of truth: <code>engineering-workflow.md</code> · reasoning in <code>docs/adr/</code> · vocabulary in <code>CONTEXT.md</code></span>
-  <span>None of it has been run against a real project yet. That is the plan, not an accident.</span>
+  <span>Source of truth: <code>engineering-workflow.md</code> · reasoning in <code>docs/adr/</code> · vocabulary in <code>CONTEXT.md</code> · releases in <code>CHANGELOG.md</code></span>
+  <span>v1.1.0. Enforcement is not validation — none of it has been run against a real project yet. That is the plan, not an accident.</span>
 </footer>
 
 </div>
@@ -287,16 +449,16 @@ const STAGES=[
   out:"Terms into CONTEXT.md, decisions into docs/adr/"},
  {b:1,n:"to-prd",gate:1,q:"What is the problem, and for whom?",
   body:"<p>The business half of the plan: problem, solution, user stories, success, out of scope. No mechanism, no file paths.</p><p>The test for whether it sits at the right altitude — a reader who does not write code can read it end to end and recognise their own problem in it.</p><p>This stage also <strong>names the effort</strong>, the directory every later stage resolves from the filesystem. That is what lets a phase resume weeks later in a clean session.</p>",
-  out:"docs/planning/&lt;effort&gt;/prd.md"},
+  out:"docs/planning/&lt;effort&gt;/&lt;effort&gt; — PRD.md"},
  {b:1,n:"to-spec",gate:1,q:"How will it be built, and where do the tests attach?",
   body:"<p>The engineering half. It references the PRD rather than restating it, so each fact has one home.</p><p>Its core work is finding the <strong>seams</strong> — where behaviour can be observed from outside. Prefer an existing seam to a new one, and the highest available to a lower one. The seams get agreed with you before the spec is written, because moving one later is expensive.</p>",
-  out:"docs/planning/&lt;effort&gt;/spec.md"},
+  out:"docs/planning/&lt;effort&gt;/&lt;effort&gt; — Spec.md"},
  {b:1,n:"to-wireframes",gate:1,q:"What are the screens, and how do they connect?",
   body:"<p><strong>Fidelity is a budget.</strong> Spend it on visuals and you buy critique of visuals — give a reviewer colour and type and they discuss colour and type, while the flow missing a step goes unmentioned.</p><p>So: boxes, labels, hierarchy, real content shape, greyscale. It sits before phasing because a phase is defined by what it ships, and that stays abstract until the screens have names.</p><p>Done when every user story in the PRD reaches a screen. A story with no screen is a gap; a screen no story reaches is scope nobody asked for.</p>",
-  out:"docs/planning/&lt;effort&gt;/wireframes.md + a published artifact"},
+  out:"docs/planning/&lt;effort&gt;/&lt;effort&gt; — Wireframes.md + a published artifact"},
  {b:1,n:"to-phases",gate:1,q:"In what order does this ship?",
   body:"<p>Phases that each <strong>ship</strong>. A phase ending with work merged but nothing a user can do is not a phase — it is a checkpoint someone drew on a plan.</p><p><strong>The cancellation test:</strong> if everything after this phase were cancelled tomorrow, is the user better off than before it existed? A phase that fails strands the project mid-migration.</p><p><strong>Full coverage:</strong> every capability in the spec lands in exactly one phase. Work in no phase surfaces late; work in two means the boundary is wrong.</p>",
-  out:"docs/planning/&lt;effort&gt;/roadmap.md"},
+  out:"docs/planning/&lt;effort&gt;/&lt;effort&gt; — Roadmap.md"},
  {b:2,n:"prototype",gate:1,q:"Does this actually work when you use it?",
   body:"<p>Throwaway code answering one question — several radically different UI variations, or a state model you drive by hand. Variants must differ <strong>structurally</strong>: three lightly-tweaked card grids is wallpaper, not a prototype.</p><p>The most useful response is almost always <em>“the header from B with the sidebar from C”</em> — that recombination is the actual design.</p>",
   out:"A throwaway branch, and a decision"},
@@ -307,13 +469,13 @@ const STAGES=[
   body:"<p>One phase becomes <strong>tracer bullets</strong> — each cutting a narrow but complete path through every layer, each declaring what blocks it.</p><p>A ticket is sized to a single fresh context window. That sizing is not incidental: it is exactly a subagent's budget, which is what makes the ticket the unit of delegation.</p><p><strong>Wide refactors are the exception</strong> — a change whose blast radius fans across the codebase runs expand–contract instead.</p>",
   out:"Issues on the tracker, blocking edges wired"},
  {b:3,n:"implement",gate:0,q:"Does the code exist and pass?",
-  body:"<p>One ticket, from a cold context window to a pushed, verified branch.</p><p><strong>TDD is red → green.</strong> Refactoring is not in the loop — it is relocated to review, where the tests are already green and the code is free to move. Relocated, not deleted.</p><p>TDD is mandatory for backend logic. <strong>UI is the deliberate exception</strong>, tested after implementation: a screen's shape moves while it is built, and a test against a moving shape breaks on every layout change without catching a real defect.</p><p>Lint, build and coverage run inside the subagent — their enormous output dies with the run. The boundary is the isolation.</p>",
+  body:"<p>One ticket, from a cold context window to a pushed, verified branch.</p><p><strong>TDD is red → green.</strong> Refactoring is not in the loop — it is relocated to review, where the tests are already green and the code is free to move. Relocated, not deleted.</p><p>TDD is mandatory for backend logic. <strong>UI is the deliberate exception</strong>, tested after implementation by <strong>ui-testing</strong>: a screen's shape moves while it is built, and a test against a moving shape breaks on every layout change without catching a real defect. A component test passing and the screen working are independent facts, and <strong>screen-verifier</strong> is what establishes the second — a browser, against the running app, with the screenshot to show for it.</p><p>Lint, build and coverage run inside the subagent — their enormous output dies with the run. The boundary is the isolation, and the verdict plus the failing lines is the compressed evidence that crosses it.</p>",
   out:"A pushed branch, and a report"},
  {b:3,n:"open-pr",gate:0,q:"Is the work visible while it is still red?",
   body:"<p>A draft PR opened right after the red-test push, stating through its failing test what the ticket must make true.</p><p>The <strong>implementer</strong> opens it, not the orchestrator — it is the only thing that knows the push happened, and it does not report back until its run ends. A stray draft PR is visible and harmless; the merge stays the orchestrator's.</p>",
   out:"A draft PR, linked both ways to its ticket"},
- {b:3,n:"review",gate:0,q:"Is it right, in five separate senses?",
-  body:"<p>Five independent axes as parallel read-only agents: <strong>code</strong> (standards and Fowler smells, where refactoring lives), <strong>spec</strong> (is it the right thing), <strong>test</strong> (would these fail on a real regression), <strong>security</strong> (a finding must name a concrete path to harm), <strong>migration</strong> (failure mode here is data loss).</p><p>Reported per axis, <strong>never merged or reranked</strong> — a change can pass one and fail another, and a merged list lets a clean axis bury a failing one under minor style notes.</p>",
+ {b:3,n:"review",gate:0,q:"Is it right, in six separate senses?",
+  body:"<p>Six independent axes as parallel read-only agents: <strong>code</strong> (standards and Fowler smells, where refactoring lives), <strong>spec</strong> (is it the right thing), <strong>test</strong> (would these fail on a real regression), <strong>security</strong> (a finding must name a concrete path to harm), <strong>migration</strong> (failure mode here is data loss), <strong>goal</strong> (does the outcome hold once it leaves the diff).</p><p>Reported per axis, <strong>never merged or reranked</strong> — a change can pass one and fail another, and a merged list lets a clean axis bury a failing one under minor style notes.</p>",
   out:"A verdict per axis"},
  {b:3,n:"wrap-up",gate:1,q:"Can this be merged, and what did it teach the plan?",
   body:"<p><strong>Merge is authorised only by your explicit approval of that specific PR.</strong> Reviews passing and CI green are signals you weigh when approving — they are not the approval. Approving one PR says nothing about the next.</p><p>Order is load-bearing: merge, confirm it landed, then the tracker, then the documents. A ticket moved to Done ahead of a merge that fails is a tracker asserting something false.</p><p>Then reconciliation, under one rule: <strong>a document follows a decision, not a diff.</strong> Code diverging because someone decided otherwise means the spec is stale. Code diverging because it is <em>wrong</em> is a defect — rewriting the spec to match would launder a bug into a requirement.</p>",
