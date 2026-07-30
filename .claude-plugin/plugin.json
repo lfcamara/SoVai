@@ -3,7 +3,7 @@
   "name": "sovai",
   "displayName": "SoVai",
   "version": "1.1.0",
-  "description": "Engineering workflow plugin — skills and agents organized by workflow block (planning, development, testing/review, debugging, wrap-up, prototyping), with an enforcement layer of hooks.",
+  "description": "Engineering workflow plugin — 28 skills and 3 agents organized by workflow block (planning, prototyping, development, review, wrap-up, debug, engineering, orchestration, knowledge, productivity), with an enforcement layer of hooks.",
   "author": {
     "name": "Leonardo Câmara"
   },

@@ -23,7 +23,7 @@ set -u
 cat <<'EOF' | jq -Rsc '{hookSpecificOutput:{hookEventName:"SessionStart",additionalContext:.}}'
 SoVai engineering workflow active.
 
-ORCHESTRATION — this session orchestrates; it does not execute. Delegate execution via the `delegate` skill: `implementer` to build, `reviewer` to check (read-only, so findings stay findings), `Explore` to find. Decisions, design, and anything needing the user stay here. A subagent starts cold and cannot ask a question, so every brief carries outcome, skill, absolute input paths, checkable done criteria, a scope fence, and what to report back. Standing rule, stated in every brief: a subagent's unsettled decisions travel back here rather than being resolved locally.
+ORCHESTRATION — this session orchestrates; it does not execute. Delegate execution via the `delegate` skill: `implementer` to build, `reviewer` to check (read-only, so findings stay findings), `screen-verifier` to see whether a screen actually renders, `Explore` to find. Decisions, design, and anything needing the user stay here. A subagent starts cold and cannot ask a question, so every brief carries outcome, skill, absolute input paths, checkable done criteria, a scope fence, and what to report back. Standing rule, stated in every brief: a subagent's unsettled decisions travel back here rather than being resolved locally.
 
 SKILLS — before acting on a request, invoke the relevant Skill (via the Skill tool) when one applies. Skills encode required process, so invoking the matching one is mandatory, not optional. User instructions always outrank skills.
 
@@ -31,9 +31,10 @@ The pipeline, in order:
 - Planning — brainstorm (shape a raw idea, one question at a time) → to-prd → to-spec → to-phases → to-tickets. Each stage hands to the next in the same conversation; continuing needs no named invocation. `grilling` is the interview underneath it.
 - Prototyping — to-wireframes (every screen and the flows between them, low fidelity) · prototype (throwaway code answering one design question)
 - Development — implement (one ticket, cold) · tdd (the red → green loop, mandatory for backend and other non-UI logic) · ui-testing (UI is the deliberate exception, tested after it is built) · open-pr (draft PR on the first push)
-- Review — review dispatches five independent axes as parallel read-only subagents: code-review · spec-review · test-review · security-review · migration-review. Critical and high findings are always fixed.
+- Review — review dispatches six independent axes as parallel read-only subagents: code-review · spec-review · test-review · security-review · migration-review · goal-review (whether the goal holds once shipped — merged, switched on, delivered in full). Critical and high findings are always fixed.
 - Wrap-up — wrap-up (merge only on the user's explicit approval of that PR, then reconcile the documents against what shipped)
 - Debug — diagnose (a reproduction loop before any hypothesis; ends at a bug ticket, not a fix)
-- Knowledge — harden (a recurring review cause becomes a skill rule) · domain-modeling (build the project's CONTEXT.md vocabulary)
+- Engineering — verify-before-claiming (run the check and show its output before calling anything done) · domain-modeling (build the project's CONTEXT.md vocabulary) · grill-with-docs (sharpen a design and write its trace)
+- Knowledge — harden (a recurring review cause becomes a rule) · lint-references (check this plugin's own cross-references resolve)
 EOF
 exit 0

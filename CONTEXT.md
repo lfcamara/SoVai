@@ -1,6 +1,6 @@
 # SoVai
 
-A Claude Code plugin: general-purpose engineering workflow harness, organized into workflow blocks (planning, development, testing/review, debug, wrap-up, prototyping).
+A Claude Code plugin: general-purpose engineering workflow harness, organized into workflow blocks.
 
 ## Language
 
@@ -48,8 +48,16 @@ _Avoid_: Reason, root cause (reserve that for the bug being diagnosed, not the p
 One command that goes red on a specific bug and green once it is fixed — red-capable, deterministic, fast, and runnable unattended. Building it is what finds a bug; hypothesising before it exists is the failure the debug block prevents.
 _Avoid_: Repro, test case, harness
 
+**Evidence**:
+The output of the check that would have contradicted a claim, shown beside it — the test summary, the screenshot and the entry point that produced it, the lines that failed. A claim of done without it is a belief worded as a fact. A subagent boundary compresses the output, never the requirement.
+_Avoid_: Proof, verification, result
+
+**Gate**:
+A mechanism that refuses rather than advises — a hook that will not let a session end with production logic edited and `tdd` never entered, or a rule that withholds the word "done" until its check has run. Gates here fail open: no configuration means no gating, because a gate that breaks a session gets uninstalled and takes every rule it carried with it.
+_Avoid_: Check, guard, blocker, hook (the hook is the mechanism; the gate is what it refuses)
+
 **Axis**:
-One independent dimension of review — code, spec, test, security, migration. Each runs as its own parallel `reviewer` subagent and is reported separately, never merged with the others.
+One independent dimension of review — code, spec, test, security, migration, goal. Each runs as its own parallel `reviewer` subagent and is reported separately, never merged with the others.
 _Avoid_: Check, pass, dimension
 
 **Frontier**:

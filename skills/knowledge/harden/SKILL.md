@@ -1,11 +1,11 @@
 ---
 name: harden
-description: Harden a skill, review axis, or agent definition against a defect that keeps recurring across review records. Use when the user asks to harden the plugin, mentions recurring or repeated review findings, wants a skill updated based on what keeps failing review, or is due for periodic maintenance on the review-to-skill feedback loop — never off a single review's findings.
+description: Harden a skill, review axis, agent definition, or gate against a defect that keeps recurring across review records. Use when the user asks to harden the plugin, mentions recurring or repeated review findings, wants a skill updated based on what keeps failing review, or is due for periodic maintenance on the review-to-skill feedback loop — never off a single review's findings.
 ---
 
 # Harden
 
-Runs in this repo — the SoVai plugin — because this is where the skills, review axes, and agent definitions it amends live. Reads `docs/reviews/` from one or more project repos, whose paths the user supplies: the vaults hold the review records, the plugin holds what gets changed.
+Runs in this repo — the SoVai plugin — because this is where the skills, review axes, agent definitions, and gates it amends live. Reads `docs/reviews/` from one or more project repos, whose paths the user supplies: the vaults hold the review records, the plugin holds what gets changed.
 
 ## Confirm the run is worthwhile
 
@@ -29,9 +29,10 @@ Within each cluster, weight by severity: a cause behind two critical findings ha
 
 A recurring cause points at exactly one owner — pick it with this test: **what single artifact, present at the moment the defect was introduced, would have stopped it?**
 
-- A rule was missing from a review axis's criteria → that axis skill (`code-review`, `spec-review`, `test-review`, `security-review`, `migration-review`).
+- A rule was missing from a review axis's criteria → that axis skill (`code-review`, `spec-review`, `test-review`, `security-review`, `migration-review`, `goal-review`).
 - A skill's completion criterion was loose enough to let the defect pass as done → that skill.
 - An agent definition permitted an action it should have fenced off → that agent definition.
+- Nothing was watching an action a **gate** could have refused → the hook that should have fired, under `hooks/`. Where the gate exists and stayed silent because the project's own config classified the path wrong, the owner is that config, in the project's repo rather than this one.
 
 Choosing wrong spreads a rule across files that don't need it and leaves the one that does still exposed. If a cluster's evidence doesn't point cleanly at one owner, report that as its own finding rather than forcing a guess.
 
@@ -40,6 +41,8 @@ Choosing wrong spreads a rule across files that don't need it and leaves the one
 Read the owner file in full before writing anything. Where an existing rule is close — covers the class of defect but is too loose, too narrow, or silent on this specific case — rewrite that rule to close the gap. Adding a new rule beside a near-right one is how a skill accumulates **sediment**, the exact failure `writing-great-skills` names: safe to add, risky to remove, and the thing that let the original rule stay too weak to catch this in the first place.
 
 Add a genuinely new rule only when nothing existing is close. Either way, hold the result to `writing-great-skills` in full: a checkable completion criterion where it binds a step, positive phrasing over prohibition, and no restatement of what `review`, `diagnose`, or the owner file's own content already covers elsewhere.
+
+Where the owner is a **gate**, the amendment is a change to a shell script rather than to prose, and the one property it must preserve is failing open: a hook that breaks a session over its own configuration gets uninstalled, taking every rule it carried with it.
 
 ## Propose, don't apply
 
