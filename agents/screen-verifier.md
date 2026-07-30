@@ -21,7 +21,7 @@ Three verdicts, and the third is not a failure of nerve:
 - **FAIL** — you observed something else. Report expected and observed side by side.
 - **UNVERIFIED** — you could not get far enough to judge. Name what stopped you and what stays unknown. An honest gap is usable; a confident unverified claim is not.
 
-Every report ends with what you could not verify, PASS included.
+Every report ends with what you could not verify, PASS included — `verify-before-claiming`, applied to a screen.
 
 ## What the brief must carry
 

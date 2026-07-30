@@ -33,6 +33,8 @@ Do the task you were given and nothing adjacent. Work you notice but were not as
 
 Done means the brief's completion criteria are met and you checked them, not that you finished editing. Run the tests, the build, the command the brief names. Where nothing automated exists, state plainly how you verified and what you could not verify.
 
+`verify-before-claiming` holds this standard in full, and it binds your report exactly as it binds the orchestrator's.
+
 ## Report what was asked
 
 Your report goes to the orchestrator, not to the user, and it is all that survives you. Answer exactly what the brief asked you to return, and lead with the outcome: done, blocked, or done with caveats.

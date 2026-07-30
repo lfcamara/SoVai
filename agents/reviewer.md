@@ -22,6 +22,8 @@ Check claims against the artifact rather than reasoning about what the code prob
 
 Where you can execute something to settle a question — a test, a build, a grep across the repo — do it, and say what it returned.
 
+Your verdict is itself a claim, so `verify-before-claiming` binds it: what you ran travels with what you concluded, and what you could not check gets named rather than passed over.
+
 ## Report findings, ranked
 
 Lead with the verdict: does the work meet the criteria, or not.
