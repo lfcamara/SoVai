@@ -34,7 +34,7 @@ The pipeline, in order:
 - Review — review dispatches six independent axes as parallel read-only subagents: code-review · spec-review · test-review · security-review · migration-review · goal-review (whether the goal holds once shipped — merged, switched on, delivered in full). Critical and high findings are always fixed.
 - Wrap-up — wrap-up (merge only on the user's explicit approval of that PR, then reconcile the documents against what shipped)
 - Debug — diagnose (a reproduction loop before any hypothesis; ends at a bug ticket, not a fix)
-- Engineering — verify-before-claiming (run the check and show its output before calling anything done) · domain-modeling (build the project's CONTEXT.md vocabulary) · grill-with-docs (sharpen a design and write its trace)
+- Engineering — verify-before-claiming (always on, not a stage: no claim of done, fixed or passing without the output of the check that proves it — a subagent's report included) · domain-modeling (build the project's CONTEXT.md vocabulary)
 - Knowledge — harden (a recurring review cause becomes a rule) · lint-references (check this plugin's own cross-references resolve)
 EOF
 exit 0

@@ -73,7 +73,7 @@ Ten blocks, 28 skills, 3 agents.
 | **Wrap-up** | `wrap-up` — merge on your approval, then reconcile the docs against what actually shipped |
 | **Debug** | `diagnose` — evidence, a reproduction loop, ranked hypotheses, a bug ticket |
 | **Knowledge** | `harden` · `lint-references` — recurring review findings become skill rules, and a name that went stale stops reading live |
-| **Engineering** | `verify-before-claiming` · `domain-modeling` · `grill-with-docs` — evidence before any claim of done, and the vocabulary the documents are written in |
+| **Engineering** | `verify-before-claiming` · `domain-modeling` · `grill-with-docs` — evidence before any claim of done, the vocabulary the documents are written in, and a design interview that leaves its trace (that last one you type by hand) |
 | **Orchestration** | `delegate` — the six-part brief every handoff to a subagent carries |
 | **Productivity** | `grilling` · `writing-great-skills` — the interview underneath `brainstorm`, and the standard every skill here is held to |
 
@@ -116,7 +116,7 @@ That's deliberate rather than careless: the feedback loop above exists precisely
 ## Learn more
 
 - **[engineering-workflow.md](engineering-workflow.md)** — the full process, stage by stage
-- **[engineering-workflow.html](engineering-workflow.html)** — the same thing, interactive
+- **[engineering-workflow.html](engineering-workflow.html)** — a condensed interactive view of it; the `.md` above stays the source of truth
 - **[docs/adr/](docs/adr/)** — why each decision was made the way it was
 - **[CHANGELOG.md](CHANGELOG.md)** — what changed in each release, and why it was worth changing
 

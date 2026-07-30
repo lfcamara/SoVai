@@ -25,6 +25,6 @@ The shipping copy of this mandate is the SessionStart bootstrap under `hooks/`, 
 - `hooks/` — the enforcement layer: SessionStart bootstrap, pre-edit gate, `Skill` phase tracker, Stop gate, plus the shared config resolver and the wiring that registers them. Paths there are plugin-relative via `${CLAUDE_PLUGIN_ROOT}`, and path classification comes from the edited project's own config, never from this plugin.
 - `docs/adr/` — why each decision was made the way it was.
 
-Invoke `writing-great-skills` before authoring or editing a skill. After any structural change — a skill, agent, ADR, hook, or manifest edit, and any rename — run `bash skills/knowledge/lint-references/lint.sh` from the repo root and get CLEAN before finishing. Cross-references here are bare names in prose that nothing else validates, so a stale one reads live until that linter resolves it.
+Read `skills/productivity/writing-great-skills/SKILL.md` in full before authoring or editing a skill — it is user-invoked, so reaching it is a read rather than a `Skill` call. After any structural change — a skill, agent, ADR, hook, or manifest edit, and any rename — run `bash skills/knowledge/lint-references/lint.sh` from the repo root and get CLEAN before finishing. Cross-references here are bare names in prose that nothing else validates, so a stale one reads live until that linter resolves it.
 
 See [README.md](README.md) for the current skill inventory and roadmap.

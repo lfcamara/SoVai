@@ -5,7 +5,7 @@ description: Check that this plugin's own cross-references resolve — bare skil
 
 # Lint References
 
-This plugin's cross-references are **bare names in backticks** — `review` naming five axes, `wrap-up` naming `to-tickets`, an ADR citing an agent. Nothing reads them back: not the filesystem, not Claude Code, not any other tool. A rename leaves the old name sitting in prose, reading exactly as live as the day it worked. This is what reads them back.
+This plugin's cross-references are **bare names in backticks** — `review` naming six axes, `wrap-up` naming `to-tickets`, an ADR citing an agent. Nothing reads them back: not the filesystem, not Claude Code, not any other tool. A rename leaves the old name sitting in prose, reading exactly as live as the day it worked. This is what reads them back.
 
 ## Run it
 
