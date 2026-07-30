@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# SessionStart hook for SoVai. Injects three things into every session, and
+# nothing else: the orchestration mandate, the mandatory-invocation contract,
+# and a one-line-per-block skill index.
+#
+# The orchestration mandate lives HERE rather than in CLAUDE.md because plugins
+# do not ship CLAUDE.md — a mandate in the SoVai repo's CLAUDE.md governs work
+# on SoVai itself and never loads in a consuming project, which is exactly where
+# the work happens. See ADR-0012.
+#
+# The invocation contract is the mechanism ADR-0001 assumes: the planning
+# pipeline auto-continues only if the model reliably reaches for the next skill,
+# and a description alone does not make that reliable.
+#
+# Kept deliberately short — every line here loads into every session, and this
+# is the one file in the plugin where verbosity has a permanent cost.
+# Never blocks. Always exits 0.
+
+set -u
+
+# Pipe the literal message straight into jq (-R raw, -s slurp -> whole stdin as
+# one string) to build the JSON. Avoids the heredoc-inside-$() quoting quirk.
+cat <<'EOF' | jq -Rsc '{hookSpecificOutput:{hookEventName:"SessionStart",additionalContext:.}}'
+SoVai engineering workflow active.
+
+ORCHESTRATION — this session orchestrates; it does not execute. Delegate execution via the `delegate` skill: `implementer` to build, `reviewer` to check (read-only, so findings stay findings), `Explore` to find. Decisions, design, and anything needing the user stay here. A subagent starts cold and cannot ask a question, so every brief carries outcome, skill, absolute input paths, checkable done criteria, a scope fence, and what to report back. Standing rule, stated in every brief: a subagent's unsettled decisions travel back here rather than being resolved locally.
+
+SKILLS — before acting on a request, invoke the relevant Skill (via the Skill tool) when one applies. Skills encode required process, so invoking the matching one is mandatory, not optional. User instructions always outrank skills.
+
+The pipeline, in order:
+- Planning — brainstorm (shape a raw idea, one question at a time) → to-prd → to-spec → to-phases → to-tickets. Each stage hands to the next in the same conversation; continuing needs no named invocation. `grilling` is the interview underneath it.
+- Prototyping — to-wireframes (every screen and the flows between them, low fidelity) · prototype (throwaway code answering one design question)
+- Development — implement (one ticket, cold) · tdd (the red → green loop, mandatory for backend and other non-UI logic) · ui-testing (UI is the deliberate exception, tested after it is built) · open-pr (draft PR on the first push)
+- Review — review dispatches five independent axes as parallel read-only subagents: code-review · spec-review · test-review · security-review · migration-review. Critical and high findings are always fixed.
+- Wrap-up — wrap-up (merge only on the user's explicit approval of that PR, then reconcile the documents against what shipped)
+- Debug — diagnose (a reproduction loop before any hypothesis; ends at a bug ticket, not a fix)
+- Knowledge — harden (a recurring review cause becomes a skill rule) · domain-modeling (build the project's CONTEXT.md vocabulary)
+EOF
+exit 0
