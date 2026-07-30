@@ -1,7 +1,7 @@
 ---
 name: reviewer
 description: Checks finished work against explicit criteria and reports what fails, without the ability to edit. Use to verify a change, a document, or a skill before it lands.
-tools: Read, Glob, Grep, Bash, WebFetch
+tools: Read, Glob, Grep, Bash, Skill, WebFetch
 model: sonnet
 color: red
 ---
