@@ -233,7 +233,7 @@ The third sits **on** that axis rather than across it: "observes a running syste
 
 The trade is stated rather than hidden. No fixed tool allowlist can name browser tooling whose names vary by environment, so `screen-verifier` holds a full grant and carries the constraint in writing: it is read-only by discipline where `reviewer` is read-only by construction.
 
-The standing rule all three carry: **an unsettled decision goes back, it does not get resolved locally.** A plausible wrong answer arrives looking finished and nobody re-examines it, so one round trip is always cheaper.
+Two standing rules all three carry, and every brief repeats. **An unsettled decision goes back, it does not get resolved locally** — a plausible wrong answer arrives looking finished and nobody re-examines it, so one round trip is always cheaper. And **the report is bound by `verify-before-claiming`** — done means each criterion was checked against a run, with the output that settles it travelling alongside the claim.
 
 And what comes back is a claim, not a fact. Read the diff, not just the report — a confident summary of a broken change reads exactly like a confident summary of a working one.
 
@@ -268,6 +268,8 @@ Had the id been per-agent, the layer would have been decorative. The orchestrato
 A hook can observe that an edit happened, that a skill was entered, that a session is ending. It cannot observe whether the sentence about to be written carries evidence — and the failure that matters most here is not an unrun command but a report asserting more than its run supports, or with no run behind it at all ([ADR-0014](docs/adr/0014-completion-is-gated-globally.md)).
 
 So that one is a rule the model holds while it writes. `verify-before-claiming` binds every *done*, *fixed*, *passing* and *working* — in a report, a commit message, a PR body, a sentence to you — and binds a subagent exactly as it binds the orchestrator: run the check that would contradict the claim, show what it said, and where no command stands behind a claim, name what you could not verify.
+
+That binding travels rather than being assumed. `delegate` states it as a standing rule in every brief, which is the only thing a cold subagent certainly reads, and each agent definition names the skill that owns the standard instead of restating it — so the standard has one owner, and sharpening it stays one edit rather than four that have to agree.
 
 It is one always-on rule rather than a criterion inside each skill, because a rule living in a skill is silent for precisely the runs where no skill was invoked — the quick fix, the ad-hoc edit, the question that turned into a change — which are the runs where an unverified *done* is likeliest. It reconciles with the rule that keeps verification inside the subagent: the output is required **where the check ran**, and only the compressed form crosses the boundary — the command, its result, and the lines that failed. A verdict with nothing behind it never qualified as either.
 
