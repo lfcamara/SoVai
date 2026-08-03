@@ -105,14 +105,6 @@ The test for whether to delegate: *if you can't write the brief, you don't under
 
 ---
 
-## Honest status
-
-**v1.1.0 is still unproven.** Every block is implemented and internally consistent — cross-references now checked by a linter rather than by eye, and the rules that matter enforced by hooks rather than left to the agent's discretion. But none of it has been run against a real project yet, and enforcement is not validation: a gate that fires every time still only fires on a process nobody has tested. The design is reasoned, not validated, and first contact will change it.
-
-That's deliberate rather than careless: the feedback loop above exists precisely to absorb what real use teaches.
-
----
-
 ## Learn more
 
 - **[engineering-workflow.md](engineering-workflow.md)** — the full process, stage by stage
