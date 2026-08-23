@@ -334,9 +334,11 @@ It carries the symptom, the root cause, the fix, the reproduction command, and w
 
 ## Per-project configuration
 
-Two facts cannot be discovered from a repo.
+Three facts cannot be discovered from a repo.
 
 **Where its tickets go.** The Linear team and project belong in the target repo's `CLAUDE.md`, which every session already loads. A repo departing from the default writes `docs/agents/issue-tracker.md` by hand — and should, because the default names the one tracker whose issue tooling is currently not reachable at all. The floor always works: `to-tickets` falls to local markdown, one file per ticket, and says so plainly rather than failing. The cost is stated in [ADR-0004](docs/adr/0004-planning-documents-live-in-the-repo-tickets-in-the-tracker.md) — a repo that never writes that file gets local files, and `wrap-up` then has nothing to move to Done.
+
+**Whether the test list gets approved.** Whether the developer wants to see the behaviours an implementer intends to verify before any of them is written ([ADR-0011](docs/adr/0011-the-test-list-is-approved-not-the-tests.md)). It is a standing preference rather than a per-ticket question, and it lives in the target repo's `CLAUDE.md` beside the tracker facts — asked per ticket, a control the developer wanted becomes a prompt they learn to dismiss. `to-tickets` reads the standing answer from there and writes it into each brief.
 
 **What a file is.** Which paths hold production logic, which hold UI, which hold tests. This is the fact the hooks run on, and it lives in a `sovai.config.json` at the project root, found by walking up from the edited file ([ADR-0013](docs/adr/0013-per-project-config-resolved-by-walking-up.md)):
 
@@ -344,7 +346,7 @@ Two facts cannot be discovered from a repo.
 {
   "productionLogic": ["src/**", "lib/**"],
   "ui":              ["src/components/**", "src/screens/**", "src/app/**"],
-  "tests":           ["*.test.*", "*.spec.*", "test/**"]
+  "tests":           ["*.test.*", "*.spec.*", "test/**", "tests/**", "*__tests__*"]
 }
 ```
 
