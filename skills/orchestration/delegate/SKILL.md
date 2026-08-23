@@ -11,6 +11,8 @@ Execution goes to a subagent; the decisions stay here. A subagent starts **cold*
 
 Send work whose decisions are already made and whose result can be checked: implementing an approved plan, applying a mechanical change across files, writing something to a template, verifying work against criteria.
 
+Send a lint, build, test or coverage run for a different reason: its output is enormous and mostly noise even when green. Delegate the run and take back the verdict and the failing lines — the subagent boundary is where that log dies, and this context is not the place for it.
+
 Keep work whose value is in the deciding — design, trade-offs, anything the user must weigh in on, anything where you would be inventing the requirements as you go.
 
 The planning stages sit entirely on the keep side: `brainstorm`, `to-prd`, `to-spec`, `to-wireframes`, `to-phases`. Every one of them ends with the user reading a draft and correcting it, and that loop needs someone who can be corrected. A cold agent cannot be — it can only be re-briefed, which means re-deriving from scratch what the last round already settled.
