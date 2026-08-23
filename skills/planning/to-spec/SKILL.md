@@ -25,6 +25,8 @@ Prefer an existing seam to a new one, and the highest seam available to a lower 
 
 Put the proposed seams to the user and get agreement before writing the spec — a wrong seam is expensive to move later.
 
+This gate is why the spec is written in this session rather than dispatched to a subagent: a cold agent has nobody to put the seams to, and would pick one and carry on.
+
 ## Write it
 
 Write to `docs/planning/<effort>/<effort> — Spec.md`, beside the PRD it belongs to.

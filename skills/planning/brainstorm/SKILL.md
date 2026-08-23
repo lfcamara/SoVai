@@ -23,6 +23,8 @@ Run the `grilling` skill together with the `domain-modeling` skill. `grilling` o
 
 Look facts up in the environment — the codebase, the docs, the tracker. Put the **decisions** to the user.
 
+The interview itself stays in this session. Looking a fact up is legwork and can go to an `Explore` agent; the interview cannot, because a subagent has nobody to interview.
+
 ## Carry it forward
 
 The session is done shaping when no open questions remain **and the user has confirmed the shared understanding** — `grilling` holds that gate; do not step past it.

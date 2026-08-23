@@ -85,4 +85,6 @@ The wireframes are done when **every user story in the PRD is reachable** — th
 
 Show the user the artifact and let them react. The useful feedback is usually a missing step or a screen that turns out to be two.
 
+Deriving the screens and building the artifact both run here, not in a subagent. The screens are settled by the user reacting to them, and the artifact is the thing they react to — sending either away would put the feedback loop across a boundary it cannot cross.
+
 Once they are satisfied, continue in the same session: run the `to-phases` skill. The screens are now concrete enough to draw phase boundaries through.

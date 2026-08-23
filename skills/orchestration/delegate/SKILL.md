@@ -13,6 +13,8 @@ Send work whose decisions are already made and whose result can be checked: impl
 
 Keep work whose value is in the deciding — design, trade-offs, anything the user must weigh in on, anything where you would be inventing the requirements as you go.
 
+The planning stages sit entirely on the keep side: `brainstorm`, `to-prd`, `to-spec`, `to-wireframes`, `to-phases`. Every one of them ends with the user reading a draft and correcting it, and that loop needs someone who can be corrected. A cold agent cannot be — it can only be re-briefed, which means re-deriving from scratch what the last round already settled.
+
 The test is the brief itself. **If you cannot write the brief, you do not understand the task well enough to delegate it** — and the effort of discovering that is the effort of doing the thinking that was missing. Write the brief first; if it comes out vague, that is the signal to go back to the user or the codebase, not to send it anyway and hope.
 
 ## Write the brief
