@@ -43,6 +43,8 @@ Present the phases as a numbered list, each with what ships, why it stands alone
 
 Iterate until the user approves.
 
+That iteration is what keeps this skill in the session. Each round is a correction to the last one; a subagent receives briefs, not corrections, and every round would start from nothing.
+
 ## Write the roadmap
 
 Write the approved breakdown to `docs/planning/<effort>/<effort> — Roadmap.md`, beside the PRD and spec.

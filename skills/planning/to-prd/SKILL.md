@@ -54,3 +54,5 @@ Keep mechanism, file paths, and code out of it. A reader who does not write code
 ## Carry it forward
 
 Show the user the PRD and let them correct it. Once they are satisfied, continue in the same session: run the `to-spec` skill.
+
+Write the PRD here rather than dispatching it. Synthesis is a judgement about what the session meant, and the session is the only place that judgement can be made — a subagent would be handed the transcript and asked to guess at it.
