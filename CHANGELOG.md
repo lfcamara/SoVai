@@ -14,13 +14,27 @@ Entries say **why**. What changed is recoverable from the diff forever; why it w
 
 ## Release step
 
+Work on a branch. **Merging to main is the release**, because that is what `/plugin update` pulls — so steps 2 through 5 apply at the merge, not at every commit. Pushing a change straight to main releases it either way; the only thing skipping the version does is take away the one signal an installed user gets that their process changed.
+
 1. Make the change — skill, agent, hook, or doc.
 2. Run the plugin's reference linter, `skills/knowledge/lint-references/lint.sh`, from the repo root. Exit 0 or the release stops. Every cross-reference in this plugin is a bare name in prose — a skill naming a skill, an ADR citing an agent — that nothing else validates, and the manifest has to agree with what is on disk in both directions, since an undeclared skill never loads and a declared path that no longer exists is a load error someone else meets first. A dead reference does not raise an error; it silently does not happen, in a session you are not in, and the person who installed the plugin has no way to tell it was ever meant to work.
 3. Bump `version` in `.claude-plugin/plugin.json`, per the policy above.
 4. Add a dated entry below, saying why the change was made.
-5. Commit and push. Installed users pick it up with `/plugin update sovai@sovai`.
+5. Merge the branch to main. Installed users pick it up with `/plugin update sovai@sovai`.
 
 ---
+
+## 1.1.1 — 2026-08-23
+
+An audit of the plugin against itself. Nothing here changes what the workflow does; two things it already claimed are now true.
+
+**Fixed: the reference linter passes.** `skills/development/verify/` sat in the working tree, undeclared in the manifest and untracked in git, which meant it never loaded — and it was the one dead reference `lint-references` reported, so step 2 of the release above could not have been cleared by anyone who ran it. The skill is retired rather than declared. Its in-ticket half was already inlined into `implement`, and `verify-before-claiming` already owns the evidence discipline; what neither covered was the orchestrator checking a build outside a ticket, which is one rule about where a log may land and now sits in `delegate`, beside the decision it qualifies. Retiring it also removes a name one suffix away from `verify-before-claiming` for a different job.
+
+**Fixed: the planning stages say why they stay in the session.** Every one of them ends with the user reading a draft and correcting it, and a cold agent can only be re-briefed, never corrected — that was the reason the pipeline keeps planning in the orchestrator, and it was written down nowhere. Against a SessionStart bootstrap that mandates delegation, each stage read as an arbitrary exception. Each now carries the specific mechanism that keeps it: nobody to interview, nobody to put the seams to, nobody to react to the artifact. `delegate` carries the conclusion the five share, so there is one index and five reasons rather than one assertion repeated.
+
+**Changed: the release step names the branch.** Merging to main is what `/plugin update` pulls, so that is the release, and steps 2–5 apply there. Written down because the alternative on offer was relaxing the version policy to fit the habit of committing to main, which would have cost the signal the policy exists for.
+
+**Why patch.** No capability was added or removed. The retired skill was never in the manifest, so nothing possible in 1.1.0 became impossible — no installed session could reach it.
 
 ## 1.1.0 — 2026-07-30
 
