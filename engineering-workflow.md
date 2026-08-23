@@ -358,6 +358,6 @@ Onboarding is therefore a one-file drop — copy `sovai.config.example.json` to 
 
 ## Status
 
-Version 1.1.0. Every block implemented, and the rules that carry the most weight now fire on their own instead of waiting to be reached for. What each release changed, and why it was worth changing, is in [CHANGELOG.md](CHANGELOG.md).
+Every block implemented, and the rules that carry the most weight now fire on their own instead of waiting to be reached for. The current version is the one in [`plugin.json`](.claude-plugin/plugin.json); what each release changed, and why it was worth changing, is in [CHANGELOG.md](CHANGELOG.md).
 
 **Enforcement is not validation.** A hook makes a stated rule deterministic; it says nothing about whether the rule was right. **None of this has been run against a real project yet.** The design is reasoned but unvalidated, and the first real use is expected to change it. That is the plan, not an accident.
