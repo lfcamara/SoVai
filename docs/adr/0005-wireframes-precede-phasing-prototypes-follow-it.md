@@ -24,3 +24,20 @@ The cadence argument was right and is untouched: a prototype belongs to the phas
 
 The skill is unchanged in every other respect and is still model-invocable. What it loses is a guaranteed slot in the pipeline, which was the only thing making it fire when nobody had asked a question.
 
+
+## to-wireframes hands off instead of rendering
+
+**Status: accepted, 2026-08-31.** Amends the stage above, which had `to-wireframes` build and publish the artifact the user reacts to.
+
+The skill did two separable things. It **derived** the screens from the PRD's user stories, recorded them, and checked story coverage — the load-bearing half, read downstream by `to-roadmap` for phase boundaries and by `ui-testing` for its minimum test list. And it **rendered** them, by hand, as a self-contained HTML artifact.
+
+The rendering is now a handoff. `to-wireframes` writes a second file, `<effort> — Design Brief.md`, which is not a document about the design but the prompt itself: addressed to a design tool, carrying the fidelity budget, the platform proportions, and one block per screen. The user takes it to Claude Design or whatever they use.
+
+Three reasons, none of them effort. A design tool is someone else's skill or someone else's product, and a markdown file depends on nothing and survives that changing — where auto-invoking a tool the plugin does not own would make the pipeline's most visual stage its most fragile. The user is the one who will sit in the tool moving things by hand, so a canvas generated from this session is a canvas they immediately re-drive. And the orchestration mandate says this session holds decisions rather than execution; rendering spends its context on presentation.
+
+**The cost is a real stop in the pipeline, and it is paid deliberately.** Wireframes exist to surface the missing step and the screen that turns out to be two, and that reaction now happens outside the session. So the chain does not continue on its own here — the only planning stage where it does not — and the skill gains a second entrance: the user comes back with a canvas, and the record, the flow, and the story-coverage table are reconciled against what was actually drawn before `to-roadmap` runs. A roadmap drawn through a stale record is the failure that reconciliation exists to prevent.
+
+The record stays the source of truth, which is what makes the trade safe: the brief is derived from it and the canvas from the brief, so both are regenerable and neither is load-bearing.
+
+The templates for both documents moved out to `WIREFRAMES-FORMAT.md` and `DESIGN-BRIEF-FORMAT.md`, matching the format files the rest of the planning block now uses.
+

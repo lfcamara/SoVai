@@ -31,51 +31,36 @@ Cover the unglamorous states too — empty, loading, error, permission denied, f
 
 ## Record the screens
 
-Write `docs/planning/<effort>/<effort> — Wireframes.md`, beside the PRD and spec. This file is the record; the artifact built from it is the presentation.
+Write `docs/planning/<effort>/<effort> — Wireframes.md`, beside the PRD, to the shape in [WIREFRAMES-FORMAT.md](./WIREFRAMES-FORMAT.md).
 
-Both exist for a reason. The artifact is what the user reacts to and it lives outside the repo, so a plan that kept only the artifact would leave the roadmap referencing screens nobody can find once the link is lost. The file is what every later stage reads.
+This file is the record and the source of truth. The brief written next is derived from it, and the canvas the user builds from that brief is the presentation — both are regenerable, and this is not. It is what `to-roadmap` and `ui-testing` read, and a plan that kept only the canvas would leave the roadmap pointing at screens nobody can find once the link is lost.
 
-<wireframes-template>
+## Hand off to the design tool
 
-# <Effort name> — Wireframes
+The record is not what the user reacts to. Write a second file — the **design brief** — that they can take to a visual design tool as it stands: `docs/planning/<effort>/<effort> — Design Brief.md`, to the shape in [DESIGN-BRIEF-FORMAT.md](./DESIGN-BRIEF-FORMAT.md).
 
-PRD: [[<effort> — PRD]] · Spec: [[<effort> — Spec]] · Artifact: <url, once published>
+The brief *is* the prompt. It opens addressed to the tool and carries the fidelity budget from above, the target platform's proportions, and one block per screen. The user opens it, takes the whole thing to Claude Design or whatever they use, and gets a canvas back.
 
-## Flow
+This skill does not render the canvas itself. Three reasons, and none of them is effort:
 
-```mermaid
-flowchart LR
-  A[Screen name] -->|action| B[Next screen]
-```
+- **No dependency it cannot keep.** A design tool is someone else's skill or someone else's product. A markdown file depends on nothing and still works when that changes.
+- **The user is the one sitting in the tool.** They will move things by hand regardless, so a canvas generated from this session is a canvas they immediately re-drive.
+- **This session holds decisions, not execution.** Rendering here spends the orchestrator's context on presentation.
 
-## Screens
+Tell the user where the brief is and what to do with it. Then stop.
 
-### <Screen name>
+## Reconcile what comes back
 
-**Purpose:** one line — what the user is here to do.
+Wireframes exist to surface the missing step and the screen that turns out to be two — and that discovery now happens in a tool outside this session. If nothing comes back, the record is stale from the moment the user starts drawing, and `to-roadmap` will draw phase boundaries through screens that no longer exist.
 
-**Holds:** the elements on it, in hierarchy order.
+So this skill has a second entrance. When the user returns with a canvas — a link, an export, or just a description of what changed — reconcile the record against it:
 
-**States:** empty, loading, error, and any others this screen has.
+- Add screens that appeared, drop ones that went, update what each holds and the states it has
+- Redraw the flow where transitions moved
+- **Rebuild the story-coverage table**, then re-run Completion below against it
+- Write the canvas URL into the record, so it points at its own presentation
 
-## Story coverage
-
-| User story | Screen |
-|---|---|
-| 1 | <screen name> |
-
-</wireframes-template>
-
-## Build the artifact
-
-Load the `artifact-design` skill, then write a self-contained HTML file from the recorded screens and publish it with the Artifact tool. An artifact works whatever the target platform is, needs no codebase, and gives the user one link to react to.
-
-The page holds two things:
-
-- **A flow diagram** — the screens as nodes, the transitions as labelled edges. Artifacts render Mermaid natively, so a `<pre class="mermaid">` block is enough.
-- **Every screen, laid out** — each with its name, its purpose in one line, and the states it has. Size the frames to the target platform's proportions so density reads honestly; a layout that works wide often fails narrow.
-
-Write the published URL back into `<effort> — Wireframes.md` so the record points at its own presentation.
+Reconcile before anything downstream runs. A roadmap drawn from a stale record is the exact failure this section exists to prevent.
 
 ## Completion
 
@@ -83,8 +68,8 @@ The wireframes are done when **every user story in the PRD is reachable** — th
 
 ## Carry it forward
 
-Show the user the artifact and let them react. The useful feedback is usually a missing step or a screen that turns out to be two.
+This is the one stage of planning that leaves the session, so it does not chain on its own. Stop at the handoff and say so plainly: the brief is written, and the record is provisional until the user comes back with a canvas.
 
-Deriving the screens and building the artifact both run here, not in a subagent. The screens are settled by the user reacting to them, and the artifact is the thing they react to — sending either away would put the feedback loop across a boundary it cannot cross.
+Once they have and the record is reconciled, continue in the same session: run the `to-roadmap` skill. The screens are now concrete enough to draw phase boundaries through.
 
-Once they are satisfied, continue in the same session: run the `to-roadmap` skill. The screens are now concrete enough to draw phase boundaries through.
+Deriving the screens and reconciling them both run here rather than in a subagent. The screens are settled by the user reacting to them, and a cold agent has nobody to react.
