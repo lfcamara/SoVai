@@ -1,11 +1,13 @@
 ---
 name: to-wireframes
-description: Lay out every screen an effort needs and the flows between them, at deliberately low fidelity. Use after a spec is written and before work is sequenced into phases, when the user asks for wireframes or wants to see the shape of an interface, or when another skill needs the screens named before it can plan.
+description: Lay out every screen an effort needs and the flows between them at deliberately low fidelity, hand them off as a design brief, and reconcile the record when a canvas comes back. Use when the user asks for wireframes or wants to see the shape of an interface, when they return from a design tool with a canvas or a link to react to, or when another skill needs the screens named before it can plan.
 ---
 
 # To Wireframes
 
 Name every **screen** the effort needs and the flows between them. A screen is one coherent view the user is looking at — a page on a site, a screen in an app, a step in a flow, a pane in a tool. Whatever the target platform calls it, the unit is the same.
+
+**Two ways in.** Deriving the screens, and reconciling the record once the user has been to a design tool — the stage stops in the middle, so the second entrance is reached cold as often as the first.
 
 Wireframes come before phases. A phase is defined by what it ships, and that stays abstract until the screens have names — the cancellation test is hard to apply to a capability and easy to apply to a screen a user can reach.
 
@@ -41,13 +43,9 @@ The record is not what the user reacts to. Write a second file — the **design 
 
 The brief *is* the prompt. It opens addressed to the tool and carries the fidelity budget from above, the target platform's proportions, and one block per screen. The user opens it, takes the whole thing to Claude Design or whatever they use, and gets a canvas back.
 
-This skill does not render the canvas itself. Three reasons, and none of them is effort:
+The brief is the deliverable here; the canvas is the user's to build. A markdown file depends on nothing and survives the tool changing, and the user is the one who will move things by hand once they are in there anyway — the reasoning is in ADR-0005.
 
-- **No dependency it cannot keep.** A design tool is someone else's skill or someone else's product. A markdown file depends on nothing and still works when that changes.
-- **The user is the one sitting in the tool.** They will move things by hand regardless, so a canvas generated from this session is a canvas they immediately re-drive.
-- **This session holds decisions, not execution.** Rendering here spends the orchestrator's context on presentation.
-
-Tell the user where the brief is and what to do with it. Then stop.
+Hand it over and stop. The chain resumes at the second entrance, not here.
 
 ## Reconcile what comes back
 
