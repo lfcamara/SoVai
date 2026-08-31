@@ -56,7 +56,7 @@ That file already exists in any project SoVai gates, sits at the project root, a
 
 Where no `tracker` is recorded, ask once: which tracker, and the destination it needs. Offer to write the answer into `sovai.config.json` — a fact re-asked every run is a fact that was never captured. Where the user is not reachable, publish to local markdown and say plainly that you did.
 
-**There is no default tracker.** Guessing one means either publishing into somebody's wrong project or failing against a service that was never connected, and both read as the plugin being broken. Local markdown is the floor and falling to it loudly is a working outcome; a wrong guess is not.
+**Resolve, never assume.** Every run gets its tracker from one of exactly three places — the config, the user, or the floor. Guessing a fourth means publishing into somebody's wrong project or failing against a service nobody connected, and both read as the plugin being broken.
 
 A project needing more than the config holds — a house convention for how blocking is expressed, a naming rule for titles — records it in `docs/agents/issue-tracker.md`. Read that file where it exists: it refines the config, never replaces it.
 

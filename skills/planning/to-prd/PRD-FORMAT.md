@@ -34,4 +34,3 @@ What this effort deliberately leaves out, and why. The explicit no's carry as mu
 
 - **Every section, in this order.** A later stage resolves the PRD by path and reads it by heading, so a missing or renamed section is a section that silently does not exist.
 - **Numbered user stories.** `to-wireframes` builds its story-coverage table by number, and `ui-testing` derives a test list from that table. An unnumbered list breaks both.
-- **One vocabulary.** Every term comes from the project's `CONTEXT.md`.

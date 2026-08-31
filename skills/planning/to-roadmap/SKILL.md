@@ -76,6 +76,6 @@ Phases are planned once; everything after runs **per phase**, at the start of th
 
 So continue in the same session for **phase 1 only**, and leave the later phases untouched — each gets its own run when it begins: run the `to-tickets` skill.
 
-**Prototyping is not part of that chain.** A prototype is throwaway code that answers a question, and an effort arriving here already has a PRD, wireframes, a spec and a roadmap. Most phases reach this point with nothing left open, and a prototype built anyway is ceremony that costs a whole session.
+**Prototyping is a question you raise, not a stage you run.** A prototype is throwaway code that answers a question, and an effort arriving here already has a PRD, wireframes, a spec and a roadmap. Most phases reach this point with nothing left open, and a prototype built anyway is ceremony that costs a whole session.
 
 So offer it, never run it. Where the spec's **Risks and unknowns** names something only running code would settle — a state model nobody can reason about on paper, a layout that may not survive real content — name that question and let the user decide whether to spend a `prototype` run on it. Where nothing is open, go to tickets and do not raise it.
