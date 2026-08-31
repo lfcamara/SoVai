@@ -21,7 +21,7 @@ Merge with `gh`. Then confirm the merge actually landed before touching the trac
 
 ## Update the tracker
 
-Move the ticket to Done. Tracker mechanics and the Linear team/project convention live in `to-tickets` — follow that, not a restatement of it here.
+Move the ticket to Done. The tracker is resolved from the project's `sovai.config.json`, and the mechanics of every tracker live in `to-tickets` — follow that, not a restatement of it here. A project publishing to local markdown has no Done to move to; say that plainly rather than reporting a state change that did not happen.
 
 ## Write the troubleshooting note
 
