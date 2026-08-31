@@ -24,6 +24,22 @@ Work on a branch. **Merging to main is the release**, because that is what `/plu
 
 ---
 
+## 2.1.0 — 2026-08-31
+
+**Editing a `SKILL.md` now points at the standard for writing one.** A new branch in the pre-edit hook, fired once per session, naming `writing-great-skills` and asking for it to be read in full.
+
+It exists because the instruction it enforces already existed and was skipped. The 2.0.0 rework — twelve commits, seven skills, six new reference files — was written after a targeted grep of the standard rather than a read of it, and the audit afterwards found a defect the standard catches on its first page: a skill given a second entrance whose trigger never reached its description, leaving that entrance unreachable from the cold session it exists to serve. A grep returns what you already suspected; the defects worth catching are the other ones.
+
+That is the same gap ADR-0012 was written about, arriving in a new place. Prose the agent has loaded is advice, and a hook that fires at the moment of the action is a mechanism.
+
+**It keys off the filename and reads no config**, unlike every other branch of that hook. SoVai's own repo has no `sovai.config.json` — it has no production logic to gate — so a config-driven version of this check would have fired in consuming projects and never in the repo where skills are actually written. A file named `SKILL.md` means a skill is being authored, in any project, with nothing declared.
+
+It reminds rather than blocks. A hook cannot verify that a file was read, and refusing every edit until an unobservable precondition holds is how a gate gets uninstalled and takes its rules with it.
+
+Still four hooks — this is a branch in an existing one. Making `writing-great-skills` model-invocable was considered and rejected: its description would load in every session of every consuming project, a permanent cost for a rule that only applies while authoring a skill.
+
+---
+
 ## 2.0.0 — 2026-08-31
 
 The planning block reworked. Major by this changelog's own definition: a stage is renamed, a stage leaves the automatic chain, another stops mid-pipeline and waits for you, and the pipeline gains entrances that are not the top. If you learned the old shape, it no longer holds.
