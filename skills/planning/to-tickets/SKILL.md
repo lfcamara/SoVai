@@ -44,37 +44,29 @@ Iterate until the user approves. Publish nothing before then.
 
 ## Publish
 
-Read `docs/agents/issue-tracker.md` in the repo for where issues live and how this project expresses blocking. Absent that file, default to **Linear**.
+### Resolve the tracker
 
-Linear needs a team and a project to publish into, and neither is guessable from the repo. Look for them in the repo's `CLAUDE.md`, which is where a project records the facts every session needs. Where they are not recorded anywhere, ask once and offer to write the answer into `CLAUDE.md` — a fact re-asked every run is a fact that was never captured.
+The tracker is recorded in the project's `sovai.config.json`, under a `tracker` key:
 
-Publish in dependency order — blockers first — so each ticket can reference real identifiers by the time it needs them. Work the **frontier**: any ticket whose blockers are all published.
+```json
+"tracker": { "kind": "linear", "team": "Core", "project": "Billing", "phasesAsParents": true }
+```
 
-- **Linear** — one issue per ticket, on the project matching the effort. Use Linear's native blocking relationship for the edges, and make each ticket a sub-issue of the phase where the tracker models phases as parent issues. If the connected Linear tools cannot create issues, say so plainly and write the tickets to the local fallback instead of silently dropping them.
-- **Local markdown** — one file per ticket at `docs/planning/<effort>/tickets/<NN> — <Ticket title>.md`, numbered from `01` in dependency order. One ticket per file, never a combined file.
+That file already exists in any project SoVai gates, sits at the project root, and is found by walking up from the work — so tracker facts live where every other per-project fact already does, rather than in a second convention nobody remembers to write.
 
-A link exists to be traversed, so spend it on the jump a reader would actually make: a ticket to the phase it belongs to, a ticket to the spec decision it implements, a spec to the PRD it serves. Linking everything a document touches produces a graph as useless as no graph — resist the urge to add a "related notes" list.
+Where no `tracker` is recorded, ask once: which tracker, and the destination it needs. Offer to write the answer into `sovai.config.json` — a fact re-asked every run is a fact that was never captured. Where the user is not reachable, publish to local markdown and say plainly that you did.
 
-<ticket-template>
+**There is no default tracker.** Guessing one means either publishing into somebody's wrong project or failing against a service that was never connected, and both read as the plugin being broken. Local markdown is the floor and falling to it loudly is a working outcome; a wrong guess is not.
 
-# <Title>
+A project needing more than the config holds — a house convention for how blocking is expressed, a naming rule for titles — records it in `docs/agents/issue-tracker.md`. Read that file where it exists: it refines the config, never replaces it.
 
-**Phase:** the phase this belongs to, linked as `[[<effort> — Roadmap#Phase <N> — <name>]]`, or omitted when there is no roadmap.
+### Publish in dependency order
 
-**What to build:** the end-to-end behaviour this ticket makes work, from the user's perspective — not a layer-by-layer implementation list.
+Read [TRACKERS.md](./TRACKERS.md) for what the resolved tracker calls each of the four capabilities publishing needs, and for the mechanics of expressing a blocking edge there.
 
-**Blocked by:** the tickets that gate this one, or "Nothing — can start immediately".
+Publish blockers first, so each ticket can reference real identifiers by the time it needs them. Work the **frontier**: any ticket whose blockers are all published.
 
-**Acceptance criteria:**
-
-- [ ] Criterion 1
-- [ ] Criterion 2
-
-</ticket-template>
-
-Keep file paths and code snippets out of ticket bodies — they go stale before the ticket is picked up. One exception: a prototype snippet that pins a decision more precisely than prose can, trimmed to the decision-rich part.
-
-Leave any parent issue open and unmodified.
+Write each ticket to the shape in [TICKET-FORMAT.md](./TICKET-FORMAT.md). The body is identical whatever the tracker; only the mechanics of the edge change.
 
 ## Carry it forward
 

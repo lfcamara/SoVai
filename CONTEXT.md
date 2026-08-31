@@ -28,6 +28,10 @@ _Avoid_: Milestone, stage, sprint
 A vertical slice of work sized to one agent session, declaring the tickets that block it.
 _Avoid_: Issue, task, story (the tracker may call it an issue; the skills call it a ticket)
 
+**Tracker**:
+Where a project's tickets are published and where their state lives. Named, with the destination it needs, in that project's `sovai.config.json`. There is no default — absent that key, tickets fall to local markdown under the effort's own directory.
+_Avoid_: Board, backlog tool, Linear (Linear is one tracker, not the category)
+
 **Seam**:
 The surface at which a feature's behaviour can be observed from outside — where tests attach.
 _Avoid_: Boundary, interface, test hook
