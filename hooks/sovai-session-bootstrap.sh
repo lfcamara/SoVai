@@ -27,6 +27,8 @@ ORCHESTRATION — this session orchestrates; it does not execute. Delegate execu
 
 SKILLS — before acting on a request, invoke the relevant Skill (via the Skill tool) when one applies. Skills encode required process, so invoking the matching one is mandatory, not optional. User instructions always outrank skills.
 
+ENTRY — size the request before entering the pipeline: an idea whose boundaries are still open → `brainstorm`; a feature already shaped → `to-prd`; a change that fits one ticket → `to-tickets`, or `implement` where the ticket already exists. Not every request starts at the top.
+
 The pipeline, in order:
 - Planning — brainstorm (shape a raw idea, one question at a time) → to-prd → to-spec → to-phases → to-tickets. Each stage hands to the next in the same conversation; continuing needs no named invocation. `grilling` is the interview underneath it.
 - Prototyping — to-wireframes (every screen and the flows between them, low fidelity) · prototype (throwaway code answering one design question)

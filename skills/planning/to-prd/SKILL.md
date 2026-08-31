@@ -15,6 +15,8 @@ Everything this work produces — spec, wireframes, roadmap, tickets — lives i
 
 Name it here, before writing anything. Every later stage finds its inputs by resolving that directory, and stages run weeks apart in fresh sessions with nothing but the filesystem to go on. The name is the anchor the whole pipeline hangs from, so prefer one that will still be recognizable when the session that chose it is long gone.
 
+**A new effort gets a new directory, always.** A feature arriving at a project that already has efforts on disk is its own effort, never an amendment to an earlier one — do not reopen a previous PRD to fold it in. A PRD is a dated argument for one piece of work: what the problem was, what was in, and what was deliberately left out. Editing it to also cover work decided months later destroys the record of both. Where the new effort builds on an earlier one, link to it and move on. What genuinely outlives an effort — the vocabulary, the architectural decisions — already has homes in `CONTEXT.md` and `docs/adr/`, and those are built to be revised.
+
 ## Write it
 
 Use the project's domain glossary (`CONTEXT.md`) for every term, so the PRD, the code, and the conversation stay in one vocabulary.
