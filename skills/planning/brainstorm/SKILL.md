@@ -15,7 +15,12 @@ An idea is unshaped when you can restate its goal but cannot yet answer, from wh
 - Where it starts and stops
 - What it deliberately leaves out
 
-Work that already answers these is shaped. Say so, name the next step you would take, and let the user redirect you — a small clear change goes straight to implementation.
+Work that already answers these is shaped, and shaping it again spends the user's time buying nothing. Say so and route it:
+
+- **Shaped, and the size of a feature** — go to `to-prd`. What you are skipping is the interview, not the documents.
+- **Shaped, and fits inside a single ticket** — go to `to-tickets`, or straight to `implement` where the ticket already exists. A PRD for a copy change is a PRD nobody will read.
+
+Name the route before you take it and let the user redirect you.
 
 ## Shape it
 
