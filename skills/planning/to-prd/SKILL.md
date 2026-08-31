@@ -21,33 +21,7 @@ Use the project's domain glossary (`CONTEXT.md`) for every term, so the PRD, the
 
 Write to `docs/planning/<effort>/<effort> — PRD.md`, creating the directory if it does not exist.
 
-<prd-template>
-
-# <Effort name>
-
-## Problem
-
-The problem the user faces, from the user's perspective. What it costs them today.
-
-## Solution
-
-What changes for that user once this exists — described as an experience, not a mechanism.
-
-## User stories
-
-A long, numbered list, extensive enough to cover the whole feature:
-
-1. As an <actor>, I want <capability>, so that <benefit>
-
-## Success
-
-How we will know this worked. Prefer an observable signal over a sentiment.
-
-## Out of scope
-
-What this effort deliberately leaves out, and why. The explicit no's carry as much weight as the yes's.
-
-</prd-template>
+Write it to exactly the shape in [PRD-FORMAT.md](./PRD-FORMAT.md). Read that file before writing, and follow its sections and their order — later stages read this document by heading.
 
 Keep mechanism, file paths, and code out of it. A reader who does not write code should be able to read the PRD end to end and recognize their own problem in it — that is the checkable standard for whether it is written at the right altitude.
 
