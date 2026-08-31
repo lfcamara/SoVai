@@ -12,6 +12,12 @@
 #                       deliberate exception.
 #   test / neither / no config -> exits 0 silently.
 #
+# SKILL AUTHORING is checked FIRST and independently of all of the above. A file
+# named SKILL.md means a skill is being authored, in any project, and that needs
+# no config to know — which matters, because SoVai's own repo has no
+# sovai.config.json and would otherwise be the one project this hook never fires
+# in. See ADR-0018.
+#
 # TDD re-timing: when the tdd-active sentinel already exists, a production edit
 # gets the GREEN-minimal message instead of "go invoke tdd". Telling a session
 # mid-Green to fetch a skill it is already running pollutes Green with work the
@@ -38,6 +44,22 @@ session_id=$(printf '%s' "$input" | jq -r '.session_id // "nosession"' 2>/dev/nu
 
 [ -z "$file_path" ] && exit 0
 
+session=$(sovai_session_slug "$session_id")
+
+# --- Skill authoring: filename alone is the signal, so no config is consulted.
+if [ "$(basename "$file_path")" = "SKILL.md" ]; then
+  skill_sentinel="/tmp/sovai-skill-edit-${session}"
+  if [ ! -f "$skill_sentinel" ]; then
+    touch "$skill_sentinel" 2>/dev/null || true
+    plugin_root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
+    standard="$plugin_root/skills/productivity/writing-great-skills/SKILL.md"
+    parent=$(basename "$(dirname "$file_path")")
+    msg="About to author a skill (\`${parent}/SKILL.md\`). Read \`${standard}\` IN FULL before this edit. It is user-invoked, so no \`Skill\` call reaches it and it has to be read — and read whole, because a targeted grep returns what you already suspected. It defines predictability, the information hierarchy, when to split, pruning, leading words, and the failure modes every skill here is held to. Skipping it yields skills that read well and behave worse: a branch whose trigger is missing from the description, so the branch is unreachable; a rule steered by prohibition, which makes the banned behaviour more available; reference duplicated across files, so the meaning drifts. User instructions always outrank this."
+    jq -nc --arg msg "$msg" '{hookSpecificOutput:{hookEventName:"PreToolUse",additionalContext:$msg}}'
+  fi
+  exit 0
+fi
+
 # Which project does this file belong to, and what shape did that project declare?
 project_root=$(sovai_find_project_config "$file_path") || exit 0   # not onboarded -> no gating
 rel="${file_path#"$project_root"/}"
@@ -46,7 +68,6 @@ class=$(sovai_classify_path "$project_root" "$file_path")
 [ -z "$class" ] && exit 0
 [ "$class" = "test" ] && exit 0
 
-session=$(sovai_session_slug "$session_id")
 tdd_active="/tmp/sovai-tdd-active-${session}"
 
 case "$class" in

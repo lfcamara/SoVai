@@ -1,5 +1,5 @@
 {
-  "description": "SoVai enforcement layer: SessionStart orchestration mandate + skill index, pre-edit TDD/UI gate, TDD phase tracking, TDD stop-gate. Every command is plugin-relative via ${CLAUDE_PLUGIN_ROOT}; path classification comes from the edited project's sovai.config.json, never from this plugin.",
+  "description": "SoVai enforcement layer: SessionStart orchestration mandate + skill index, pre-edit skill-authoring/TDD/UI gate, TDD phase tracking, TDD stop-gate. Every command is plugin-relative via ${CLAUDE_PLUGIN_ROOT}; path classification comes from the edited project's sovai.config.json, never from this plugin. The one exception is the skill-authoring branch, which keys off the filename SKILL.md and so needs no config at all.",
   "hooks": {
     "SessionStart": [
       {
