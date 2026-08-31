@@ -16,13 +16,14 @@ IDEA
  ├─ to-prd ─────────────────────────► <effort> — PRD.md
  ├─ to-spec ────────────────────────► <effort> — Spec.md
  ├─ to-wireframes ──────────────────► <effort> — Wireframes.md
- ├─ to-phases ──────────────────────► <effort> — Roadmap.md
+ │                                    <effort> — Design Brief.md  ──► you, in a design tool
+ ├─ to-roadmap ─────────────────────► <effort> — Roadmap.md
  │
  └─ PER PHASE, when that phase begins:
       │
-      ├─ prototype ──── validate the interface
-      ├─ frontend-design ──── settle the visual design (ambient — not shipped here)
       ├─ to-tickets ──── break the phase into tracer bullets
+      │
+      │  (prototype and frontend-design sit beside this, on request — see below)
       │
       └─ PER TICKET, on the frontier, in parallel:
            │
@@ -32,11 +33,15 @@ IDEA
            └─ wrap-up ────── merge on YOUR approval, reconcile docs
 ```
 
-Everything above `to-phases` runs **once**. Everything below runs **once per phase**, at the moment that phase starts — never in advance.
+Everything above `to-roadmap` runs **once**. Everything below runs **once per phase**, at the moment that phase starts — never in advance.
 
 That single rule is the spine of the whole process, and the reasoning is always the same: detail planned against a codebase that will have moved by the time the work begins is detail that gets thrown away.
 
 None of this waits to be invoked by name, and the parts of it that matter most no longer wait to be reached for either: four hooks make them fire on their own — see [What makes it non-optional](#what-makes-it-non-optional).
+
+**You do not have to enter at the top.** The SessionStart hook routes by size: an idea whose boundaries are still open goes to `brainstorm`, a feature already shaped goes to `to-prd` — skipping the interview, not the documents — and a change that fits in one ticket goes to `to-tickets`, or straight to `implement` where the ticket exists. A pipeline that can only be entered at the top is a pipeline people stop entering, and a PRD for a copy change is a PRD nobody reads.
+
+**One stage stops and waits for you.** `to-wireframes` ends by writing a design brief rather than drawing the screens itself; you take it to a design tool and come back with a canvas, which it reconciles the record against. Every other stage hands to the next in the same conversation.
 
 ---
 
@@ -68,7 +73,7 @@ The spec's core work is finding the **seams**: where behaviour can be observed f
 
 ### to-wireframes
 
-Every screen and the flows between them, at deliberately low fidelity, published as an artifact and recorded in the effort's Wireframes note.
+Every screen and the flows between them, at deliberately low fidelity, recorded in the effort's Wireframes note and handed to you as a design brief.
 
 **Fidelity is a budget.** Spend it on visuals and you buy critique of visuals — give a reviewer colour and type and they discuss colour and type, while the flow missing a step goes unmentioned. So: boxes, labels, hierarchy, real content shape, greyscale.
 
@@ -76,7 +81,13 @@ It sits **before** phasing because a phase is defined by what it ships, and that
 
 Completion is checkable: every user story in the PRD reaches a screen. A story with no screen is a gap; a screen no story reaches is scope nobody asked for.
 
-### to-phases
+**It hands off rather than renders.** Alongside the record it writes `<effort> — Design Brief.md`, which is not a document about the design but the prompt itself — addressed to a design tool, carrying the fidelity constraints, the platform proportions, and one block per screen. You take it to Claude Design or whatever you use.
+
+The plugin does not invoke that tool. A design tool is someone else's skill or someone else's product, and hard-wiring one would make the most visual stage of the pipeline its most fragile; you are also the one who will move things by hand once you are in there. The record stays the source of truth, so the brief is regenerable from it and the canvas from the brief.
+
+The cost is a genuine stop — the only planning stage that does not continue on its own. Wireframes exist to surface the missing step and the screen that turns out to be two, and that reaction now happens outside the session, so the skill has a second entrance: you come back with a canvas and it reconciles the record, the flow, and the coverage table against what you actually drew, before `to-roadmap` runs on it.
+
+### to-roadmap
 
 Breaks the effort into phases that each **ship**.
 
@@ -87,13 +98,17 @@ Two tests, both applied to every phase:
 - **The cancellation test.** If everything after this phase were cancelled tomorrow, is the user better off than before it existed? A phase that fails strands the project mid-migration and should be merged into whichever phase completes its value.
 - **Full coverage.** Every capability in the spec lands in exactly one phase. Work in no phase surfaces late; work in two means the boundary is in the wrong place.
 
+It is named for the document it writes, like every other stage in the block. "Phase" stays the unit inside that document. There is deliberately no separate epic stage: an epic is a tracker's word for the same thing, and mapping a phase onto one is a publishing concern that `to-tickets` already handles.
+
 ---
 
 ## Stage 2 — Per phase
 
-### prototype
+### prototype — on request, not on schedule
 
 Throwaway code that answers one question. Two branches: several radically different UI variations to react to, or an interactive model to drive by hand.
+
+**It is not a link in the chain.** A phase reaching this point has a PRD, wireframes, a spec and a roadmap behind it, and most arrive with nothing open — a prototype built anyway spends a session answering a question nobody asked. So `to-roadmap` goes straight to `to-tickets` and *offers* this instead, with a trigger rather than a mood: the spec's **Risks and unknowns** section is where an open question is already written down, and the offer is made only when something there needs running code to settle.
 
 Variants must be **structurally** different — different layout, different hierarchy, different primary affordance. Three lightly-tweaked card grids is wallpaper, not a prototype.
 
@@ -336,7 +351,9 @@ It carries the symptom, the root cause, the fix, the reproduction command, and w
 
 Three facts cannot be discovered from a repo.
 
-**Where its tickets go.** The Linear team and project belong in the target repo's `CLAUDE.md`, which every session already loads. A repo departing from the default writes `docs/agents/issue-tracker.md` by hand — and should, because the default names the one tracker whose issue tooling is currently not reachable at all. The floor always works: `to-tickets` falls to local markdown, one file per ticket, and says so plainly rather than failing. The cost is stated in [ADR-0004](docs/adr/0004-planning-documents-live-in-the-repo-tickets-in-the-tracker.md) — a repo that never writes that file gets local files, and `wrap-up` then has nothing to move to Done.
+**Where its tickets go.** In `sovai.config.json`, under a `tracker` key: which tracker, whatever fields that tracker needs to name a destination, and whether phases become parent issues. It used to be split across `docs/agents/issue-tracker.md` and the target repo's `CLAUDE.md` while the config file that already sits at the project root held neither — a fact with three possible homes gets written in a fourth and found in none ([ADR-0004](docs/adr/0004-planning-documents-live-in-the-repo-tickets-in-the-tracker.md)). `docs/agents/issue-tracker.md` survives for house conventions in prose, refining the config rather than competing with it.
+
+**There is no default tracker.** Guessing one means publishing into somebody's wrong project or failing against a service that was never connected, and both read as the plugin being broken rather than as one missing line of config. Absent the key, `to-tickets` asks once and offers to write the answer; with nobody to ask, it falls to local markdown — one file per ticket — and says so plainly. That floor always works, and the cost of staying on it is that `wrap-up` has no Done to move a ticket to, which it now states rather than glossing. Per-tracker mechanics live in `TRACKERS.md` beside the skill; adding a tracker is a section there, never a branch in the skill.
 
 **Whether the test list gets approved.** Whether the developer wants to see the behaviours an implementer intends to verify before any of them is written ([ADR-0011](docs/adr/0011-the-test-list-is-approved-not-the-tests.md)). It is a standing preference rather than a per-ticket question, and it lives in the target repo's `CLAUDE.md` beside the tracker facts — asked per ticket, a control the developer wanted becomes a prompt they learn to dismiss. `to-tickets` reads the standing answer from there and writes it into each brief.
 
@@ -346,13 +363,16 @@ Three facts cannot be discovered from a repo.
 {
   "productionLogic": ["src/**", "lib/**"],
   "ui":              ["src/components/**", "src/screens/**", "src/app/**"],
-  "tests":           ["*.test.*", "*.spec.*", "test/**", "tests/**", "*__tests__*"]
+  "tests":           ["*.test.*", "*.spec.*", "test/**", "tests/**", "*__tests__*"],
+  "tracker":         { "kind": "local", "team": "", "project": "", "phasesAsParents": false }
 }
 ```
 
 Three lists of shell globs, not a stack enum. A stack name would only add a mapping that breaks on the first monorepo, and what the gates need is the classification itself: `src/components` is UI in one project and a component library dense with logic in the next, and the only party that knows is the project. Precedence runs tests, then ui, then productionLogic, so a UI path nested under a production path wins and nobody writes exclusions.
 
-Onboarding is therefore a one-file drop — copy `sovai.config.example.json` to the project root, rename it, edit the three lists — never a change to this plugin. Because the file sits at the root and is found by ancestry, worktrees and clones inherit it for free.
+The `tracker` key is the one part of this file read by skills rather than by the hooks; it lives here because a project should have one place that answers "what is this project", not two.
+
+Onboarding is therefore a one-file drop — copy `sovai.config.example.json` to the project root, rename it, edit the three lists and the tracker — never a change to this plugin. Because the file sits at the root and is found by ancestry, worktrees and clones inherit it for free.
 
 **Everything fails open, and the consequence is worth stating plainly: a project with no `sovai.config.json` is not gated.** No config, or a malformed one, classifies nothing — no reminders, and a Stop gate that never fires. A reader who skips this section gets a plugin that appears to do nothing. The direction is chosen rather than incidental: under-gating costs a missed reminder, while over-gating costs a developer who cannot finish a session, and a hook that breaks work over its own configuration gets uninstalled, taking every rule it was carrying with it.
 
