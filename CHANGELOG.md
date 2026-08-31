@@ -24,6 +24,26 @@ Work on a branch. **Merging to main is the release**, because that is what `/plu
 
 ---
 
+## 2.0.0 — 2026-08-31
+
+The planning block reworked. Major by this changelog's own definition: a stage is renamed, a stage leaves the automatic chain, another stops mid-pipeline and waits for you, and the pipeline gains entrances that are not the top. If you learned the old shape, it no longer holds.
+
+**You can enter in the middle.** Every request used to land at the top — `brainstorm` chained unconditionally into `to-prd`, so a copy change and a new product got the same five documents, and the only escape was one sentence telling the agent to notice the work was already shaped and name the next step, where the next step was `to-prd` regardless. Three entrances now, sized by the work, and the routing rule lives in the SessionStart hook rather than in a new skill: a router only works if it fires before everything else, and skill invocation is semantic rather than ordered. One that fires most of the time is worse than none, because the misses go unrouted and the always-loaded description is paid for anyway.
+
+**`to-wireframes` hands you a design brief instead of drawing the screens.** It was doing two separable jobs: deriving the screens from the PRD's user stories with a coverage table, and then rendering them by hand as an HTML artifact. The first is load-bearing — `to-roadmap` draws phase boundaries from it, `ui-testing` derives its minimum test list from it. The second was the plugin doing a design tool's job. It now writes a brief that *is* the prompt, and you take it to Claude Design or whatever you use. Not auto-invoking that tool is the point: it is someone else's product, and hard-wiring it would make the most visual stage of the pipeline its most fragile. The cost is a real stop in the chain, so the skill gained a second entrance — you come back with a canvas and it reconciles the record against what you actually drew, before anything downstream runs on it.
+
+**`prototype` is offered, not scheduled.** The per-phase cadence was right; running one every phase was not. A phase arriving there has a PRD, wireframes, a spec and a roadmap behind it, and most have nothing left open. A prototype built anyway spends a session answering a question nobody asked — and in a harness whose claim is that every stage earns its place, that teaches the opposite. The offer now has a trigger rather than a mood: the spec's Risks and unknowns section is where an open question is already written down.
+
+**`to-phases` is now `to-roadmap`.** Every other skill in the block is named for the artifact it writes. This one wrote a Roadmap and was the only name that did not tell you what you would get. "Phase" is untouched as the unit inside the document. A separate epics stage was considered and rejected: epics have no cadence of their own, and phase-to-epic is a publishing concern `to-tickets` already handles.
+
+**Tickets stopped assuming Linear.** Tracker facts had three competing homes and the config file that already sits at every project root held none of them. They live in `sovai.config.json` now, under one key. The Linear default is withdrawn — ADR-0004 had already conceded it was the least-verified path, and an unconfigured project either published into the wrong place or failed against a service nobody had connected, both of which read as the plugin being broken rather than as one missing line of config. With nothing configured, `to-tickets` asks once, offers to write the answer, and falls to local markdown when nobody is there to ask. Per-tracker mechanics moved beside the skill, where adding a tracker is a section rather than a branch.
+
+**The planning documents got format files.** PRD, spec, ticket, wireframes and design brief templates moved out of the skill bodies, following the convention `domain-modeling` already set. This is not progressive disclosure and is not defended as such — every run reaches these templates, so nothing is saved. What it buys is a shape that can carry its own constraints without pushing judgement out of the skill, and the constraints that were previously implicit are now written down: user stories are numbered because two downstream skills key off those numbers, and sections are fixed because `spec-review` and `implement` find what they need by heading.
+
+**Not in this release:** the spec is still written once per effort, before phasing. Moving it to per-phase — where the cadence rule the rest of the pipeline runs on says it belongs — is the next change, and it moves enough files to deserve its own release.
+
+---
+
 ## 1.1.1 — 2026-08-23
 
 An audit of the plugin against itself. Nothing here changes what the workflow does; two things it already claimed are now true.

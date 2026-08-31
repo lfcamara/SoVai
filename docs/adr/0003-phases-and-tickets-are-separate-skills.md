@@ -10,10 +10,10 @@ Separate skills does not mean separate manual invocations: `to-roadmap` chains i
 
 ## Renamed to to-roadmap, and there is no epic stage
 
-**Status: accepted, 2026-08-31.** `to-phases` is now `to-roadmap`.
+**Status: accepted, 2026-08-31.** The skill formerly called to-phases is now `to-roadmap`.
 
-Every other skill in the planning block is named for the artifact it writes — `to-prd` writes the PRD, `to-spec` the Spec, `to-tickets` the tickets. This one wrote `<effort> — Roadmap.md` while calling itself `to-phases`, and was the only name in the block that did not tell you what you would get. "Phase" is untouched as the unit inside the document: it is what `CONTEXT.md` defines and what the cancellation test is applied to.
+Every other skill in the planning block is named for the artifact it writes — `to-prd` writes the PRD, `to-spec` the Spec, `to-tickets` the tickets. This one wrote `<effort> — Roadmap.md` while calling itself to-phases, and was the only name in the block that did not tell you what you would get. "Phase" is untouched as the unit inside the document: it is what `CONTEXT.md` defines and what the cancellation test is applied to.
 
-**A separate `to-epics` was considered and rejected.** It would add a third level between the roadmap and the tickets, and the argument that split this skill from `to-tickets` in the first place was **cadence** — phases are decomposed once, tickets are written per phase, weeks apart. Epics have no cadence of their own; they run exactly when phases do, which makes a separate skill a level of hierarchy bought for nothing.
+**A separate to-epics stage was considered and rejected.** It would add a third level between the roadmap and the tickets, and the argument that split this skill from `to-tickets` in the first place was **cadence** — phases are decomposed once, tickets are written per phase, weeks apart. Epics have no cadence of their own; they run exactly when phases do, which makes a separate skill a level of hierarchy bought for nothing.
 
 "Epic" is also a tracker's word where "phase" is a shipping word, and shipping is this block's criterion. Where a project's tracker models epics, that is a **publishing** concern and `to-tickets` already handles it: it hangs each ticket off a parent issue representing its phase wherever the tracker has such a concept, which is exactly the phase-to-epic mapping, made at the moment it becomes real rather than planned as its own stage.

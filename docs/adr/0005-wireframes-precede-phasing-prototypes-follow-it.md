@@ -1,6 +1,6 @@
 # Wireframes precede phasing; prototypes follow it
 
-Validation of an interface is split across two stages sitting on either side of `to-phases`.
+Validation of an interface is split across two stages sitting on either side of `to-roadmap`.
 
 `to-wireframes` runs between the spec and the roadmap, once, covering the whole effort at low fidelity. A phase is defined by what it ships, and that stays abstract until the screens have names — the cancellation test is hard to apply to a capability and easy to apply to a screen. Wireframes also routinely surface scope nobody had accounted for, and discovering that after the roadmap is drawn means redrawing it.
 

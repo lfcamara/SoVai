@@ -351,7 +351,7 @@ It carries the symptom, the root cause, the fix, the reproduction command, and w
 
 Three facts cannot be discovered from a repo.
 
-**Where its tickets go.** In `sovai.config.json`, under a `tracker` key: which tracker, whatever fields that tracker needs to name a destination, and whether phases become parent issues. It used to be split across `docs/agents/issue-tracker.md` and the target repo's `CLAUDE.md` while the config file that already sits at the project root held neither — a fact with three possible homes gets written in a fourth and found in none ([ADR-0004](docs/adr/0004-planning-documents-live-in-the-repo-tickets-in-the-tracker.md)). `docs/agents/issue-tracker.md` survives for house conventions in prose, refining the config rather than competing with it.
+**Where its tickets go.** In `sovai.config.json`, under a `"tracker"` key: which tracker, whatever fields that tracker needs to name a destination, and whether phases become parent issues. It used to be split across `docs/agents/issue-tracker.md` and the target repo's `CLAUDE.md` while the config file that already sits at the project root held neither — a fact with three possible homes gets written in a fourth and found in none ([ADR-0004](docs/adr/0004-planning-documents-live-in-the-repo-tickets-in-the-tracker.md)). `docs/agents/issue-tracker.md` survives for house conventions in prose, refining the config rather than competing with it.
 
 **There is no default tracker.** Guessing one means publishing into somebody's wrong project or failing against a service that was never connected, and both read as the plugin being broken rather than as one missing line of config. Absent the key, `to-tickets` asks once and offers to write the answer; with nobody to ask, it falls to local markdown — one file per ticket — and says so plainly. That floor always works, and the cost of staying on it is that `wrap-up` has no Done to move a ticket to, which it now states rather than glossing. Per-tracker mechanics live in `TRACKERS.md` beside the skill; adding a tracker is a section there, never a branch in the skill.
 
@@ -370,7 +370,7 @@ Three facts cannot be discovered from a repo.
 
 Three lists of shell globs, not a stack enum. A stack name would only add a mapping that breaks on the first monorepo, and what the gates need is the classification itself: `src/components` is UI in one project and a component library dense with logic in the next, and the only party that knows is the project. Precedence runs tests, then ui, then productionLogic, so a UI path nested under a production path wins and nobody writes exclusions.
 
-The `tracker` key is the one part of this file read by skills rather than by the hooks; it lives here because a project should have one place that answers "what is this project", not two.
+The `"tracker"` key is the one part of this file read by skills rather than by the hooks; it lives here because a project should have one place that answers "what is this project", not two.
 
 Onboarding is therefore a one-file drop — copy `sovai.config.example.json` to the project root, rename it, edit the three lists and the tracker — never a change to this plugin. Because the file sits at the root and is found by ancestry, worktrees and clones inherit it for free.
 
