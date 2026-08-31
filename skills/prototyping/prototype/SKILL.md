@@ -38,6 +38,8 @@ The branches produce very different artifacts, and picking wrong wastes the whol
 
 ## Carry it forward
 
-Once a direction is validated and the user is satisfied, the visual design is the next question. Run the `frontend-design` skill to take the validated structure to a finished design.
+Record the answer before anything else — the verdict and the question it settled, per rule 6. That record is the only part of this work meant to survive.
 
-Then continue to the `to-tickets` skill for the work the prototype just settled.
+Where the prototype validated an interface and the visual design is now the open question, run the `frontend-design` skill to take the validated structure to a finished design.
+
+Then stop and report, unless the phase's tickets have not been written yet — in which case continue to `to-tickets` for the work this just settled. This skill is invoked deliberately rather than reached by a chain, so it does not assume what the session was doing before it arrived.
