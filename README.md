@@ -26,19 +26,21 @@ IDEA
  ├─ brainstorm ────► shape it until the understanding is shared
  ├─ to-prd ────────► the problem, in plain language
  ├─ to-spec ───────► the technical decisions and where tests attach
- ├─ to-wireframes ─► every screen and the flows between them
- ├─ to-phases ─────► phases that each ship something usable alone
+ ├─ to-wireframes ─► every screen, then a brief you take to a design tool
+ ├─ to-roadmap ────► phases that each ship something usable alone
  │
  └─ per phase, when that phase starts:
-      prototype → frontend-design → to-tickets
+      to-tickets
        │
        └─ per ticket, in parallel:
             implement → open-pr → review → wrap-up
 ```
 
-Everything above `to-phases` runs **once**. Everything below runs **when that work actually starts** — because detail planned against a codebase that will have moved is detail you throw away.
+Everything above `to-roadmap` runs **once**. Everything below runs **when that work actually starts** — because detail planned against a codebase that will have moved is detail you throw away.
 
-You don't invoke any of it by name. Describe an idea and the pipeline picks it up.
+You don't invoke any of it by name, and you don't have to start at the top. An open-ended idea enters at `brainstorm`, a feature you've already thought through enters at `to-prd`, and a change that fits in one ticket goes straight to `to-tickets` — a copy tweak shouldn't cost you a PRD.
+
+Two things sit beside the pipeline rather than inside it. `prototype` is offered when a spec still names a question only running code can settle, never run on schedule. And `to-wireframes` ends by handing you a **design brief** — a prompt you take to Claude Design, or whatever you use — instead of drawing the screens itself; you come back with a canvas and it reconciles the record against what you actually drew. It's the one stage that stops and waits for you.
 
 One name above isn't ours: `frontend-design` is an ambient skill the pipeline hands off to, deliberately not reimplemented here.
 
@@ -66,8 +68,8 @@ Ten blocks, 28 skills, 3 agents.
 
 | Block | What it does |
 |---|---|
-| **Planning** | `brainstorm` · `to-prd` · `to-spec` · `to-phases` · `to-tickets` |
-| **Prototyping** | `to-wireframes` · `prototype` — low-fidelity first, throwaway code second |
+| **Planning** | `brainstorm` · `to-prd` · `to-spec` · `to-wireframes` · `to-roadmap` · `to-tickets` |
+| **Prototyping** | `prototype` — throwaway code answering one question, on request rather than on schedule |
 | **Development** | `tdd` · `implement` · `ui-testing` · `open-pr` — red → green, one ticket at a time |
 | **Review** | `review` + six axes — parallel, read-only, ranked by severity |
 | **Wrap-up** | `wrap-up` — merge on your approval, then reconcile the docs against what actually shipped |

@@ -170,7 +170,7 @@ footer code{font-family:var(--mono)}
 
 <section>
   <h2>The pipeline</h2>
-  <p class="lede">Everything above <span style="font-family:var(--mono)">to-phases</span> runs once.
+  <p class="lede">Everything above <span style="font-family:var(--mono)">to-roadmap</span> runs once.
     Everything below runs once per phase, and the last four once per ticket — always at the moment that
     work begins, never in advance. Detail planned against a codebase that will have moved is detail
     that gets thrown away.</p>
@@ -187,7 +187,7 @@ footer code{font-family:var(--mono)}
         <div class="spine" id="band-1"></div>
       </div>
       <div class="band">
-        <div class="band-head"><span class="band-name">Once per phase</span><span class="band-note">when that phase starts</span></div>
+        <div class="band-head"><span class="band-name">Once per phase</span><span class="band-note">when that phase starts — the last two only on request</span></div>
         <div class="spine" id="band-2"></div>
       </div>
       <div class="band">
@@ -463,20 +463,20 @@ const STAGES=[
   body:"<p>The engineering half. It references the PRD rather than restating it, so each fact has one home.</p><p>Its core work is finding the <strong>seams</strong> — where behaviour can be observed from outside. Prefer an existing seam to a new one, and the highest available to a lower one. The seams get agreed with you before the spec is written, because moving one later is expensive.</p>",
   out:"docs/planning/&lt;effort&gt;/&lt;effort&gt; — Spec.md"},
  {b:1,n:"to-wireframes",gate:1,q:"What are the screens, and how do they connect?",
-  body:"<p><strong>Fidelity is a budget.</strong> Spend it on visuals and you buy critique of visuals — give a reviewer colour and type and they discuss colour and type, while the flow missing a step goes unmentioned.</p><p>So: boxes, labels, hierarchy, real content shape, greyscale. It sits before phasing because a phase is defined by what it ships, and that stays abstract until the screens have names.</p><p>Done when every user story in the PRD reaches a screen. A story with no screen is a gap; a screen no story reaches is scope nobody asked for.</p>",
-  out:"docs/planning/&lt;effort&gt;/&lt;effort&gt; — Wireframes.md + a published artifact"},
- {b:1,n:"to-phases",gate:1,q:"In what order does this ship?",
-  body:"<p>Phases that each <strong>ship</strong>. A phase ending with work merged but nothing a user can do is not a phase — it is a checkpoint someone drew on a plan.</p><p><strong>The cancellation test:</strong> if everything after this phase were cancelled tomorrow, is the user better off than before it existed? A phase that fails strands the project mid-migration.</p><p><strong>Full coverage:</strong> every capability in the spec lands in exactly one phase. Work in no phase surfaces late; work in two means the boundary is wrong.</p>",
+  body:"<p><strong>Fidelity is a budget.</strong> Spend it on visuals and you buy critique of visuals — give a reviewer colour and type and they discuss colour and type, while the flow missing a step goes unmentioned.</p><p>So: boxes, labels, hierarchy, real content shape, greyscale. It sits before phasing because a phase is defined by what it ships, and that stays abstract until the screens have names.</p><p>Done when every user story in the PRD reaches a screen. A story with no screen is a gap; a screen no story reaches is scope nobody asked for.</p><p><strong>It hands off rather than renders.</strong> Beside the record it writes a <strong>design brief</strong> — not a document about the design but the prompt itself, which you take to Claude Design or whatever you use. The plugin does not invoke that tool: hard-wiring someone else's product would make the most visual stage the most fragile, and you are the one who will move things by hand once you are in there.</p><p>This is <strong>the one stage that stops and waits for you</strong>. You come back with a canvas and it reconciles the record, the flow and the coverage table against what you actually drew, before the roadmap is built on it.</p>",
+  out:"docs/planning/&lt;effort&gt;/&lt;effort&gt; — Wireframes.md + — Design Brief.md"},
+ {b:1,n:"to-roadmap",gate:1,q:"In what order does this ship?",
+  body:"<p>Phases that each <strong>ship</strong>. A phase ending with work merged but nothing a user can do is not a phase — it is a checkpoint someone drew on a plan.</p><p><strong>The cancellation test:</strong> if everything after this phase were cancelled tomorrow, is the user better off than before it existed? A phase that fails strands the project mid-migration.</p><p><strong>Full coverage:</strong> every capability in the spec lands in exactly one phase. Work in no phase surfaces late; work in two means the boundary is wrong.</p><p>Named for the document it writes, like every other stage in the block. \"Phase\" stays the unit inside it — there is deliberately no separate epic stage, because an epic is a tracker's word for the same thing and mapping one is a publishing concern.</p>",
   out:"docs/planning/&lt;effort&gt;/&lt;effort&gt; — Roadmap.md"},
- {b:2,n:"prototype",gate:1,q:"Does this actually work when you use it?",
-  body:"<p>Throwaway code answering one question — several radically different UI variations, or a state model you drive by hand. Variants must differ <strong>structurally</strong>: three lightly-tweaked card grids is wallpaper, not a prototype.</p><p>The most useful response is almost always <em>“the header from B with the sidebar from C”</em> — that recombination is the actual design.</p>",
+ {b:2,n:"to-tickets",gate:1,q:"What are the units of work?",
+  body:"<p>One phase becomes <strong>tracer bullets</strong> — each cutting a narrow but complete path through every layer, each declaring what blocks it.</p><p>A ticket is sized to a single fresh context window. That sizing is not incidental: it is exactly a subagent's budget, which is what makes the ticket the unit of delegation.</p><p><strong>Wide refactors are the exception</strong> — a change whose blast radius fans across the codebase runs expand–contract instead.</p>",
+  out:"Issues on the resolved tracker — or markdown files — blocking edges wired"},
+ {b:2,n:"prototype",gate:1,q:"Does this actually work when you use it? (on request)",
+  body:"<p>Throwaway code answering one question — several radically different UI variations, or a state model you drive by hand. Variants must differ <strong>structurally</strong>: three lightly-tweaked card grids is wallpaper, not a prototype.</p><p>The most useful response is almost always <em>“the header from B with the sidebar from C”</em> — that recombination is the actual design.</p><p><strong>Not a link in the chain.</strong> A phase arriving here has a PRD, wireframes, a spec and a roadmap behind it, and most have nothing left open. The roadmap goes straight to tickets and <em>offers</em> this instead — only when the spec's <em>Risks and unknowns</em> names something running code has to settle.</p>",
   out:"A throwaway branch, and a decision"},
  {b:2,n:"frontend-design",gate:0,q:"What does it finally look like?",
   body:"<p>Takes the validated structure to a finished visual design.</p><p>An <strong>ambient skill</strong> from the environment — deliberately not vendored into this plugin, so it stays whatever the environment provides rather than a copy that drifts.</p>",
   out:"Design applied to the winning direction"},
- {b:2,n:"to-tickets",gate:1,q:"What are the units of work?",
-  body:"<p>One phase becomes <strong>tracer bullets</strong> — each cutting a narrow but complete path through every layer, each declaring what blocks it.</p><p>A ticket is sized to a single fresh context window. That sizing is not incidental: it is exactly a subagent's budget, which is what makes the ticket the unit of delegation.</p><p><strong>Wide refactors are the exception</strong> — a change whose blast radius fans across the codebase runs expand–contract instead.</p>",
-  out:"Issues on the tracker, blocking edges wired"},
  {b:3,n:"implement",gate:0,q:"Does the code exist and pass?",
   body:"<p>One ticket, from a cold context window to a pushed, verified branch.</p><p><strong>TDD is red → green.</strong> Refactoring is not in the loop — it is relocated to review, where the tests are already green and the code is free to move. Relocated, not deleted.</p><p>TDD is mandatory for backend logic. <strong>UI is the deliberate exception</strong>, tested after implementation by <strong>ui-testing</strong>: a screen's shape moves while it is built, and a test against a moving shape breaks on every layout change without catching a real defect. A component test passing and the screen working are independent facts, and <strong>screen-verifier</strong> is what establishes the second — a browser, against the running app, with the screenshot to show for it.</p><p>Lint, build and coverage run inside the subagent — their enormous output dies with the run. The boundary is the isolation, and the verdict plus the failing lines is the compressed evidence that crosses it.</p>",
   out:"A pushed branch, and a report"},
