@@ -31,29 +31,7 @@ This gate is why the spec is written in this session rather than dispatched to a
 
 Write to `docs/planning/<effort>/<effort> — Spec.md`, beside the PRD it belongs to.
 
-<spec-template>
-
-# <Effort name> — Spec
-
-PRD: [[<effort> — PRD]]
-
-## Implementation decisions
-
-The decisions that shape the build: modules built or changed, the interfaces that move, schema changes, API contracts, architectural choices, and the constraints behind them.
-
-## Testing decisions
-
-The seams the tests attach to, what gets tested through each, and prior art in the codebase to follow. Good tests describe external behaviour, so state the behaviour each seam is meant to expose.
-
-## Risks and unknowns
-
-What could invalidate this plan, and what is still unverified.
-
-## Out of scope
-
-Technical work deliberately excluded — the boundaries of this spec, distinct from the product scope the PRD sets.
-
-</spec-template>
+Write it to exactly the shape in [SPEC-FORMAT.md](./SPEC-FORMAT.md). Read that file before writing, and follow its sections and their order — `spec-review` and `implement` both read this document by heading.
 
 Leave specific file paths and code snippets out; they go stale faster than the spec is read. One exception: where a prototype produced a snippet that pins a decision more precisely than prose can — a schema, a state machine, a type — inline the decision-rich part and note that it came from a prototype.
 
