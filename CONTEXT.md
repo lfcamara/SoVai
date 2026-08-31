@@ -84,6 +84,10 @@ _Avoid_: Page, view, route (each is platform-specific; "screen" is the neutral t
 A low-fidelity layout of the screens and the flows between them, deliberately greyscale and unstyled so review lands on structure rather than visuals.
 _Avoid_: Mockup, sketch, design
 
+**Design brief**:
+The handoff a wireframing run produces — a self-contained prompt at `docs/planning/<effort>/<effort> — Design Brief.md` that the user takes to a visual design tool to get a canvas back. Derived from the wireframes record and regenerable from it; never edited by hand.
+_Avoid_: Design doc, prompt, spec (it is neither a design nor a specification, but an instruction to a tool)
+
 **Prototype**:
 Throwaway code that answers one design question, built without tests or abstractions and never promoted to production.
 _Avoid_: MVP, spike, proof of concept
