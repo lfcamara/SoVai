@@ -1,9 +1,9 @@
 ---
-name: to-phases
+name: to-roadmap
 description: Break a large effort into phases that each ship something useful on their own. Use when a spec covers more work than one release, when the user asks how to sequence or stage a project, or when another skill needs a roadmap before tickets can be written.
 ---
 
-# To Phases
+# To Roadmap
 
 An effort is too large to build in one go. Break it into **phases** — each one ending in something that **ships**.
 
