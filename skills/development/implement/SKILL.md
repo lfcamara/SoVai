@@ -11,19 +11,13 @@ Exactly one **ticket**. A ticket is sized to one context window by construction 
 
 ## Gather context
 
-Read the ticket in full, then the roadmap and the spec for the ticket's own phase (`<effort> — Phase <N> Spec.md`) under `docs/planning/<effort>/` for the decisions that shaped it, `CONTEXT.md` for the domain vocabulary tests and code should use, and the ADRs covering the area you're touching. A ticket that references something not on disk where it says it should be is a fact to report, not a gap to fill by guessing.
+Read the ticket in full, then the spec for the ticket's own phase (`<effort> — Phase <N> Spec.md`) for the decisions that shaped it, `CONTEXT.md` for the domain vocabulary tests and code should use, and the ADRs covering the area you're touching. The brief's inputs are the authoritative paths; resolve whatever it left out from `docs/planning/<effort>/`. A ticket that references something not on disk where it says it should be is a fact to report, not a gap to fill by guessing.
 
-## Agree the test list, when the brief asks for it
+## Test list, only when asked
 
-The brief says whether the developer wants to approve what will be tested before any of it is written. Where it does, this is the first thing you do.
+Start the loop by default. Where the brief says the user asked to see what will be tested first, this is the first thing you do: produce the **test list** — one line per behaviour you intend to verify, at the seams the spec agreed, in the language of what the user can do rather than what the code calls. Then stop and report it; you have no way to ask, so the list going back is the whole step.
 
-Produce the **test list**: one line per behaviour you intend to verify, at the seams the spec agreed, in the language of what the user can do rather than what the code calls. Then stop and report it — you have no way to ask, so the list going back is the whole step.
-
-List the behaviours, not the tests. Writing every test before any implementation is the horizontal slicing `tdd` warns against: it commits to a test structure before the implementation has taught you anything, and the resulting tests verify a shape you imagined rather than behaviour anyone meets. The list is knowable up front; the tests are not, and a list of behaviours is far quicker to judge than a wall of test bodies.
-
-Say plainly that the list is what you can see from here, and that the loop will surface cases it did not anticipate. Report those when they appear rather than treating the approved list as the ceiling.
-
-Where the brief does not ask for approval, skip this and start the loop.
+List the behaviours, not the tests. Writing every test before any implementation is the horizontal slicing `tdd` warns against, and a list of behaviours is far quicker to judge than a wall of test bodies. Say plainly that the list is what you can see from here — cases the loop surfaces later get reported when they appear, rather than being capped by the list.
 
 ## Build: red, then green
 
@@ -37,21 +31,22 @@ Land the loop at green and stop. Cleanup happens in review, against a diff a rev
 
 ## Commit discipline
 
-The red test is the first commit, and pushing it is the first push. Immediately after that push, run the `open-pr` skill yourself to open the draft PR — you are the only thing that knows the push has happened, and the orchestrator does not hear from you again until this run ends. A draft PR opened here states, through its failing test, what the ticket has to make true; opened at the end it would say nothing that the finished diff doesn't already say.
+Cut the ticket's branch from the base branch before anything is committed — `open-pr` holds the name it carries. The red test is the first commit on it, and pushing it is the first push. Immediately after that push, run the `open-pr` skill yourself to open the draft PR — you are the only thing that knows the push has happened, and the orchestrator does not hear from you again until this run ends. A draft PR opened here states, through its failing test, what the ticket has to make true; opened at the end it would say nothing that the finished diff doesn't already say.
 
 ## Verify before reporting
 
-Before calling the ticket done, run the project's lint, build, test, and coverage commands. Their full output stays inside this run and is gone once it ends — carry forward only the verdict and the failing lines, never the raw output.
+Before calling the ticket done, run the project's lint, build, test, and coverage commands, as the project declares them — `CONTEXT.md`, the root `CLAUDE.md`, and the package or task manifest are where they are named. Their full output stays inside this run and is gone once it ends — carry forward only the verdict and the failing lines, never the raw output.
 
 ## Report
 
 Return, in this order:
 
 1. **Outcome** — done, blocked, or done with caveats.
-2. **What changed and where** — files and behavior, not a diff narration.
-3. **How it was verified** — which commands, and the result.
-4. **What the ticket didn't anticipate** — anything you had to resolve that wasn't written down.
-5. **What you noticed but left alone** — deliberately, because it was outside this ticket.
+2. **Where the work is** — the branch name and the draft PR's URL, which are how the orchestrator reaches the diff at all.
+3. **What changed and where** — files and behavior, not a diff narration.
+4. **How it was verified** — which commands, and the result.
+5. **What the ticket didn't anticipate** — anything you had to resolve that wasn't written down.
+6. **What you noticed but left alone** — deliberately, because it was outside this ticket.
 
 Ticket state belongs to the orchestrator — implementing a ticket doesn't include moving it on the tracker.
 
