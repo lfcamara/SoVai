@@ -72,28 +72,9 @@ One occurrence is not a pattern. Record the cause and move on; whether it recurs
 
 ## Write the review record
 
-Write a durable record of this review into the project's Obsidian vault, at `docs/reviews/<YYYY-MM-DD> — <ticket or branch>.md`. Documents in this vault are Obsidian notes — link the ticket with a wikilink (`[[checkout-flow — Phase 1 Spec]]`), not a relative markdown link.
+Write a durable record of this review to the shape in [REVIEW-RECORD-FORMAT.md](./REVIEW-RECORD-FORMAT.md), at `docs/reviews/<YYYY-MM-DD> — <ticket or branch>.md`.
 
-The record isn't archival. It's the input to skill hardening later, which only works if every finding also carries why it wasn't prevented — the cause from the step above.
-
-```markdown
-# Review: <ticket or branch> — <YYYY-MM-DD>
-
-Fixed point: <ref>
-Ticket: [[<ticket>]]
-
-## Axes run
-- <axis>: <why it was selected>
-
-## Findings
-### <axis> — <severity>
-<where, what, why it matters>
-Cause: <why this wasn't prevented earlier>
-
-## Resolution
-- Fixed: <critical/high findings, and every owed refactor, resolved before merge>
-- Deferred: <medium/low findings the user chose to leave, or "none raised">
-```
+The record isn't archival. It is the input to skill hardening later, which works only if every finding also carries why it wasn't prevented — the cause from the step above — and it is what `wrap-up` reads to decide whether anything still blocks the merge.
 
 ## What happens next
 
