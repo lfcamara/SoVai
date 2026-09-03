@@ -17,8 +17,12 @@ The business-facing planning document: problem statement, solution, and user sto
 _Avoid_: Product doc, requirements doc, brief
 
 **Spec**:
-The technical planning document: implementation decisions, testing decisions, out of scope. Written after the PRD and referencing it, owning the "how".
+The technical planning document for **one phase**: implementation decisions, testing decisions, risks, out of scope. Written when that phase starts, referencing the PRD for the why and the roadmap for what the phase ships. Owns the "how".
 _Avoid_: Technical design doc, RFC, plan
+
+**Fork**:
+A technical choice the sequencing depends on that nobody has made yet — build or buy, one service or two, migrate in place or alongside. Settled in `to-roadmap` before any phase is drawn, and recorded as an ADR where it is hard to reverse. An effort has no other architecture document.
+_Avoid_: Decision point, trade-off, option
 
 **Phase**:
 A stage of an effort that ends in something shippable and valuable on its own, spanning many sessions and holding several tickets.
