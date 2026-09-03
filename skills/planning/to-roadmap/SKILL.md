@@ -35,7 +35,7 @@ Each phase carries:
 Two tests decide whether the breakdown holds. Apply both to every phase before showing it to anyone:
 
 - **The cancellation test.** If every later phase were cancelled tomorrow, is the user better off than before this phase existed? A phase that fails leaves the project stranded mid-migration, and should be merged into the phase that completes its value.
-- **Full coverage.** Every user story in the PRD, and every screen in the wireframes, lands in exactly one phase. Walk both and account for each — work that appears in no phase is work that will surface late, and work that appears in two is a boundary drawn in the wrong place.
+- **Full coverage.** Every user story in the PRD, and every screen in the wireframes, lands in exactly one phase. Walk both and account for each — work that appears in no phase is work that will surface late, and work that appears in two is a boundary drawn in the wrong place. An effort with no interface arrives here with no wireframes and covers the user stories alone; say that you did, because a coverage claim is only as strong as the lists it walked.
 
 Order the phases so each one raises the floor: the earliest phases carry the load-bearing risk and the thinnest end-to-end path, later phases widen it.
 
