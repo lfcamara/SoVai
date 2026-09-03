@@ -1,6 +1,6 @@
 # Diagnosis ends at a bug ticket, not at a fix
 
-**Superseded in part by [ADR-0015](0015-review-has-a-goal-axis.md), 2026-07-30: review now has six axes.** "The five axes" below records the count at the time of this decision; nothing else about it changed — a bug ticket still enters the normal flow and is still reviewed by every axis that applies.
+**A sixth axis existed between 2026-07-30 and 2026-09-03 ([ADR-0015](0015-review-has-a-goal-axis.md), since reversed).** "The five axes" below is again the count; nothing else about this decision changed — a bug ticket still enters the normal flow and is still reviewed by every axis that applies.
 
 The debug block diagnoses a bug and files a ticket. Fixing it is not part of it — the ticket enters the normal flow, implemented under TDD, reviewed across the five axes, landed by wrap-up.
 

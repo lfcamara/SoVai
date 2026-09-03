@@ -160,10 +160,10 @@ footer code{font-family:var(--mono)}
     twelve stages, three cadences, one rule about who is allowed to decide what, and four hooks
     that stop the rest of it being optional.</p>
   <div class="meta">
-    <span class="tag">28 skills</span>
+    <span class="tag">27 skills</span>
     <span class="tag">3 agents</span>
     <span class="tag">4 hooks</span>
-    <span class="tag">17 ADRs</span>
+    <span class="tag">20 ADRs</span>
     <span class="tag">10 blocks</span>
   </div>
 </header>
@@ -191,7 +191,7 @@ footer code{font-family:var(--mono)}
         <div class="spine" id="band-2"></div>
       </div>
       <div class="band">
-        <div class="band-head"><span class="band-name">Once per ticket</span><span class="band-note">parallel across the frontier</span></div>
+        <div class="band-head"><span class="band-name">Once per ticket</span><span class="band-note">parallel across the frontier — one worktree each</span></div>
         <div class="spine" id="band-3"></div>
       </div>
     </div>
@@ -214,7 +214,7 @@ footer code{font-family:var(--mono)}
 </section>
 
 <section>
-  <h2>The six review axes</h2>
+  <h2>The five review axes</h2>
   <p class="lede">Independent skills, dispatched as parallel read-only agents and reported per axis,
     never merged or reranked — a change can pass one and fail another, and a merged list lets a clean
     axis bury a failing one under a wash of minor style notes.</p>
@@ -223,28 +223,22 @@ footer code{font-family:var(--mono)}
       <thead><tr><th>Axis</th><th>The question it answers</th><th>Selected when</th></tr></thead>
       <tbody>
         <tr><td>code-review</td><td>Is it written well? Repo standards plus 12 Fowler smells — where refactoring lives</td><td>Always</td></tr>
-        <tr><td>spec-review</td><td>Is it the right thing? Missing requirements, scope creep, wrong implementations</td><td>A spec exists to hold the diff to</td></tr>
+        <tr><td>spec-review</td><td>Is it the right thing? Missing requirements, scope creep, wrong implementations, scope deferred without saying so</td><td>A spec exists to hold the diff to</td></tr>
         <tr><td>test-review</td><td>Would the tests fail on a real regression?</td><td>Always</td></tr>
         <tr><td>security-review</td><td>What does it expose? A finding must name a concrete path to harm</td><td>The diff touches a security surface</td></tr>
         <tr><td>migration-review</td><td>Reversibility, destructive operations, backfills — failure mode here is data loss</td><td>The diff touches a schema or a migration</td></tr>
-        <tr><td>goal-review</td><td>Does the outcome hold? Merged, switched on, delivered in full — not merely built well</td><td>A ticket and a readable PR both exist</td></tr>
       </tbody>
     </table>
   </div>
-  <p class="lede" style="margin-top:1.2rem">The sixth closes a structural gap rather than a thoroughness
-    one. The other five all judge the diff, and a diff looks identical whether the change was merged,
-    held behind a flag still switched off, or two thirds of its ticket. Well written, on spec, well
-    tested and inert is the false-done nothing else on the run can see — so this axis reads the state
-    of the world the ticket wanted changed instead.</p>
-  <p class="lede">Mid-ticket it still runs, and that is the subtle part. A draft PR exists from the
-    red-test push, so <em>not merged</em> is then the <strong>expected</strong> state, and reporting it
-    as a problem is pure noise — an axis trained away as noise has stopped working. Gating the whole
-    axis on a claim of done would have been the easy answer and the wrong one: it discards the two
-    sub-checks that are most actionable exactly then, scope quietly deferred and a flag shipped
-    switched off. So the noise is suppressed one level down instead.</p>
-  <div class="rule-box"><p>Four states — merged, enforced, scope covered, tracker consistent — are
-    reported as <strong>facts</strong>, whatever they say. A fact becomes a <strong>finding</strong>
-    only where it contradicts a claim that the work is done.</p></div>
+  <p class="lede" style="margin-top:1.2rem">Scope quietly deferred belongs to <strong>spec-review</strong>,
+    as a fourth finding type beside missing, unasked and implemented wrong. A sixth axis carried that
+    question for a while, reading the merge and enforcement state a diff cannot show; it was removed
+    once <strong>wrap-up</strong> owned the merge gate and the phase's exit criteria it had been
+    reporting on separately, leaving covered scope as the only question it still held alone.</p>
+  <div class="rule-box"><p>The ticket promised three things and the diff carries two, all of it well
+    written. Work the PR or the ticket names as deferred is a <strong>fact</strong>, and often a sound
+    call — the <strong>finding</strong> is silence about it, because that is what reaches the merge
+    looking complete.</p></div>
 </section>
 
 <section>
@@ -354,13 +348,14 @@ footer code{font-family:var(--mono)}
 
 <section>
   <h2>Per-project configuration</h2>
-  <p class="lede">Three facts cannot be discovered from a repo. Where its tickets go — the tracker team
-    and project, named in the target repo's own <code>CLAUDE.md</code>, with local markdown as the floor
-    that always works. Whether the test list gets approved before any test is written — a standing
-    preference beside them in the same file, because asked per ticket a control the developer wanted
-    becomes a prompt they learn to dismiss. And what a file <em>is</em>: the fact the hooks run on,
-    declared in a <code>sovai.config.json</code> at the project root and found by walking up from the
-    edited file.</p>
+  <p class="lede">Three facts cannot be discovered from a repo. Where its tickets go — the tracker and
+    whatever fields name a destination in it, under a <code>tracker</code> key, with local markdown as
+    the floor that always works. What makes a fresh checkout runnable — a git worktree carries tracked
+    files and nothing else, so the commands that restore the <code>.env</code>, the
+    <code>node_modules</code> and the build cache are listed under <code>worktreeSetup</code>, and
+    <strong>delegate</strong> runs them before dispatching an implementer in. And what a file
+    <em>is</em>: the fact the hooks run on. All three live in one
+    <code>sovai.config.json</code> at the project root, found by walking up from the edited file.</p>
   <div class="scroll">
     <table>
       <thead><tr><th>Key</th><th>Example patterns</th><th>What it means</th></tr></thead>
@@ -469,8 +464,8 @@ const STAGES=[
   body:"<p>The engineering half, scoped to <strong>one phase</strong> and written when that phase starts. It references the PRD for the why and the roadmap for what the phase ships, so each fact has one home.</p><p>It used to run once per effort, before phasing — the most detail-dense document in the pipeline, written at the moment least was known. An effort's architecture is not in here at all: the <strong>forks</strong> sequencing depends on are settled during the roadmap and recorded as ADRs, because a decision that outlives every phase belongs somewhere built to be revised.</p><p>Its core work is finding the <strong>seams</strong> — where behaviour can be observed from outside. Prefer an existing seam to a new one, and the highest available to a lower one. The seams get agreed with you before the spec is written, because moving one later is expensive.</p>",
   out:"docs/planning/&lt;effort&gt;/&lt;effort&gt; — Phase &lt;N&gt; Spec.md"},
  {b:2,n:"to-tickets",gate:1,q:"What are the units of work?",
-  body:"<p>One phase becomes <strong>tracer bullets</strong> — each cutting a narrow but complete path through every layer, each declaring what blocks it.</p><p>A ticket is sized to a single fresh context window. That sizing is not incidental: it is exactly a subagent's budget, which is what makes the ticket the unit of delegation.</p><p><strong>Wide refactors are the exception</strong> — a change whose blast radius fans across the codebase runs expand–contract instead.</p>",
-  out:"Issues on the resolved tracker — or markdown files — blocking edges wired"},
+  body:"<p>One phase becomes <strong>tracer bullets</strong> — each cutting a narrow but complete path through every layer, each declaring what blocks it.</p><p>A ticket is sized to a single fresh context window. That sizing is not incidental: it is exactly a subagent's budget, which is what makes the ticket the unit of delegation.</p><p><strong>Wide refactors are the exception</strong> — a change whose blast radius fans across the codebase runs expand–contract instead.</p><p>Publishing ends by <strong>cutting the phase's branch</strong> — <code>phase/&lt;effort&gt;-&lt;NN&gt;</code>, from <code>main</code>. Every ticket branches from it, and it reaches <code>main</code> as a single merge when the phase closes: the phase is the unit that ships, so it is the unit <code>main</code> receives.</p>",
+  out:"Issues on the resolved tracker — or markdown files — blocking edges wired, and the phase branch cut"},
  {b:2,n:"prototype",gate:1,q:"Does this actually work when you use it? (on request)",
   body:"<p>Throwaway code answering one question — several radically different UI variations, or a state model you drive by hand. Variants must differ <strong>structurally</strong>: three lightly-tweaked card grids is wallpaper, not a prototype.</p><p>The most useful response is almost always <em>“the header from B with the sidebar from C”</em> — that recombination is the actual design.</p><p><strong>Not a link in the chain.</strong> A phase arriving here has a PRD, wireframes, a spec and a roadmap behind it, and most have nothing left open. The roadmap goes straight to tickets and <em>offers</em> this instead — only when the spec's <em>Risks and unknowns</em> names something running code has to settle.</p>",
   out:"A throwaway branch, and a decision"},
@@ -478,16 +473,16 @@ const STAGES=[
   body:"<p>Takes the validated structure to a finished visual design.</p><p>An <strong>ambient skill</strong> from the environment — deliberately not vendored into this plugin, so it stays whatever the environment provides rather than a copy that drifts.</p>",
   out:"Design applied to the winning direction"},
  {b:3,n:"implement",gate:0,q:"Does the code exist and pass?",
-  body:"<p>One ticket, from a cold context window to a pushed, verified branch.</p><p><strong>TDD is red → green.</strong> Refactoring is not in the loop — it is relocated to review, where the tests are already green and the code is free to move. Relocated, not deleted.</p><p>TDD is mandatory for backend logic. <strong>UI is the deliberate exception</strong>, tested after implementation by <strong>ui-testing</strong>: a screen's shape moves while it is built, and a test against a moving shape breaks on every layout change without catching a real defect. A component test passing and the screen working are independent facts, and <strong>screen-verifier</strong> is what establishes the second — a browser, against the running app, with the screenshot to show for it.</p><p>Lint, build and coverage run inside the subagent — their enormous output dies with the run. The boundary is the isolation, and the verdict plus the failing lines is the compressed evidence that crosses it.</p>",
+  body:"<p>One ticket, from a cold context window to a pushed, verified branch.</p><p>The work happens in <strong>a git worktree of its own</strong> under the project's <code>worktrees/</code>, on a branch cut from the phase branch. That isolation is what makes the frontier's parallelism real: two implementers sharing one checkout share a HEAD, and the second one's commits land on the first one's branch. A fresh worktree carries tracked files only, so the project's <code>worktreeSetup</code> commands run before an implementer is dispatched in.</p><p><strong>TDD is red → green.</strong> Refactoring is not in the loop — it is relocated to review, where the tests are already green and the code is free to move. Relocated, not deleted.</p><p>TDD is mandatory for backend logic. <strong>UI is the deliberate exception</strong>, tested after implementation by <strong>ui-testing</strong>: a screen's shape moves while it is built, and a test against a moving shape breaks on every layout change without catching a real defect. A component test passing and the screen working are independent facts, and <strong>screen-verifier</strong> is what establishes the second — a browser, against the running app, with the screenshot to show for it.</p><p>Before anything is reported the branch <strong>rebases on the phase branch</strong>, so what gets verified is what the phase will hold. Lint, build and coverage run inside the subagent — their enormous output dies with the run. The boundary is the isolation, and the verdict plus the failing lines is the compressed evidence that crosses it.</p>",
   out:"A pushed branch, and a report"},
  {b:3,n:"open-pr",gate:0,q:"Is the work visible while it is still red?",
-  body:"<p>A draft PR opened right after the red-test push, stating through its failing test what the ticket must make true.</p><p>The <strong>implementer</strong> opens it, not the orchestrator — it is the only thing that knows the push happened, and it does not report back until its run ends. A stray draft PR is visible and harmless; the merge stays the orchestrator's.</p>",
-  out:"A draft PR, linked both ways to its ticket"},
- {b:3,n:"review",gate:0,q:"Is it right, in six separate senses?",
-  body:"<p>Six independent axes as parallel read-only agents: <strong>code</strong> (standards and Fowler smells, where refactoring lives), <strong>spec</strong> (is it the right thing), <strong>test</strong> (would these fail on a real regression), <strong>security</strong> (a finding must name a concrete path to harm), <strong>migration</strong> (failure mode here is data loss), <strong>goal</strong> (does the outcome hold once it leaves the diff).</p><p>Reported per axis, <strong>never merged or reranked</strong> — a change can pass one and fail another, and a merged list lets a clean axis bury a failing one under minor style notes.</p>",
+  body:"<p>A draft PR opened right after the red-test push, stating through its failing test what the ticket must make true.</p><p>The <strong>implementer</strong> opens it, not the orchestrator — it is the only thing that knows the push happened, and it does not report back until its run ends. A stray draft PR is visible and harmless; the merge stays the orchestrator's.</p><p>It targets the <strong>phase branch</strong> it was cut from, never <code>main</code>.</p><p>The <strong>ticket's link back</strong> is the orchestrator's half, run when the report arrives: reaching Linear or Jira takes connectors the implementer does not hold, so left with it that step is silently unexecutable on half the trackers.</p>",
+  out:"A draft PR, linked to its ticket — and pointed at from it once the report lands"},
+ {b:3,n:"review",gate:0,q:"Is it right, in five separate senses?",
+  body:"<p>Five independent axes as parallel read-only agents: <strong>code</strong> (standards and Fowler smells, where refactoring lives), <strong>spec</strong> (is it the right thing — including scope the ticket promised that the diff quietly dropped), <strong>test</strong> (would these fail on a real regression), <strong>security</strong> (a finding must name a concrete path to harm), <strong>migration</strong> (failure mode here is data loss).</p><p>Reported per axis, <strong>never merged or reranked</strong> — a change can pass one and fail another, and a merged list lets a clean axis bury a failing one under minor style notes.</p><p>Reviewers cannot write, so <strong>the fixes are their own run</strong>: a fresh implementer brief, into the ticket's existing worktree, quoting the findings and fenced to them. Then the axes that raised them run again. What must be fixed is critical, high, and anything marked <strong>owed</strong> — the refactor <strong>tdd</strong> postponed to <strong>code-review</strong>, which severity alone would have let you waive.</p>",
   out:"A verdict per axis"},
  {b:3,n:"wrap-up",gate:1,q:"Can this be merged, and what did it teach the plan?",
-  body:"<p><strong>Merge is authorised only by your explicit approval of that specific PR.</strong> Reviews passing and CI green are signals you weigh when approving — they are not the approval. Approving one PR says nothing about the next.</p><p>Order is load-bearing: merge, confirm it landed, then the tracker, then the documents. A ticket moved to Done ahead of a merge that fails is a tracker asserting something false.</p><p>Then reconciliation, under one rule: <strong>a document follows a decision, not a diff.</strong> Code diverging because someone decided otherwise means the spec is stale. Code diverging because it is <em>wrong</em> is a defect — rewriting the spec to match would launder a bug into a requirement.</p>",
+  body:"<p><strong>Merge is authorised only by your explicit approval of that specific PR.</strong> Reviews passing and CI green are signals you weigh when approving — they are not the approval. Approving one PR says nothing about the next.</p><p>Order is load-bearing: merge, confirm it landed, then the tracker, then the documents. A ticket moved to Done ahead of a merge that fails is a tracker asserting something false.</p><p>The ticket's <strong>worktree and branch retire on that same ordering</strong> — after the merge is confirmed, and never forced. A worktree with uncommitted changes holds work the merge did not carry: a fact to report, not a directory to delete.</p><p>When the last ticket in a phase closes and its exit criteria hold, <strong>the phase branch goes to <code>main</code></strong> as a pull request of its own, under its own explicit approval. Approving the tickets said nothing about shipping the phase.</p><p>Then reconciliation, under one rule: <strong>a document follows a decision, not a diff.</strong> Code diverging because someone decided otherwise means the spec is stale. Code diverging because it is <em>wrong</em> is a defect — rewriting the spec to match would launder a bug into a requirement.</p>",
   out:"Merged code, a closed ticket, documents that still tell the truth"}
 ];
 

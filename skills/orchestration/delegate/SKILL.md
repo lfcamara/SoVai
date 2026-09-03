@@ -39,6 +39,12 @@ Two standing rules go in every brief. Unsettled decisions come back rather than 
 - **`screen-verifier`** — observes. Drives a browser against the running app and reports whether a screen renders, with the artifacts behind the verdict. Send it a claim about an interface; a passing test and a working screen are independent facts.
 - **`Explore`** — finding things. Locating files, symbols, or usages across a codebase.
 
+## Give an implementer its own worktree
+
+An `implementer` works in a worktree of its own, cut from the phase branch at `<project root>/worktrees/<TICKET-ID>-<slug>`. Create it, run the commands the project lists under `worktreeSetup` in its `sovai.config.json` so the tree is actually runnable — git materializes tracked files only, so a fresh worktree has no `.env` and no `node_modules` — and name that absolute path in the brief as where the work happens.
+
+That isolation is what makes the frontier's parallelism real: two implementers sharing one checkout share a HEAD, and the second one's commits land on the first one's branch (ADR-0020). The worktree outlives the run and is removed by `wrap-up` when the ticket's PR merges.
+
 Independent briefs run at once. Where two pieces of work do not touch the same files and neither needs the other's result, dispatch them together.
 
 ## Verify what comes back

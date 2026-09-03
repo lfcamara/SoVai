@@ -65,8 +65,16 @@ A mechanism that refuses rather than advises — a hook that will not let a sess
 _Avoid_: Check, guard, blocker, hook (the hook is the mechanism; the gate is what it refuses)
 
 **Axis**:
-One independent dimension of review — code, spec, test, security, migration, goal. Each runs as its own parallel `reviewer` subagent and is reported separately, never merged with the others.
+One independent dimension of review — code, spec, test, security, migration. Each runs as its own parallel `reviewer` subagent and is reported separately, never merged with the others.
 _Avoid_: Check, pass, dimension
+
+**Phase branch**:
+The branch a phase's work lands on, cut from `main` when that phase is ticketed and merged back once, when the phase closes. Named `phase/<effort>-<NN>`. Every ticket in the phase branches from it.
+_Avoid_: Release branch, integration branch, epic branch
+
+**Worktree**:
+The checkout an implementer works in, one per ticket, under the project's own `worktrees/` directory. What lets tickets on the frontier run at the same time without sharing a HEAD.
+_Avoid_: Clone, sandbox, workspace
 
 **Frontier**:
 The tickets whose blockers have all closed — the set that can be worked, and therefore parallelized, right now.

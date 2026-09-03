@@ -24,6 +24,7 @@ Every finding quotes the spec line it comes from. A finding with no citation is 
 - **Missing or partial** — something the spec asked for that the diff doesn't do, or only half does.
 - **Unasked (scope creep)** — behaviour present in the diff that no line in the spec called for.
 - **Implemented wrong** — a requirement that looks handled but whose behaviour diverges from what the spec actually says.
+- **Deferred but presented as delivered** — scope the ticket promised that the diff does not carry, where nothing says it was put off. Check the ticket's own acceptance criteria as a checklist, not just the spec's prose. Work the PR or the ticket explicitly names as deferred — a follow-up ticket, a stated later phase — is a fact and often a sound call; the finding is silence about it, because that is what reaches the merge looking complete.
 
 Where the spec is a PRD (business-facing: problem, solution, user stories) rather than a technical spec, hold the diff to the behaviour those stories imply, not to implementation details the PRD never had — that's `code-review`'s ground.
 

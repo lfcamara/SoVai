@@ -29,7 +29,7 @@ IDEA
            │
            ├─ implement ──── red → green, push
            ├─ open-pr ────── draft PR
-           ├─ review ─────── six axes, parallel
+           ├─ review ─────── five axes, parallel
            └─ wrap-up ────── merge on YOUR approval, reconcile docs
 ```
 
@@ -140,11 +140,15 @@ A ticket is sized to a single fresh context window. That sizing is not incidenta
 
 Wide refactors are the exception — a mechanical change whose blast radius fans across the codebase cannot land green as a vertical slice, so it runs **expand–contract** instead: add the new form beside the old, migrate call sites in batches, delete the old form once nothing references it.
 
+Publishing ends by **cutting the branch the phase will land on** — `phase/<effort>-<NN>`, cut from `main` and pushed. Every ticket in the phase branches from it, and it reaches `main` as a single merge when the phase closes, because the phase is the unit that ships ([ADR-0020](docs/adr/0020-work-lands-on-a-phase-branch-through-worktrees.md)). The same run confirms `worktrees/` is in the project's `.gitignore` before any ticket is dispatched: each one is worked in a worktree under that directory, and an unignored one turns every search in the project into duplicate hits across N copies of the tree.
+
 ---
 
 ## Stage 3 — Per ticket
 
-Tickets on the **frontier** — those whose blockers have all closed — can run in parallel, in isolated worktrees when their files could overlap.
+Tickets on the **frontier** — those whose blockers have all closed — run in parallel, each in **its own git worktree** at `<project root>/worktrees/<TICKET-ID>-<slug>`. That is not a precaution taken when files might overlap; it is what makes the parallelism executable at all. Two implementers sharing one checkout share a HEAD, and the second one's first commit lands on the first one's branch ([ADR-0020](docs/adr/0020-work-lands-on-a-phase-branch-through-worktrees.md)).
+
+A ticket's branch is cut from the **phase branch**, and its PR targets that branch rather than `main`. A fresh worktree holds tracked files and nothing else — no `.env`, no `node_modules` — so the project lists the commands that make one runnable under `worktreeSetup` in its `sovai.config.json`, and `delegate` runs them before dispatching an implementer in.
 
 ### The ticket lifecycle
 
@@ -163,7 +167,7 @@ One ticket, from a cold context window to a pushed, verified branch.
 
 **TDD is red → green.** The failing test first, then the code that satisfies it. Refactoring is not part of the loop — it is relocated to review, where the tests are already green and the code is free to move. Relocated, not deleted: the structural cleanup is still owed.
 
-**You can approve the test list first.** Tests are the behaviour contract at its finest grain, so a wrong one produces correct code implementing the wrong thing — cheap to catch now, expensive once the implementation exists. Switch it on and the implementer returns a list of the behaviours it intends to verify, one line each, and stops until you approve.
+**You can ask to see the test list first.** Tests are the behaviour contract at its finest grain, so a wrong one produces correct code implementing the wrong thing — cheap to catch now, expensive once the implementation exists. Tickets go straight into the loop by default; ask on the ticket in front of you and `to-tickets` carries it into that brief, so the implementer returns a list of the behaviours it intends to verify, one line each, and stops until you approve. There is deliberately no setting behind it: a question asked every time becomes a prompt to dismiss, and an answer stored once becomes a config line nobody revisits when it changes ([ADR-0011](docs/adr/0011-the-test-list-is-approved-not-the-tests.md)).
 
 What you approve is the *list*, never a set of written tests. Writing them all up front is the horizontal slicing `tdd` warns against, and the full set isn't knowable anyway — the third cycle's test comes from what the second one exposed. Cases the loop discovers later get reported rather than suppressed for sitting outside the list.
 
@@ -175,32 +179,35 @@ The red test is the first commit and the first push — which is what lets a dra
 
 The **implementer** opens that draft PR, not the orchestrator. The orchestrator's only channel out of a subagent is its final report, which arrives after the run is over and the work is already green — by then a draft PR says nothing the finished diff doesn't. Ticket state stays the orchestrator's, and so does the merge; a stranded ticket needs something alive to reconcile it, while a stray draft PR is visible and harmless.
 
-Lint, build, tests and coverage run **inside** the implementer. Their output is enormous, and the subagent boundary is already the isolation: it dies with the run. Only the verdict and the failing lines travel back — which is the compressed form of the evidence `verify-before-claiming` requires, not an exemption from it.
+The **ticket's link back to the PR** is the orchestrator's, though, split off by capability rather than by preference: reaching Linear or Jira takes MCP connectors the implementer does not hold, so left with it the step is silently unexecutable on half the supported trackers. It runs when the report arrives, from the PR URL that report carries ([ADR-0007](docs/adr/0007-development-block-shape.md)).
+
+Before any of that is reported, the branch **rebases on the phase branch**, so what gets verified is what the phase will actually hold. Lint, build, tests and coverage run **inside** the implementer. Their output is enormous, and the subagent boundary is already the isolation: it dies with the run. Only the verdict and the failing lines travel back — which is the compressed form of the evidence `verify-before-claiming` requires, not an exemption from it.
 
 ### review
 
-Six independent axes, dispatched as parallel read-only agents:
+Five independent axes, dispatched as parallel read-only agents:
 
 | Axis | The question it answers |
 |---|---|
 | `code-review` | Is it written well? Repo standards plus 12 Fowler smells. **Where refactoring lives.** |
-| `spec-review` | Is it the right thing? Missing requirements, scope creep, wrong implementations. |
+| `spec-review` | Is it the right thing? Missing requirements, scope creep, wrong implementations, scope deferred without saying so. |
 | `test-review` | Would the tests fail on a real regression? |
 | `security-review` | What does it expose? A finding must name a concrete path to harm. |
 | `migration-review` | Reversibility, destructive operations, backfills. Failure mode here is data loss. |
-| `goal-review` | Does the outcome hold? Merged, switched on, delivered in full — not merely built well. |
 
-`code-review` and `test-review` always run; the rest fire on a checkable test — `spec-review`, `security-review` and `migration-review` against the diff, `goal-review` against what the diff cannot contain.
+`code-review` and `test-review` always run; `spec-review`, `security-review` and `migration-review` fire on a checkable test against the diff.
 
-That last one closes a structural gap rather than a thoroughness one. The other five all judge the diff, and a diff looks identical whether the change was merged, held behind a flag still switched off, or two thirds of its ticket. Well written, on spec, well tested and inert is the false-done nothing else on the run can see.
-
-Its selection rule needs stating, because it is the subtle part. It runs when **both** references exist: a ticket naming the outcome, and a pull request whose state can be read. Neither is in the working tree, and a verdict reached without them is a guess in a finding's clothes.
-
-Mid-ticket it still runs. `implement` opens the draft PR on the red-test push, so a PR almost always exists by review time — and *not merged* is then the **expected** state, where reporting it as a problem is pure noise, and an axis trained away as noise has stopped working. Gating the whole axis on a claim of done would have been the easy answer and the wrong one: it discards the two sub-checks that are most actionable exactly then, scope quietly deferred and a flag shipped switched off. So the noise is suppressed one level down instead. The axis reports four states — merged, enforced, scope covered, tracker consistent — as **facts**, whatever they say; a fact becomes a **finding** only where it contradicts a claim that the work is done.
+Scope quietly deferred is `spec-review`'s to catch, as a fourth finding type: the ticket promised three things, the diff carries two, and nothing anywhere says the third was put off. Well written, on spec, well tested and two thirds delivered is the false-done that would otherwise reach the merge looking complete, which is why that axis reads the ticket's own acceptance criteria as a checklist and not only the spec's prose ([ADR-0015](docs/adr/0015-review-has-a-goal-axis.md)).
 
 Findings are reported **per axis, never merged or reranked** — a change can pass one axis and fail another, and a merged list lets a clean axis bury a failing one under minor style notes.
 
 Reviewers are read-only by construction. A reviewer that fixes what it finds destroys the evidence and returns a verdict nobody can audit.
+
+The fixed point is not a question when a ticket is being reviewed: it is the phase branch that ticket was cut from. Asking there would put to you something the branch already answers.
+
+**So the fixes are their own run.** The reviewers cannot write, and the implementer that wrote the code ended when it reported — so what must be fixed goes back out as a fresh `implementer` brief, into the same worktree and branch, which are still on disk because `wrap-up` retires them only after the merge. The brief quotes the findings as the axis wrote them and fences the run to those: a fix run that also tidies what nobody flagged arrives at the least reviewable moment there is. It points at `tdd` for anything that changes behaviour, since a fix to a real defect starts at a red test that reproduces it; an owed refactor changes no behaviour and runs against the suite already green, which is the whole reason the cleanup was moved here.
+
+Then the axes that raised those findings run again, plus any axis the fix diff newly qualifies for — a fix that touches a migration file gets `migration-review` whether or not it ran the first time. There is no cap on rounds. The ticket moves back to Doing for the fix and to Testing for the re-review, because those states describe what is happening to it.
 
 ### wrap-up
 
@@ -208,13 +215,15 @@ Reviewers are read-only by construction. A reviewer that fixes what it finds des
 
 Order is load-bearing: merge → confirm it landed → tracker → documents. A ticket moved to Done ahead of a merge that then fails is a tracker asserting something false, with nothing downstream able to catch it.
 
+The ticket's **worktree and branch are retired** on the same ordering — after the merge is confirmed, never ahead of it, and **never forced**. A worktree holding uncommitted changes, or a branch holding commits the merge did not carry, is work the merge left behind: a fact to report, not a directory to delete. Nothing is lost by a worktree that outlives its ticket.
+
 Then the documents get reconciled, under one rule:
 
 > **A document follows a decision, not a diff.**
 
 Code diverging from the spec because someone deliberately decided otherwise means the spec is stale — update it. Code diverging because the code is *wrong* is a defect belonging to `spec-review`; rewriting the spec to match would launder a bug into a requirement, which is worse than a stale spec because it destroys the record that would have caught it.
 
-When the last ticket in a phase merges, the phase's exit criteria are **verified against the roadmap, not inferred** from tickets closing — then the next phase gets its own `to-tickets` run.
+When the last ticket in a phase merges, the phase's exit criteria are **verified against the roadmap, not inferred** from tickets closing. Only once they hold does the phase branch go to `main`, as a pull request of its own carrying **its own explicit approval** — approving the tickets said nothing about shipping the phase, and this is the merge where a user first meets the capability whole ([ADR-0020](docs/adr/0020-work-lands-on-a-phase-branch-through-worktrees.md)). Until then the phase branch integrates `main` whenever `main` moves, or the final merge becomes the one conflict every ticket avoided. With the phase merged, the next phase gets its own `to-tickets` run.
 
 ---
 
@@ -256,7 +265,7 @@ Three agents, split by execution mode rather than job title — there is no "fro
 - **`reviewer`** — reads only.
 - **`screen-verifier`** — observes a running system through a browser, and fixes nothing.
 
-The third sits **on** that axis rather than across it: "observes a running system" is a third execution mode beside writes and reads-only, where "frontend developer" is a person ([ADR-0016](docs/adr/0016-screen-verification-is-a-third-agent.md)). Widening `reviewer`'s grant instead was the leading alternative and was rejected: all six axes would inherit a browser none of them uses, and — the deciding objection — **a browser can click.** An agent able to submit a form or press a delete control is not read-only against the running system, however read-only it stays against the repo, and that guarantee is what makes a reviewer's findings auditable.
+The third sits **on** that axis rather than across it: "observes a running system" is a third execution mode beside writes and reads-only, where "frontend developer" is a person ([ADR-0016](docs/adr/0016-screen-verification-is-a-third-agent.md)). Widening `reviewer`'s grant instead was the leading alternative and was rejected: all five axes would inherit a browser none of them uses, and — the deciding objection — **a browser can click.** An agent able to submit a form or press a delete control is not read-only against the running system, however read-only it stays against the repo, and that guarantee is what makes a reviewer's findings auditable.
 
 The trade is stated rather than hidden. No fixed tool allowlist can name browser tooling whose names vary by environment, so `screen-verifier` holds a full grant and carries the constraint in writing: it is read-only by discipline where `reviewer` is read-only by construction.
 
@@ -325,6 +334,8 @@ Review findings are ranked by the axis that found them, because severity depends
 
 **Critical and high are always fixed** — `wrap-up` will not merge with either unresolved, no matter how firmly the PR was approved. **Medium and low are fixed only when you say so.** The boundary between high and medium is the one that carries weight: it is where a fix stops being optional.
 
+**Owed cuts across the ladder.** `code-review` marks the structural cleanup that `tdd` postponed to it as **owed**, and an owed finding is fixed before the merge whatever its severity — `wrap-up` will not merge past one either. Without that marker the ladder quietly cancelled the relocation: a baseline smell tops out at medium, medium is fixed only on request, and the refactor the loop deliberately deferred arrived at the merge as optional polish. Severity still ranks urgency. It no longer decides whether a debt the process itself created gets paid.
+
 ### Every finding records why it was not prevented
 
 A finding is a defect caught. A **cause** that repeats is a hole in the process — and the two are not the same thing.
@@ -369,7 +380,7 @@ Three facts cannot be discovered from a repo.
 
 **There is no default tracker.** Guessing one means publishing into somebody's wrong project or failing against a service that was never connected, and both read as the plugin being broken rather than as one missing line of config. Absent the key, `to-tickets` asks once and offers to write the answer; with nobody to ask, it falls to local markdown — one file per ticket — and says so plainly. That floor always works, and the cost of staying on it is that `wrap-up` has no Done to move a ticket to, which it now states rather than glossing. Per-tracker mechanics live in `TRACKERS.md` beside the skill; adding a tracker is a section there, never a branch in the skill.
 
-**Whether the test list gets approved.** Whether the developer wants to see the behaviours an implementer intends to verify before any of them is written ([ADR-0011](docs/adr/0011-the-test-list-is-approved-not-the-tests.md)). It is a standing preference rather than a per-ticket question, and it lives in the target repo's `CLAUDE.md` beside the tracker facts — asked per ticket, a control the developer wanted becomes a prompt they learn to dismiss. `to-tickets` reads the standing answer from there and writes it into each brief.
+**What makes a fresh checkout runnable.** A git worktree materializes tracked files and nothing else, so the `.env`, the `node_modules` and the build cache a project keeps out of git are all missing the moment a ticket's worktree is created — and an implementer dispatched into one would fail on a missing dependency and report a broken project. Only the project knows what to put back, so it lists those commands under `worktreeSetup` in the same file, and `delegate` runs them after creating the worktree and before dispatching in ([ADR-0020](docs/adr/0020-work-lands-on-a-phase-branch-through-worktrees.md)). Declaring nothing gets a bare checkout, which is correct for a project that needs nothing.
 
 **What a file is.** Which paths hold production logic, which hold UI, which hold tests. This is the fact the hooks run on, and it lives in a `sovai.config.json` at the project root, found by walking up from the edited file ([ADR-0013](docs/adr/0013-per-project-config-resolved-by-walking-up.md)):
 
@@ -378,15 +389,16 @@ Three facts cannot be discovered from a repo.
   "productionLogic": ["src/**", "lib/**"],
   "ui":              ["src/components/**", "src/screens/**", "src/app/**"],
   "tests":           ["*.test.*", "*.spec.*", "test/**", "tests/**", "*__tests__*"],
-  "tracker":         { "kind": "local", "team": "", "project": "", "phasesAsParents": false }
+  "tracker":         { "kind": "local", "team": "", "project": "", "phasesAsParents": false },
+  "worktreeSetup":   ["cp ../../.env .env", "cp -c -R ../../node_modules node_modules"]
 }
 ```
 
 Three lists of shell globs, not a stack enum. A stack name would only add a mapping that breaks on the first monorepo, and what the gates need is the classification itself: `src/components` is UI in one project and a component library dense with logic in the next, and the only party that knows is the project. Precedence runs tests, then ui, then productionLogic, so a UI path nested under a production path wins and nobody writes exclusions.
 
-The `"tracker"` key is the one part of this file read by skills rather than by the hooks; it lives here because a project should have one place that answers "what is this project", not two.
+The `"tracker"` and `"worktreeSetup"` keys are the parts of this file read by skills rather than by the hooks; they live here because a project should have one place that answers "what is this project", not three.
 
-Onboarding is therefore a one-file drop — copy `sovai.config.example.json` to the project root, rename it, edit the three lists and the tracker — never a change to this plugin. Because the file sits at the root and is found by ancestry, worktrees and clones inherit it for free.
+Onboarding is therefore a one-file drop — copy `sovai.config.example.json` to the project root, rename it, edit the three lists, the tracker and whatever a fresh worktree needs to run — never a change to this plugin. Because the file sits at the root and is found by ancestry, worktrees and clones inherit it for free.
 
 **Everything fails open, and the consequence is worth stating plainly: a project with no `sovai.config.json` is not gated.** No config, or a malformed one, classifies nothing — no reminders, and a Stop gate that never fires. A reader who skips this section gets a plugin that appears to do nothing. The direction is chosen rather than incidental: under-gating costs a missed reminder, while over-gating costs a developer who cannot finish a session, and a hook that breaks work over its own configuration gets uninstalled, taking every rule it was carrying with it.
 
