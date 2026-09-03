@@ -14,6 +14,8 @@ Parallelism runs across the frontier: only tickets whose blockers have closed ca
 
 Refactoring is relocated to the review stage, not deleted. The loop produces a passing test and the code that satisfies it; structural cleanup happens in `code-review`, where the tests are already green and the code is free to move. This matches the upstream `tdd` skill from mattpocock/skills, which was imported unchanged.
 
+**Amended 2026-09-03: the relocated refactor is owed, not optional.** Relocation left it in a bucket that could be waived. `code-review` caps a baseline smell at medium, and medium findings are fixed only when the user asks — so the cleanup this section postponed arrived at the merge as discretionary polish, and "relocated, not deleted" was true of the skills and false of the process. Findings that are the postponed cleanup now carry an **owed** marker beside their severity, are fixed before the work merges whatever that severity says, and `wrap-up` will not merge past one. Severity still ranks urgency; it stopped deciding whether the debt gets paid. The cost is that a ticket cannot be merged with a smell nobody wants to fix today — which is the cost of having moved the step rather than dropped it.
+
 TDD is mandatory for backend and other non-UI logic. UI is the deliberate exception, tested after implementation: a UI's shape moves while it is being built, and tests written against a moving shape break on every layout change without catching real defects. `ui-testing` covers that case, deriving its test list from the wireframes rather than chasing maximum coverage — a brittle UI suite gets disabled, and a disabled suite protects nothing.
 
 ## Verification stays inside the subagent

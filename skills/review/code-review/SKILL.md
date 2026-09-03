@@ -24,7 +24,11 @@ Assign each finding a severity per `review`'s ladder. On this axis, critical is 
 
 ## Where refactoring lives
 
-The `tdd` loop is deliberately red → green only; refactoring is not part of that cycle, it's relocated here. This is where the structural cleanup happens — not a step that got dropped, a step that got moved, so it runs with the tests already green and able to catch a regression immediately. Treat a smell you find here as work still owed, not as optional polish.
+The `tdd` loop is deliberately red → green only; refactoring is not part of that cycle, it's relocated here. This is where the structural cleanup happens — not a step that got dropped, a step that got moved, so it runs with the tests already green and able to catch a regression immediately.
+
+That relocation makes this axis's findings different from every other axis's. A smell here is a debt the process created by design, not a defect it happened to catch, so it is **owed**: fixed before the work merges, whatever its severity. Mark each such finding `owed` alongside its severity. Severity still ranks how urgent it is and still drives the order they come back in; `owed` says the fix is not the user's to waive, which is what "relocated, not deleted" has to mean to be true.
+
+A finding on this axis that is not the relocated cleanup — a documented-standard breach the diff walked into on its own — is a defect like any other and carries severity alone.
 
 ## The smell baseline
 

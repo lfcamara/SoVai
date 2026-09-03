@@ -208,6 +208,12 @@ Findings are reported **per axis, never merged or reranked** — a change can pa
 
 Reviewers are read-only by construction. A reviewer that fixes what it finds destroys the evidence and returns a verdict nobody can audit.
 
+The fixed point is not a question when a ticket is being reviewed: it is the phase branch that ticket was cut from. Asking there would put to you something the branch already answers.
+
+**So the fixes are their own run.** The reviewers cannot write, and the implementer that wrote the code ended when it reported — so what must be fixed goes back out as a fresh `implementer` brief, into the same worktree and branch, which are still on disk because `wrap-up` retires them only after the merge. The brief quotes the findings as the axis wrote them and fences the run to those: a fix run that also tidies what nobody flagged arrives at the least reviewable moment there is. It points at `tdd` for anything that changes behaviour, since a fix to a real defect starts at a red test that reproduces it; an owed refactor changes no behaviour and runs against the suite already green, which is the whole reason the cleanup was moved here.
+
+Then the axes that raised those findings run again, plus any axis the fix diff newly qualifies for — a fix that touches a migration file gets `migration-review` whether or not it ran the first time. There is no cap on rounds. The ticket moves back to Doing for the fix and to Testing for the re-review, because those states describe what is happening to it.
+
 ### wrap-up
 
 **Merge is authorized only by your explicit approval of that specific PR.** Reviews passing and CI going green are signals you weigh when approving — they are not the approval. Approving one PR says nothing about the next.
@@ -332,6 +338,8 @@ Review findings are ranked by the axis that found them, because severity depends
 | **low** | worth fixing, cheap to leave |
 
 **Critical and high are always fixed** — `wrap-up` will not merge with either unresolved, no matter how firmly the PR was approved. **Medium and low are fixed only when you say so.** The boundary between high and medium is the one that carries weight: it is where a fix stops being optional.
+
+**Owed cuts across the ladder.** `code-review` marks the structural cleanup that `tdd` postponed to it as **owed**, and an owed finding is fixed before the merge whatever its severity — `wrap-up` will not merge past one either. Without that marker the ladder quietly cancelled the relocation: a baseline smell tops out at medium, medium is fixed only on request, and the refactor the loop deliberately deferred arrived at the merge as optional polish. Severity still ranks urgency. It no longer decides whether a debt the process itself created gets paid.
 
 ### Every finding records why it was not prevented
 

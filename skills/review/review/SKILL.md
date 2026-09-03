@@ -9,7 +9,9 @@ Dispatch the diff to whichever review axes apply, run them as parallel `reviewer
 
 ## Pin the fixed point
 
-Whatever the user names is the fixed point — a commit, branch, tag, `main`, `HEAD~5`. If they didn't name one, ask.
+Whatever the user names is the fixed point — a commit, branch, tag, `main`, `HEAD~5`.
+
+Reviewing a ticket's branch, the process already knows it: the phase branch that ticket was cut from, `phase/<effort>-<NN>`. Resolve it and say which you used. Asking there puts a question to the user that the branch itself answers, and `...` already excludes whatever the phase branch gained meanwhile. Ask only when the review is of something else and the user named nothing.
 
 Confirm it resolves (`git rev-parse <fixed-point>`) and that `git diff <fixed-point>...HEAD` is non-empty before going further. A bad ref or an empty diff fails here — cheap and local — rather than inside six parallel subagents where the failure is expensive to trace back.
 
@@ -36,6 +38,8 @@ Every finding carries one of four severities, assigned by the axis that found it
 - **low** — worth fixing, costs little if it isn't.
 
 The boundary that matters most sits between high and medium: it's where a fix stops being optional (see "What happens next"). Each axis names, in one sentence, what typically reaches critical or high in its own domain — the same word means something different to a migration reviewer than to a test reviewer.
+
+`code-review` carries a second marker beside severity: **owed**, for the structural cleanup the `tdd` loop deliberately postponed to it. An owed finding is fixed before the work merges whatever its severity, because that debt was created by the process rather than found by accident. Carry the marker through aggregation exactly as the axis assigned it.
 
 ## Dispatch
 
@@ -89,14 +93,27 @@ Ticket: [[<ticket>]]
 Cause: <why this wasn't prevented earlier>
 
 ## Resolution
-- Fixed: <critical/high findings resolved before merge>
+- Fixed: <critical/high findings, and every owed refactor, resolved before merge>
 - Deferred: <medium/low findings the user chose to leave, or "none raised">
 ```
 
 ## What happens next
 
-**critical and high findings are always fixed** — not proposed, not discussed. Send them back to the ticket's `implementer` as a fresh brief naming the findings; this skill and the agents it dispatches are read-only so that findings stay findings.
+**critical and high findings are always fixed**, and so is **every finding marked owed** — not proposed, not discussed. The first two are defects; the third is the refactor `tdd` postponed, and leaving it is how "relocated, not deleted" quietly becomes deleted.
 
-**medium and low findings are fixed only when the user says so.** Present them alongside the resolution and wait — fixing a medium the user never asked for spends their time without asking.
+**medium and low findings are fixed only when the user says so**, owed ones aside. Present them alongside the resolution and wait — fixing a medium the user never asked for spends their time without asking.
 
-Once every critical and high finding is resolved and re-reviewed, the work is ready for the user to approve, and `wrap-up` merges it on that approval. Reviews passing is what makes the PR reviewable, never what authorizes the merge.
+## Dispatch the fix run
+
+The fixes are a fresh `implementer` run, because this skill and every agent it dispatches are read-only so that findings stay findings, and because the run that wrote the code ended when it reported.
+
+Move the ticket back to **Doing** and dispatch one brief per the `delegate` contract:
+
+- **Inputs** — the findings to fix, quoted as the axis wrote them, plus the path to the review record. The ticket's worktree and branch are still on disk — `wrap-up` retires them only after the merge — so the brief names that worktree and the work continues where it stopped.
+- **Skill** — `tdd` for anything that changes behaviour, since a fix to a real defect starts at a red test that reproduces it. An owed refactor changes no behaviour and needs no new test: it runs against the suite already green, which is the whole reason the cleanup was moved here.
+- **Fence** — the findings named and nothing else. A fix run that also tidies what nobody flagged is the uninvited diff `delegate` warns about, arriving at the least reviewable moment.
+- **Done** — each finding resolved, and lint, build and tests green afterward.
+
+Then re-review: the axes that raised those findings, plus any axis whose selection criteria the fix diff newly matches — a fix that touches a migration file gets `migration-review` whether or not it ran the first time. Move the ticket back to Testing as you dispatch it. Findings raised on a fix run are handled exactly like the first round, with no cap on rounds: the loop ends when a review comes back with nothing that must be fixed.
+
+Once it does, the work is ready for the user to approve, and `wrap-up` merges it on that approval. Reviews passing is what makes the PR reviewable, never what authorizes the merge.

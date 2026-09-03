@@ -13,7 +13,7 @@ A merge is authorized by the user's explicit approval of *this* pull request —
 
 ## Check the preconditions
 
-Before merging, confirm and report: the PR is not a draft, its reviews have passed, CI is green, the branch has no conflicts with its base — the phase branch it was cut from, not `main` — and the review record at `docs/reviews/<YYYY-MM-DD> — <ticket or branch>.md` carries no unresolved finding at **critical** or **high** severity. The user approved a merge of work they believed was ready — where any precondition fails, their approval was given on a false premise. A critical or high finding is never one the user's approval can wave through; it gets fixed, full stop, regardless of how firmly the PR was approved. Report the failing one and stop; do not merge around it.
+Before merging, confirm and report: the PR is not a draft, its reviews have passed, CI is green, the branch has no conflicts with its base — the phase branch it was cut from, not `main` — and the review record at `docs/reviews/<YYYY-MM-DD> — <ticket or branch>.md` carries no unresolved finding at **critical** or **high** severity and none marked **owed**. The user approved a merge of work they believed was ready — where any precondition fails, their approval was given on a false premise. A critical or high finding is never one the user's approval can wave through; it gets fixed, full stop, regardless of how firmly the PR was approved. An owed finding is the same: it is the refactor `tdd` postponed to `code-review`, and merging past it is what turns a relocated step into a dropped one. Report the failing one and stop; do not merge around it.
 
 ## Merge, then verify it landed
 
