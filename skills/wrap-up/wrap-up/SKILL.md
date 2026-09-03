@@ -13,7 +13,7 @@ A merge is authorized by the user's explicit approval of *this* pull request —
 
 ## Check the preconditions
 
-Before merging, confirm and report: the PR is not a draft, its reviews have passed, CI is green, the branch has no conflicts with its base, and the review record at `docs/reviews/<YYYY-MM-DD> — <ticket or branch>.md` carries no unresolved finding at **critical** or **high** severity. The user approved a merge of work they believed was ready — where any precondition fails, their approval was given on a false premise. A critical or high finding is never one the user's approval can wave through; it gets fixed, full stop, regardless of how firmly the PR was approved. Report the failing one and stop; do not merge around it.
+Before merging, confirm and report: the PR is not a draft, its reviews have passed, CI is green, the branch has no conflicts with its base — the phase branch it was cut from, not `main` — and the review record at `docs/reviews/<YYYY-MM-DD> — <ticket or branch>.md` carries no unresolved finding at **critical** or **high** severity. The user approved a merge of work they believed was ready — where any precondition fails, their approval was given on a false premise. A critical or high finding is never one the user's approval can wave through; it gets fixed, full stop, regardless of how firmly the PR was approved. Report the failing one and stop; do not merge around it.
 
 ## Merge, then verify it landed
 
@@ -22,6 +22,12 @@ Merge with `gh`. Then confirm the merge actually landed before touching the trac
 ## Update the tracker
 
 Move the ticket to Done. The tracker is resolved from the project's `sovai.config.json`, and the mechanics of every tracker live in `to-tickets` — follow that, not a restatement of it here. A project publishing to local markdown has no Done to move to; say that plainly rather than reporting a state change that did not happen.
+
+## Retire the ticket's worktree
+
+The ticket's work is in the phase branch now, so its worktree under `<project root>/worktrees/` and its branch both go. Remove the worktree, then delete the branch.
+
+Never force either. A worktree holding uncommitted changes, or a branch holding commits the merge did not carry, is work the merge left behind — report it and leave it on disk. Nothing is lost by a worktree that outlives its ticket; a forced removal loses the only copy of whatever was in it.
 
 ## Write the troubleshooting note
 
@@ -55,4 +61,8 @@ Check each of the following and state what you found, updating only where a deci
 
 When the ticket just moved to Done was the last open one in its phase, the phase is complete — but only if its exit criteria in `<effort> — Roadmap.md` actually hold. Verify each one and report which you checked; a phase whose tickets all closed but whose exit criteria don't hold is not done, and catching that now is far cheaper than catching it a phase later.
 
-Once the phase genuinely closes, the next phase needs its own `to-tickets` run, against the codebase as it now stands — that run is the next step, not part of this one.
+Once the exit criteria hold, the phase branch `phase/<effort>-<NN>` is what `main` receives: open its PR, and merge it under the same rule as any other — the user's explicit approval of *that* pull request. Approving the tickets said nothing about shipping the phase, and this is the merge where a user first meets the capability whole (ADR-0020).
+
+While the phase is still open, keep its branch current with `main` whenever `main` moves. A phase branch that integrates once, at the end, turns every conflict its tickets avoided into a single merge nobody planned for.
+
+With the phase merged, the next phase needs its own `to-tickets` run, against the codebase as it now stands — that run is the next step, not part of this one.

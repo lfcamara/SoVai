@@ -31,11 +31,11 @@ Land the loop at green and stop. Cleanup happens in review, against a diff a rev
 
 ## Commit discipline
 
-Cut the ticket's branch from the base branch before anything is committed — `open-pr` holds the name it carries. The red test is the first commit on it, and pushing it is the first push. Immediately after that push, run the `open-pr` skill yourself to open the draft PR — you are the only thing that knows the push has happened, and the orchestrator does not hear from you again until this run ends. A draft PR opened here states, through its failing test, what the ticket has to make true; opened at the end it would say nothing that the finished diff doesn't already say.
+Work inside the worktree the brief names, and cut the ticket's branch there from the phase branch the brief names, before anything is committed — `open-pr` holds the name the branch carries. The red test is the first commit on it, and pushing it is the first push. Immediately after that push, run the `open-pr` skill yourself to open the draft PR — you are the only thing that knows the push has happened, and the orchestrator does not hear from you again until this run ends. A draft PR opened here states, through its failing test, what the ticket has to make true; opened at the end it would say nothing that the finished diff doesn't already say.
 
 ## Verify before reporting
 
-Before calling the ticket done, run the project's lint, build, test, and coverage commands, as the project declares them — `CONTEXT.md`, the root `CLAUDE.md`, and the package or task manifest are where they are named. Their full output stays inside this run and is gone once it ends — carry forward only the verdict and the failing lines, never the raw output.
+Before calling the ticket done, rebase on the phase branch so what you verify is what the phase will hold, then run the project's lint, build, test, and coverage commands, as the project declares them — `CONTEXT.md`, the root `CLAUDE.md`, and the package or task manifest are where they are named. Their full output stays inside this run and is gone once it ends — carry forward only the verdict and the failing lines, never the raw output.
 
 ## Report
 

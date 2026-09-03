@@ -140,11 +140,15 @@ A ticket is sized to a single fresh context window. That sizing is not incidenta
 
 Wide refactors are the exception — a mechanical change whose blast radius fans across the codebase cannot land green as a vertical slice, so it runs **expand–contract** instead: add the new form beside the old, migrate call sites in batches, delete the old form once nothing references it.
 
+Publishing ends by **cutting the branch the phase will land on** — `phase/<effort>-<NN>`, cut from `main` and pushed. Every ticket in the phase branches from it, and it reaches `main` as a single merge when the phase closes, because the phase is the unit that ships ([ADR-0020](docs/adr/0020-work-lands-on-a-phase-branch-through-worktrees.md)). The same run confirms `worktrees/` is in the project's `.gitignore` before any ticket is dispatched: each one is worked in a worktree under that directory, and an unignored one turns every search in the project into duplicate hits across N copies of the tree.
+
 ---
 
 ## Stage 3 — Per ticket
 
-Tickets on the **frontier** — those whose blockers have all closed — can run in parallel, in isolated worktrees when their files could overlap.
+Tickets on the **frontier** — those whose blockers have all closed — run in parallel, each in **its own git worktree** at `<project root>/worktrees/<TICKET-ID>-<slug>`. That is not a precaution taken when files might overlap; it is what makes the parallelism executable at all. Two implementers sharing one checkout share a HEAD, and the second one's first commit lands on the first one's branch ([ADR-0020](docs/adr/0020-work-lands-on-a-phase-branch-through-worktrees.md)).
+
+A ticket's branch is cut from the **phase branch**, and its PR targets that branch rather than `main`. A fresh worktree holds tracked files and nothing else — no `.env`, no `node_modules` — so the project lists the commands that make one runnable under `worktreeSetup` in its `sovai.config.json`, and `delegate` runs them before dispatching an implementer in.
 
 ### The ticket lifecycle
 
@@ -163,7 +167,7 @@ One ticket, from a cold context window to a pushed, verified branch.
 
 **TDD is red → green.** The failing test first, then the code that satisfies it. Refactoring is not part of the loop — it is relocated to review, where the tests are already green and the code is free to move. Relocated, not deleted: the structural cleanup is still owed.
 
-**You can approve the test list first.** Tests are the behaviour contract at its finest grain, so a wrong one produces correct code implementing the wrong thing — cheap to catch now, expensive once the implementation exists. Switch it on and the implementer returns a list of the behaviours it intends to verify, one line each, and stops until you approve.
+**You can ask to see the test list first.** Tests are the behaviour contract at its finest grain, so a wrong one produces correct code implementing the wrong thing — cheap to catch now, expensive once the implementation exists. Tickets go straight into the loop by default; ask on the ticket in front of you and `to-tickets` carries it into that brief, so the implementer returns a list of the behaviours it intends to verify, one line each, and stops until you approve. There is deliberately no setting behind it: a question asked every time becomes a prompt to dismiss, and an answer stored once becomes a config line nobody revisits when it changes ([ADR-0011](docs/adr/0011-the-test-list-is-approved-not-the-tests.md)).
 
 What you approve is the *list*, never a set of written tests. Writing them all up front is the horizontal slicing `tdd` warns against, and the full set isn't knowable anyway — the third cycle's test comes from what the second one exposed. Cases the loop discovers later get reported rather than suppressed for sitting outside the list.
 
@@ -175,7 +179,7 @@ The red test is the first commit and the first push — which is what lets a dra
 
 The **implementer** opens that draft PR, not the orchestrator. The orchestrator's only channel out of a subagent is its final report, which arrives after the run is over and the work is already green — by then a draft PR says nothing the finished diff doesn't. Ticket state stays the orchestrator's, and so does the merge; a stranded ticket needs something alive to reconcile it, while a stray draft PR is visible and harmless.
 
-Lint, build, tests and coverage run **inside** the implementer. Their output is enormous, and the subagent boundary is already the isolation: it dies with the run. Only the verdict and the failing lines travel back — which is the compressed form of the evidence `verify-before-claiming` requires, not an exemption from it.
+Before any of that is reported, the branch **rebases on the phase branch**, so what gets verified is what the phase will actually hold. Lint, build, tests and coverage run **inside** the implementer. Their output is enormous, and the subagent boundary is already the isolation: it dies with the run. Only the verdict and the failing lines travel back — which is the compressed form of the evidence `verify-before-claiming` requires, not an exemption from it.
 
 ### review
 
@@ -208,13 +212,15 @@ Reviewers are read-only by construction. A reviewer that fixes what it finds des
 
 Order is load-bearing: merge → confirm it landed → tracker → documents. A ticket moved to Done ahead of a merge that then fails is a tracker asserting something false, with nothing downstream able to catch it.
 
+The ticket's **worktree and branch are retired** on the same ordering — after the merge is confirmed, never ahead of it, and **never forced**. A worktree holding uncommitted changes, or a branch holding commits the merge did not carry, is work the merge left behind: a fact to report, not a directory to delete. Nothing is lost by a worktree that outlives its ticket.
+
 Then the documents get reconciled, under one rule:
 
 > **A document follows a decision, not a diff.**
 
 Code diverging from the spec because someone deliberately decided otherwise means the spec is stale — update it. Code diverging because the code is *wrong* is a defect belonging to `spec-review`; rewriting the spec to match would launder a bug into a requirement, which is worse than a stale spec because it destroys the record that would have caught it.
 
-When the last ticket in a phase merges, the phase's exit criteria are **verified against the roadmap, not inferred** from tickets closing — then the next phase gets its own `to-tickets` run.
+When the last ticket in a phase merges, the phase's exit criteria are **verified against the roadmap, not inferred** from tickets closing. Only once they hold does the phase branch go to `main`, as a pull request of its own carrying **its own explicit approval** — approving the tickets said nothing about shipping the phase, and this is the merge where a user first meets the capability whole ([ADR-0020](docs/adr/0020-work-lands-on-a-phase-branch-through-worktrees.md)). Until then the phase branch integrates `main` whenever `main` moves, or the final merge becomes the one conflict every ticket avoided. With the phase merged, the next phase gets its own `to-tickets` run.
 
 ---
 
@@ -369,7 +375,7 @@ Three facts cannot be discovered from a repo.
 
 **There is no default tracker.** Guessing one means publishing into somebody's wrong project or failing against a service that was never connected, and both read as the plugin being broken rather than as one missing line of config. Absent the key, `to-tickets` asks once and offers to write the answer; with nobody to ask, it falls to local markdown — one file per ticket — and says so plainly. That floor always works, and the cost of staying on it is that `wrap-up` has no Done to move a ticket to, which it now states rather than glossing. Per-tracker mechanics live in `TRACKERS.md` beside the skill; adding a tracker is a section there, never a branch in the skill.
 
-**Whether the test list gets approved.** Whether the developer wants to see the behaviours an implementer intends to verify before any of them is written ([ADR-0011](docs/adr/0011-the-test-list-is-approved-not-the-tests.md)). It is a standing preference rather than a per-ticket question, and it lives in the target repo's `CLAUDE.md` beside the tracker facts — asked per ticket, a control the developer wanted becomes a prompt they learn to dismiss. `to-tickets` reads the standing answer from there and writes it into each brief.
+**What makes a fresh checkout runnable.** A git worktree materializes tracked files and nothing else, so the `.env`, the `node_modules` and the build cache a project keeps out of git are all missing the moment a ticket's worktree is created — and an implementer dispatched into one would fail on a missing dependency and report a broken project. Only the project knows what to put back, so it lists those commands under `worktreeSetup` in the same file, and `delegate` runs them after creating the worktree and before dispatching in ([ADR-0020](docs/adr/0020-work-lands-on-a-phase-branch-through-worktrees.md)). Declaring nothing gets a bare checkout, which is correct for a project that needs nothing.
 
 **What a file is.** Which paths hold production logic, which hold UI, which hold tests. This is the fact the hooks run on, and it lives in a `sovai.config.json` at the project root, found by walking up from the edited file ([ADR-0013](docs/adr/0013-per-project-config-resolved-by-walking-up.md)):
 
@@ -378,15 +384,16 @@ Three facts cannot be discovered from a repo.
   "productionLogic": ["src/**", "lib/**"],
   "ui":              ["src/components/**", "src/screens/**", "src/app/**"],
   "tests":           ["*.test.*", "*.spec.*", "test/**", "tests/**", "*__tests__*"],
-  "tracker":         { "kind": "local", "team": "", "project": "", "phasesAsParents": false }
+  "tracker":         { "kind": "local", "team": "", "project": "", "phasesAsParents": false },
+  "worktreeSetup":   ["cp ../../.env .env", "cp -c -R ../../node_modules node_modules"]
 }
 ```
 
 Three lists of shell globs, not a stack enum. A stack name would only add a mapping that breaks on the first monorepo, and what the gates need is the classification itself: `src/components` is UI in one project and a component library dense with logic in the next, and the only party that knows is the project. Precedence runs tests, then ui, then productionLogic, so a UI path nested under a production path wins and nobody writes exclusions.
 
-The `"tracker"` key is the one part of this file read by skills rather than by the hooks; it lives here because a project should have one place that answers "what is this project", not two.
+The `"tracker"` and `"worktreeSetup"` keys are the parts of this file read by skills rather than by the hooks; they live here because a project should have one place that answers "what is this project", not three.
 
-Onboarding is therefore a one-file drop — copy `sovai.config.example.json` to the project root, rename it, edit the three lists and the tracker — never a change to this plugin. Because the file sits at the root and is found by ancestry, worktrees and clones inherit it for free.
+Onboarding is therefore a one-file drop — copy `sovai.config.example.json` to the project root, rename it, edit the three lists, the tracker and whatever a fresh worktree needs to run — never a change to this plugin. Because the file sits at the root and is found by ancestry, worktrees and clones inherit it for free.
 
 **Everything fails open, and the consequence is worth stating plainly: a project with no `sovai.config.json` is not gated.** No config, or a malformed one, classifies nothing — no reminders, and a Stop gate that never fires. A reader who skips this section gets a plugin that appears to do nothing. The direction is chosen rather than incidental: under-gating costs a missed reminder, while over-gating costs a developer who cannot finish a session, and a hook that breaks work over its own configuration gets uninstalled, taking every rule it was carrying with it.
 

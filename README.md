@@ -79,9 +79,11 @@ Ten blocks, 28 skills, 3 agents.
 | **Orchestration** | `delegate` — the six-part brief every handoff to a subagent carries |
 | **Productivity** | `grilling` · `writing-great-skills` — the interview underneath `brainstorm`, and the standard every skill here is held to |
 
-**You can approve the test list before any code is written.** Switch it on and the implementer returns the behaviours it intends to verify — one line each — and waits. You approve the contract, not a wall of test bodies, and the loop still runs one test at a time.
+**You can ask to see the test list before any code is written.** Ask on the ticket you want it for and the implementer returns the behaviours it intends to verify — one line each — and waits. You approve the contract, not a wall of test bodies, and the loop still runs one test at a time. Every other ticket goes straight into the loop.
 
 **TDD is mandatory for backend logic**, and refactoring deliberately isn't part of the loop — it moves to review, where the tests are already green. UI is the exception: tested after it's built, because a screen whose shape is still moving produces tests that break on every layout change without catching a real bug.
+
+Each ticket is built in its own git worktree, on a branch off the phase's branch, so tickets on the frontier really do run in parallel and `main` takes one merge per phase.
 
 ---
 

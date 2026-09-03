@@ -13,7 +13,7 @@ The implementer runs this, not the orchestrator: it is the only thing that knows
 
 ## Branch
 
-The branch carries the ticket's identifier in its name (for example, `<TICKET-ID>-<kebab-slug>`), so the branch is legible on its own without a trip to the tracker. Open the PR against that branch — it already exists from the ticket's first push.
+The branch carries the ticket's identifier in its name (for example, `<TICKET-ID>-<kebab-slug>`), so the branch is legible on its own without a trip to the tracker. Open the PR from that branch — it already exists from the ticket's first push — and target the phase branch it was cut from, `phase/<effort>-<NN>`, never `main`. The phase reaches `main` as one merge of its own, when it closes (ADR-0020).
 
 ## Body
 

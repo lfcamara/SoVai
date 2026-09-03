@@ -24,6 +24,22 @@ Work on a branch. **Merging to main is the release**, because that is what `/plu
 
 ---
 
+## 3.0.0 — 2026-09-03
+
+Execution reworked. Major by this changelog's own definition: work now lands somewhere else, a gate that used to be on by default is off, and the parallelism the process promised was never actually executable. If you learned the old shape, the branch you end up on is different.
+
+**A phase gets a branch, and a ticket gets a worktree** ([ADR-0020](docs/adr/0020-work-lands-on-a-phase-branch-through-worktrees.md)). Tickets used to go one at a time into `main`, which meant `main` routinely held two thirds of a capability and the way back out was a sequence of reverts nobody planned. `to-tickets` now ends by cutting `phase/<effort>-<NN>` from `main`; every ticket branches from that, targets it with its PR, and the phase reaches `main` as one merge, at close, under its own approval. The phase is what ships, so the phase is what merges.
+
+The worktree half fixes something that was simply broken. `to-tickets` has always ended on a frontier and said those tickets can run in parallel — and in a single working tree they cannot, because two implementers share one checkout and one HEAD, so the second one's first commit lands on the first one's branch. Each ticket now gets `<project root>/worktrees/<TICKET-ID>-<slug>`. Inside the root, because a cold subagent can derive that path from the root it already knows; git-ignored, because otherwise every code search returns the same hit once per tree. A worktree is a checkout of tracked files and nothing else, so it has no `.env` and no `node_modules` and is not runnable when created — the project says what makes it runnable, in a new `worktreeSetup` list in its own `sovai.config.json`, for the same reason no path list is hardcoded here. `wrap-up` removes the worktree and the branch once the merge is confirmed, and never forces: a tree holding uncommitted work is a fact to report, not a directory to delete.
+
+The costs are real and were taken deliberately. `main` is no longer releasable per ticket, so a project that deploys on every merge cannot use this shape. A phase branch ages, so it integrates `main` whenever `main` moves and each ticket rebases before its PR. And a worktree under the root has to be excluded again in any tool that globs on its own terms rather than honouring `.gitignore`.
+
+**The test list is asked for, not offered** ([ADR-0011](docs/adr/0011-the-test-list-is-approved-not-the-tests.md), amended). Approving the behaviours before the loop runs was a standing preference, read from the target repo's `CLAUDE.md`, with `to-tickets` asking once and offering to record the answer. Both halves were wrong in practice: a question asked every time becomes a prompt to dismiss, and a question asked once becomes a config line nobody revisits when the answer changes — meanwhile every ticket paid a round trip for a control that was rarely wanted. Tickets now go straight into the red-green loop, and the list is produced for the tickets where you ask for it. What you approve is still a list of behaviours rather than written tests; that argument did not change.
+
+**`implement` says where the work is.** The report's job is to be the only thing that survives the run, and it did not carry the branch name or the PR link — the two things the orchestrator needs to reach the diff at all. It does now. Also: the branch is cut before the first commit rather than assumed to exist, the roadmap left the skill's reading list because reaching past the ticket is what its own scope rule forbids, the brief's paths take precedence over resolving them from the effort directory, and the verification commands are sourced where the project declares them instead of being guessed.
+
+---
+
 ## 2.0.0 — 2026-08-31
 
 The planning block reworked end to end. Major by this changelog's own definition: stages move, a stage leaves the automatic chain, another stops mid-pipeline and waits for you, and the pipeline gains entrances that are not the top. If you learned the old shape, it no longer holds.

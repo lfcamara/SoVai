@@ -68,10 +68,16 @@ Publish blockers first, so each ticket can reference real identifiers by the tim
 
 Write each ticket to the shape in [TICKET-FORMAT.md](./TICKET-FORMAT.md). The body is identical whatever the tracker; only the mechanics of the edge change.
 
+## Cut the phase branch
+
+The last act of publishing is cutting the branch the phase will land on: `phase/<effort>-<NN>`, cut from `main`, pushed. Every ticket in this phase branches from it, and it merges to `main` once, when the phase closes — the phase is the unit that ships, so it is the unit `main` receives (ADR-0020). Where it already exists from an earlier run of this phase, use it as it stands.
+
+Confirm `worktrees/` is in the project's `.gitignore` before any ticket is dispatched, adding the line where it is missing. Each ticket is worked in a worktree under that directory, and an unignored one turns every code search in the project into duplicate hits across N copies of the tree.
+
 ## Carry it forward
 
 Publishing ends planning. What exists now is a **frontier** — the tickets whose blockers have all closed — and each of those is workable immediately.
 
 Execution runs one ticket at a time through the `implement` skill, dispatched to an `implementer` per the `delegate` contract, and tickets on the frontier can run in parallel. Move a ticket to **Doing** as you dispatch it, before the agent starts — the frontier is computed from ticket state, so a ticket being worked while still showing To Do invites a second session to claim it.
 
-Each brief also says whether the developer approves the test list before code is written. Tests are the behaviour contract at its finest grain, and approving one costs minutes where unwinding code built against the wrong one costs a ticket. Read the standing answer from the repo's `CLAUDE.md`; where none is recorded, ask once and offer to write it there, so this is one question rather than one per ticket. When approval is on, the implementer returns its list and stops, and you re-dispatch with the approved list. Unlike the planning stages, this does not continue in the same session: a ticket is sized to a fresh context window, and spending that window on the planning conversation that produced it defeats the sizing.
+Tickets go straight into the loop. Where the user asks to see what will be tested on a ticket before code is written, say so in that ticket's brief: the implementer returns its list of behaviours and stops, and you re-dispatch with the approved list (ADR-0011). Unlike the planning stages, that round trip does not continue in the same session — a ticket is sized to a fresh context window, and spending that window on the planning conversation that produced it defeats the sizing.

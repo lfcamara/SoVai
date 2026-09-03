@@ -16,4 +16,8 @@ A list of intended behaviours is legitimately knowable, does not constrain how t
 
 The `implementer` is a cold subagent that cannot ask questions, so the approval cannot be requested from inside the loop. The existing stop-and-report mechanic carries it instead: the agent produces the list, reports, and ends; the orchestrator puts it to the developer and re-dispatches with the approved list. No new machinery, at the cost of one extra round trip per ticket while it is switched on.
 
-Whether approval is wanted is a standing preference, recorded in the target repo's `CLAUDE.md` alongside the other per-project facts. Asking per ticket would make a control the developer wanted into a prompt they learn to dismiss.
+## The default is to start the loop
+
+Approval happens where the developer asks for it on the ticket in front of them, and every other ticket goes straight into the red-green loop. There is no standing answer and no per-ticket question: a question asked every time becomes a prompt to dismiss, and a question asked once becomes a line in a config file that nobody revisits when the answer changes. Where the developer does ask, `to-tickets` carries it into that ticket's brief and the implementer stops on the list.
+
+What this costs is stated plainly: a list the developer would have wanted goes unasked-for, and those tests are written without their eyes on them first. That is the trade — this gate stood in front of some tickets, where the spec's agreed seams, the six review axes, and the merge approval stand behind all of them.
