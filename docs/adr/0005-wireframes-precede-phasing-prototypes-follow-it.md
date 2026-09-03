@@ -41,3 +41,9 @@ The record stays the source of truth, which is what makes the trade safe: the br
 
 The templates for both documents moved out to `WIREFRAMES-FORMAT.md` and `DESIGN-BRIEF-FORMAT.md`, matching the format files the rest of the planning block now uses.
 
+
+## The order stated above is superseded
+
+**Status: superseded, 2026-08-31.** The line "spec → wireframes → phases → per phase: prototype → design → tickets" no longer describes the pipeline. The spec moved below the roadmap and became per-phase ([ADR-0019](0019-the-spec-is-written-per-phase.md)), and prototyping left the automatic chain in the amendment above.
+
+The current order is PRD → wireframes → roadmap → per phase: spec → (prototype, on request) → tickets. Everything this ADR decided about wireframes preceding phasing is unaffected: the argument was always that phase boundaries need named screens, and screens come from the PRD's user stories rather than from the spec.
