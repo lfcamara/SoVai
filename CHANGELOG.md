@@ -24,6 +24,20 @@ Work on a branch. **Merging to main is the release**, because that is what `/plu
 
 ---
 
+## 2.0.1 — 2026-09-03
+
+An audit of 2.0.0 against itself, the day after it landed. Two fixes, both in the seam the rework left behind.
+
+**`to-prd` was still handing off to `to-spec`.** The spec moved below the roadmap and became per-phase, and every surface describing the pipeline was updated — README, SessionStart bootstrap, workflow document, ADR-0019, the entry below. The skill's own closing line was not. Because the pipeline auto-continues (ADR-0001), nobody types the stage names, so nobody was placed to notice the chain went somewhere else; and where it went could not work, since `to-spec` now opens by resolving a phase and reading the roadmap entry that scopes it. It also skipped `to-wireframes`, whose screens `to-roadmap` draws boundaries from and whose coverage table `ui-testing` reads.
+
+The linter did not catch it and could not: `to-spec` is a real skill, and `lint-references` says in its own limits that it does not check whether a resolved reference is the right one. The pipeline's order is currently written on five surfaces and asserted on none, which is the gap worth closing next.
+
+**The no-interface branch had gone missing with it.** The old `to-spec` carried the test for whether an effort has a user-facing interface and routed a headless one past wireframes. When the spec moved, the branch travelled to a stage that now runs too late to make the choice, and nothing picked it up — so a backend-only effort was routed into the stage whose whole job is naming screens it does not have. `to-prd` carries it now, where the PRD has just settled whether anyone is looking at anything. `to-roadmap` takes the other end: its full-coverage test walks the PRD's stories and the wireframes' screens, and an effort that skipped wireframes has only the first list, which it now says rather than claiming coverage against a file nobody wrote.
+
+**Two stale counts.** ADR-0011 and `lint-references`' own description still said six review axes. Neither is load-bearing, and both are the kind of number a reader trusts without checking.
+
+**Why patch.** No stage moved, split or disappeared, and nothing changes what a working 2.0.0 session did. A chain that pointed at the wrong stage now points at the right one, and a branch that existed before the rework exists again.
+
 ## 2.0.0 — 2026-09-03
 
 Planning and execution reworked end to end. Major by this changelog's own definition: stages move, a stage leaves the automatic chain, another stops mid-pipeline and waits for you, the pipeline gains entrances that are not the top, and work lands on a different branch than it used to. If you learned the old shape, it no longer holds.
