@@ -12,7 +12,7 @@ Reviews WHETHER THE RIGHT THING was built, not how it's written — that split i
 Check in this order and stop at the first hit:
 
 1. The **ticket** the work came from — a reference in the commit messages or the diff's branch name.
-2. `docs/planning/<effort>/<effort> — Spec.md` and `<effort> — PRD.md` for the effort this work belongs to.
+2. `docs/planning/<effort>/<effort> — Phase <N> Spec.md` for the phase the ticket belongs to, and `<effort> — PRD.md` for the effort. The ticket names its phase; where it does not, the roadmap does.
 3. A path the user supplies directly.
 
 If none of the three turn up anything, say so plainly and stop — report "no spec available" rather than inventing a standard to judge the diff against. A finding without a spec behind it is a preference wearing this axis's clothes.

@@ -11,7 +11,7 @@ Exactly one **ticket**. A ticket is sized to one context window by construction 
 
 ## Gather context
 
-Read the ticket in full, then the spec and roadmap under `docs/planning/<effort>/` for the decisions that shaped it, `CONTEXT.md` for the domain vocabulary tests and code should use, and the ADRs covering the area you're touching. A ticket that references something not on disk where it says it should be is a fact to report, not a gap to fill by guessing.
+Read the ticket in full, then the roadmap and the spec for the ticket's own phase (`<effort> — Phase <N> Spec.md`) under `docs/planning/<effort>/` for the decisions that shaped it, `CONTEXT.md` for the domain vocabulary tests and code should use, and the ADRs covering the area you're touching. A ticket that references something not on disk where it says it should be is a fact to report, not a gap to fill by guessing.
 
 ## Agree the test list, when the brief asks for it
 

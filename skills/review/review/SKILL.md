@@ -19,7 +19,7 @@ Capture `git diff <fixed-point>...HEAD` and `git log <fixed-point>..HEAD --oneli
 
 Run `code-review` and `test-review` always. Check the rest against the diff:
 
-- **`spec-review`** — run it when a spec exists to hold the diff to: the commit trail names a ticket, `docs/planning/<effort>/<effort> — Spec.md` or `<effort> — PRD.md` exists for the matching effort, or the user supplies a spec path. Check the commit messages and the filesystem before deciding; if none of the three turn up anything, skip it rather than inventing a spec to check against.
+- **`spec-review`** — run it when a spec exists to hold the diff to: the commit trail names a ticket, a `<effort> — Phase <N> Spec.md` or `<effort> — PRD.md` exists under `docs/planning/<effort>/` for the matching effort, or the user supplies a spec path. Check the commit messages and the filesystem before deciding; if none of the three turn up anything, skip it rather than inventing a spec to check against.
 - **`security-review`** — run it when the diff touches a security-relevant surface: authentication or authorization code, input parsing or deserialization, secrets or credentials, a dependency manifest or lockfile, or a network-facing boundary (routes, handlers, API definitions). Check `git diff --name-only` against those paths and grep the diff body for the keywords. Run it regardless of the diff if the user asks for a security pass explicitly.
 - **`migration-review`** — run it when the diff touches a schema or data migration: files under a `migrations/` directory, a schema file (`schema.prisma`, `*.sql` under a migrate path), or an ORM model whose column or type changed. Check `git diff --name-only` against those paths.
 - **`goal-review`** — run it when the goal is answerable from outside the diff: a ticket naming the outcome (the same reference `spec-review` looks for) and a pull request whose state `gh pr view` can read. Both are needed — a working tree with no PR yet cannot show merge or enforcement state, and an axis reporting "not merged" about work nobody claimed was merged is noise. Where the PR is a draft mid-ticket, run it anyway: scope coverage and a flag left switched off are both answerable then, and that is the cheapest moment to act on either.
@@ -70,7 +70,7 @@ One occurrence is not a pattern. Record the cause and move on; whether it recurs
 
 ## Write the review record
 
-Write a durable record of this review into the project's Obsidian vault, at `docs/reviews/<YYYY-MM-DD> — <ticket or branch>.md`. Documents in this vault are Obsidian notes — link the ticket with a wikilink (`[[checkout-flow — Spec]]`), not a relative markdown link.
+Write a durable record of this review into the project's Obsidian vault, at `docs/reviews/<YYYY-MM-DD> — <ticket or branch>.md`. Documents in this vault are Obsidian notes — link the ticket with a wikilink (`[[checkout-flow — Phase 1 Spec]]`), not a relative markdown link.
 
 The record isn't archival. It's the input to skill hardening later, which only works if every finding also carries why it wasn't prevented — the cause from the step above.
 

@@ -45,7 +45,7 @@ The governing rule: **a document follows a decision, not a diff.** Where the cod
 
 Check each of the following and state what you found, updating only where a decision moved:
 
-- `<effort> — Spec.md` — implementation decisions that turned out differently than planned.
+- `<effort> — Phase <N> Spec.md`, for the phase the ticket belonged to — implementation decisions that turned out differently than planned.
 - `<effort> — PRD.md` — scope that genuinely changed. This should be rare; question it when it happens.
 - `<effort> — Wireframes.md` — screens or states that changed shape.
 - `<effort> — Roadmap.md` — phase exit criteria now met.
