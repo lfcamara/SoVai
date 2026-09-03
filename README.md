@@ -25,11 +25,11 @@ IDEA
  │
  ├─ brainstorm ────► shape it until the understanding is shared
  ├─ to-prd ────────► the problem, in plain language
- ├─ to-spec ───────► the technical decisions and where tests attach
  ├─ to-wireframes ─► every screen, then a brief you take to a design tool
  ├─ to-roadmap ────► phases that each ship something usable alone
  │
  └─ per phase, when that phase starts:
+      to-spec ──────► this phase's technical decisions and test seams
       to-tickets
        │
        └─ per ticket, in parallel:
@@ -68,7 +68,7 @@ Ten blocks, 28 skills, 3 agents.
 
 | Block | What it does |
 |---|---|
-| **Planning** | `brainstorm` · `to-prd` · `to-spec` · `to-wireframes` · `to-roadmap` · `to-tickets` |
+| **Planning** | `brainstorm` · `to-prd` · `to-wireframes` · `to-roadmap` · `to-spec` · `to-tickets` |
 | **Prototyping** | `prototype` — throwaway code answering one question, on request rather than on schedule |
 | **Development** | `tdd` · `implement` · `ui-testing` · `open-pr` — red → green, one ticket at a time |
 | **Review** | `review` + six axes — parallel, read-only, ranked by severity |
