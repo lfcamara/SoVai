@@ -7,7 +7,7 @@ The record lives at `docs/planning/<effort>/<effort> — Wireframes.md`, beside 
 ```md
 # <Effort name> — Wireframes
 
-PRD: [[<effort> — PRD]] · Spec: [[<effort> — Spec]] · Brief: [[<effort> — Design Brief]] · Canvas: <url, once the user has one>
+PRD: [[<effort> — PRD]] · Brief: [[<effort> — Design Brief]] · Canvas: <url, once the user has one>
 
 ## Flow
 

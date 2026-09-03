@@ -27,7 +27,7 @@ Visual design has its own stage later. Naming it here keeps the reviewer's atten
 
 Resolve the **effort**. Where more than one could match, ask rather than guessing.
 
-Work from the PRD and spec under `docs/planning/<effort>/`. Walk the PRD's user stories and ask, for each one, which screen the actor is looking at when they do the thing. Stories cluster onto screens; a story that maps to no screen is a screen you have not drawn yet.
+Work from the PRD under `docs/planning/<effort>/`. Walk its user stories and ask, for each one, which screen the actor is looking at when they do the thing. Stories cluster onto screens; a story that maps to no screen is a screen you have not drawn yet.
 
 Cover the unglamorous states too — empty, loading, error, permission denied, first run. These are where scope hides, and finding them now is the reason this stage sits before phasing.
 
