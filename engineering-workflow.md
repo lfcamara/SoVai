@@ -14,13 +14,13 @@ IDEA
  ├─ brainstorm ──── shape it until the understanding is shared
  │
  ├─ to-prd ─────────────────────────► <effort> — PRD.md
- ├─ to-spec ────────────────────────► <effort> — Spec.md
  ├─ to-wireframes ──────────────────► <effort> — Wireframes.md
  │                                    <effort> — Design Brief.md  ──► you, in a design tool
  ├─ to-roadmap ─────────────────────► <effort> — Roadmap.md
  │
  └─ PER PHASE, when that phase begins:
       │
+      ├─ to-spec ───────► <effort> — Phase <N> Spec.md
       ├─ to-tickets ──── break the phase into tracer bullets
       │
       │  (prototype and frontend-design sit beside this, on request — see below)
@@ -57,9 +57,9 @@ It delegates the interview to `grilling` (one question at a time, always with a 
 
 It ends when no open questions remain and you confirm the shared understanding — then it continues straight into the PRD, because a shaped idea whose understanding evaporates with the transcript has wasted the interview.
 
-### to-prd → to-spec
+### to-prd
 
-Two documents, no overlap, because they serve different readers and change at different rates.
+Two planning documents, no overlap, because they serve different readers and change at different rates — and, since the spec moved below the roadmap, at different grains. The PRD covers the effort; a spec covers one phase.
 
 | | PRD | Spec |
 |---|---|---|
@@ -69,7 +69,7 @@ Two documents, no overlap, because they serve different readers and change at di
 
 The PRD names the **effort** — the kebab-case directory under `docs/planning/` that everything else lives in. Every later stage resolves the effort from the filesystem, which is what lets a phase resume weeks later in a clean session.
 
-The spec's core work is finding the **seams**: where behaviour can be observed from outside, which is where tests attach. Prefer an existing seam to a new one, and the highest available seam to a lower one. The seam gets agreed with you before the spec is written, because moving one later is expensive.
+The spec is described under [Stage 2](#stage-2--per-phase), where it now runs.
 
 ### to-wireframes
 
@@ -103,6 +103,18 @@ It is named for the document it writes, like every other stage in the block. "Ph
 ---
 
 ## Stage 2 — Per phase
+
+### to-spec
+
+The engineering half of the plan, scoped to **one phase** and written when that phase starts.
+
+It used to run once per effort, before phasing — and that contradicted the rule the rest of the pipeline runs on. The spec is the most detail-dense document here (seams, interfaces, schema, contracts), so writing one for the whole effort up front spent the most detail at the moment least was known, and a phase starting four months later inherited decisions made against a codebase that no longer existed ([ADR-0019](docs/adr/0019-the-spec-is-written-per-phase.md)).
+
+Its core work is finding the **seams**: where behaviour can be observed from outside, which is where tests attach. Prefer an existing seam to a new one, and the highest available seam to a lower one. The seam gets agreed with you before the spec is written, because moving one later is expensive.
+
+Scope is the phase. Work the roadmap gave to a later phase goes under Out of scope by name, rather than being specified early.
+
+**An effort's architecture is not in here.** The technical **forks** that sequencing depends on — build or buy, one service or two, migrate in place or alongside — are settled during `to-roadmap`, before any phase is drawn, and recorded as ADRs where they are hard to reverse. That split is by lifetime: an architectural decision outlives every phase it touches, implementation detail belongs to the phase that is starting. The cost is stated plainly in the ADR — nothing forces the record to be written, because it is a judgement and a judgement cannot be gated.
 
 ### prototype — on request, not on schedule
 
@@ -296,7 +308,7 @@ It is one always-on rule rather than a criterion inside each skill, because a ru
 
 The project's `docs/` folder **is** an Obsidian vault — a vault is just a folder of markdown, so nothing needs scaffolding and nothing moves out of the repo. Documents link each other with wikilinks, and those links are what make it a graph rather than a pile.
 
-Filenames carry the effort — `checkout-flow — Spec.md`, not `spec.md` — because the graph shows the note's name and nothing else. Fifteen efforts would otherwise render fifteen nodes labelled "spec", which costs something to draw and returns nothing.
+Filenames carry the effort — `checkout-flow — Phase 1 Spec.md`, not `spec.md` — because the graph shows the note's name and nothing else. Fifteen efforts would otherwise render fifteen nodes labelled "spec", which costs something to draw and returns nothing. It is also why a phase's number sits in the filename rather than in a directory above it.
 
 Links are spent, not sprayed: a ticket to its phase, a spec to the PRD it serves. Linking everything a document touches produces a graph as useless as none.
 
