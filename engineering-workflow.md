@@ -29,7 +29,7 @@ IDEA
            │
            ├─ implement ──── red → green, push
            ├─ open-pr ────── draft PR
-           ├─ review ─────── six axes, parallel
+           ├─ review ─────── five axes, parallel
            └─ wrap-up ────── merge on YOUR approval, reconcile docs
 ```
 
@@ -185,24 +185,19 @@ Before any of that is reported, the branch **rebases on the phase branch**, so w
 
 ### review
 
-Six independent axes, dispatched as parallel read-only agents:
+Five independent axes, dispatched as parallel read-only agents:
 
 | Axis | The question it answers |
 |---|---|
 | `code-review` | Is it written well? Repo standards plus 12 Fowler smells. **Where refactoring lives.** |
-| `spec-review` | Is it the right thing? Missing requirements, scope creep, wrong implementations. |
+| `spec-review` | Is it the right thing? Missing requirements, scope creep, wrong implementations, scope deferred without saying so. |
 | `test-review` | Would the tests fail on a real regression? |
 | `security-review` | What does it expose? A finding must name a concrete path to harm. |
 | `migration-review` | Reversibility, destructive operations, backfills. Failure mode here is data loss. |
-| `goal-review` | Does the outcome hold? Merged, switched on, delivered in full — not merely built well. |
 
-`code-review` and `test-review` always run; the rest fire on a checkable test — `spec-review`, `security-review` and `migration-review` against the diff, `goal-review` against what the diff cannot contain.
+`code-review` and `test-review` always run; `spec-review`, `security-review` and `migration-review` fire on a checkable test against the diff.
 
-That last one closes a structural gap rather than a thoroughness one. The other five all judge the diff, and a diff looks identical whether the change was merged, held behind a flag still switched off, or two thirds of its ticket. Well written, on spec, well tested and inert is the false-done nothing else on the run can see.
-
-Its selection rule needs stating, because it is the subtle part. It runs when **both** references exist: a ticket naming the outcome, and a pull request whose state can be read. Neither is in the working tree, and a verdict reached without them is a guess in a finding's clothes.
-
-Mid-ticket it still runs. `implement` opens the draft PR on the red-test push, so a PR almost always exists by review time — and *not merged* is then the **expected** state, where reporting it as a problem is pure noise, and an axis trained away as noise has stopped working. Gating the whole axis on a claim of done would have been the easy answer and the wrong one: it discards the two sub-checks that are most actionable exactly then, scope quietly deferred and a flag shipped switched off. So the noise is suppressed one level down instead. The axis reports four states — merged, enforced, scope covered, tracker consistent — as **facts**, whatever they say; a fact becomes a **finding** only where it contradicts a claim that the work is done.
+Scope quietly deferred is `spec-review`'s to catch, as a fourth finding type: the ticket promised three things, the diff carries two, and nothing anywhere says the third was put off. Well written, on spec, well tested and two thirds delivered is the false-done that would otherwise reach the merge looking complete, which is why that axis reads the ticket's own acceptance criteria as a checklist and not only the spec's prose ([ADR-0015](docs/adr/0015-review-has-a-goal-axis.md)).
 
 Findings are reported **per axis, never merged or reranked** — a change can pass one axis and fail another, and a merged list lets a clean axis bury a failing one under minor style notes.
 
@@ -270,7 +265,7 @@ Three agents, split by execution mode rather than job title — there is no "fro
 - **`reviewer`** — reads only.
 - **`screen-verifier`** — observes a running system through a browser, and fixes nothing.
 
-The third sits **on** that axis rather than across it: "observes a running system" is a third execution mode beside writes and reads-only, where "frontend developer" is a person ([ADR-0016](docs/adr/0016-screen-verification-is-a-third-agent.md)). Widening `reviewer`'s grant instead was the leading alternative and was rejected: all six axes would inherit a browser none of them uses, and — the deciding objection — **a browser can click.** An agent able to submit a form or press a delete control is not read-only against the running system, however read-only it stays against the repo, and that guarantee is what makes a reviewer's findings auditable.
+The third sits **on** that axis rather than across it: "observes a running system" is a third execution mode beside writes and reads-only, where "frontend developer" is a person ([ADR-0016](docs/adr/0016-screen-verification-is-a-third-agent.md)). Widening `reviewer`'s grant instead was the leading alternative and was rejected: all five axes would inherit a browser none of them uses, and — the deciding objection — **a browser can click.** An agent able to submit a form or press a delete control is not read-only against the running system, however read-only it stays against the repo, and that guarantee is what makes a reviewer's findings auditable.
 
 The trade is stated rather than hidden. No fixed tool allowlist can name browser tooling whose names vary by environment, so `screen-verifier` holds a full grant and carries the constraint in writing: it is read-only by discipline where `reviewer` is read-only by construction.
 

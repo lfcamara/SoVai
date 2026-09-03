@@ -53,6 +53,8 @@ feature-dev
 # name reads exactly like a live reference. Add an entry here, with the ADR that
 # rejected it, when a new ADR does the same.
 goal-reviewer   # ADR-0015 rejects it in favour of dispatching to `reviewer`
+# Retired skills, still named by the ADRs that decided and then reversed them.
+goal-review     # added by ADR-0015, removed 2026-09-03 in that ADR's reversal
 # Claude Code built-in agents and tools — a closed set Claude Code defines, for
 # which this repo holds no file.
 Explore

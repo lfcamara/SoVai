@@ -160,7 +160,7 @@ footer code{font-family:var(--mono)}
     twelve stages, three cadences, one rule about who is allowed to decide what, and four hooks
     that stop the rest of it being optional.</p>
   <div class="meta">
-    <span class="tag">28 skills</span>
+    <span class="tag">27 skills</span>
     <span class="tag">3 agents</span>
     <span class="tag">4 hooks</span>
     <span class="tag">17 ADRs</span>
@@ -214,7 +214,7 @@ footer code{font-family:var(--mono)}
 </section>
 
 <section>
-  <h2>The six review axes</h2>
+  <h2>The five review axes</h2>
   <p class="lede">Independent skills, dispatched as parallel read-only agents and reported per axis,
     never merged or reranked — a change can pass one and fail another, and a merged list lets a clean
     axis bury a failing one under a wash of minor style notes.</p>
@@ -223,28 +223,22 @@ footer code{font-family:var(--mono)}
       <thead><tr><th>Axis</th><th>The question it answers</th><th>Selected when</th></tr></thead>
       <tbody>
         <tr><td>code-review</td><td>Is it written well? Repo standards plus 12 Fowler smells — where refactoring lives</td><td>Always</td></tr>
-        <tr><td>spec-review</td><td>Is it the right thing? Missing requirements, scope creep, wrong implementations</td><td>A spec exists to hold the diff to</td></tr>
+        <tr><td>spec-review</td><td>Is it the right thing? Missing requirements, scope creep, wrong implementations, scope deferred without saying so</td><td>A spec exists to hold the diff to</td></tr>
         <tr><td>test-review</td><td>Would the tests fail on a real regression?</td><td>Always</td></tr>
         <tr><td>security-review</td><td>What does it expose? A finding must name a concrete path to harm</td><td>The diff touches a security surface</td></tr>
         <tr><td>migration-review</td><td>Reversibility, destructive operations, backfills — failure mode here is data loss</td><td>The diff touches a schema or a migration</td></tr>
-        <tr><td>goal-review</td><td>Does the outcome hold? Merged, switched on, delivered in full — not merely built well</td><td>A ticket and a readable PR both exist</td></tr>
       </tbody>
     </table>
   </div>
-  <p class="lede" style="margin-top:1.2rem">The sixth closes a structural gap rather than a thoroughness
-    one. The other five all judge the diff, and a diff looks identical whether the change was merged,
-    held behind a flag still switched off, or two thirds of its ticket. Well written, on spec, well
-    tested and inert is the false-done nothing else on the run can see — so this axis reads the state
-    of the world the ticket wanted changed instead.</p>
-  <p class="lede">Mid-ticket it still runs, and that is the subtle part. A draft PR exists from the
-    red-test push, so <em>not merged</em> is then the <strong>expected</strong> state, and reporting it
-    as a problem is pure noise — an axis trained away as noise has stopped working. Gating the whole
-    axis on a claim of done would have been the easy answer and the wrong one: it discards the two
-    sub-checks that are most actionable exactly then, scope quietly deferred and a flag shipped
-    switched off. So the noise is suppressed one level down instead.</p>
-  <div class="rule-box"><p>Four states — merged, enforced, scope covered, tracker consistent — are
-    reported as <strong>facts</strong>, whatever they say. A fact becomes a <strong>finding</strong>
-    only where it contradicts a claim that the work is done.</p></div>
+  <p class="lede" style="margin-top:1.2rem">Scope quietly deferred belongs to <strong>spec-review</strong>,
+    as a fourth finding type beside missing, unasked and implemented wrong. A sixth axis carried that
+    question for a while, reading the merge and enforcement state a diff cannot show; it was removed
+    once <strong>wrap-up</strong> owned the merge gate and the phase's exit criteria it had been
+    reporting on separately, leaving covered scope as the only question it still held alone.</p>
+  <div class="rule-box"><p>The ticket promised three things and the diff carries two, all of it well
+    written. Work the PR or the ticket names as deferred is a <strong>fact</strong>, and often a sound
+    call — the <strong>finding</strong> is silence about it, because that is what reaches the merge
+    looking complete.</p></div>
 </section>
 
 <section>
@@ -484,8 +478,8 @@ const STAGES=[
  {b:3,n:"open-pr",gate:0,q:"Is the work visible while it is still red?",
   body:"<p>A draft PR opened right after the red-test push, stating through its failing test what the ticket must make true.</p><p>The <strong>implementer</strong> opens it, not the orchestrator — it is the only thing that knows the push happened, and it does not report back until its run ends. A stray draft PR is visible and harmless; the merge stays the orchestrator's.</p><p>It targets the <strong>phase branch</strong> it was cut from, never <code>main</code>.</p><p>The <strong>ticket's link back</strong> is the orchestrator's half, run when the report arrives: reaching Linear or Jira takes connectors the implementer does not hold, so left with it that step is silently unexecutable on half the trackers.</p>",
   out:"A draft PR, linked to its ticket — and pointed at from it once the report lands"},
- {b:3,n:"review",gate:0,q:"Is it right, in six separate senses?",
-  body:"<p>Six independent axes as parallel read-only agents: <strong>code</strong> (standards and Fowler smells, where refactoring lives), <strong>spec</strong> (is it the right thing), <strong>test</strong> (would these fail on a real regression), <strong>security</strong> (a finding must name a concrete path to harm), <strong>migration</strong> (failure mode here is data loss), <strong>goal</strong> (does the outcome hold once it leaves the diff).</p><p>Reported per axis, <strong>never merged or reranked</strong> — a change can pass one and fail another, and a merged list lets a clean axis bury a failing one under minor style notes.</p><p>Reviewers cannot write, so <strong>the fixes are their own run</strong>: a fresh implementer brief, into the ticket's existing worktree, quoting the findings and fenced to them. Then the axes that raised them run again. What must be fixed is critical, high, and anything marked <strong>owed</strong> — the refactor <strong>tdd</strong> postponed to <strong>code-review</strong>, which severity alone would have let you waive.</p>",
+ {b:3,n:"review",gate:0,q:"Is it right, in five separate senses?",
+  body:"<p>Five independent axes as parallel read-only agents: <strong>code</strong> (standards and Fowler smells, where refactoring lives), <strong>spec</strong> (is it the right thing — including scope the ticket promised that the diff quietly dropped), <strong>test</strong> (would these fail on a real regression), <strong>security</strong> (a finding must name a concrete path to harm), <strong>migration</strong> (failure mode here is data loss).</p><p>Reported per axis, <strong>never merged or reranked</strong> — a change can pass one and fail another, and a merged list lets a clean axis bury a failing one under minor style notes.</p><p>Reviewers cannot write, so <strong>the fixes are their own run</strong>: a fresh implementer brief, into the ticket's existing worktree, quoting the findings and fenced to them. Then the axes that raised them run again. What must be fixed is critical, high, and anything marked <strong>owed</strong> — the refactor <strong>tdd</strong> postponed to <strong>code-review</strong>, which severity alone would have let you waive.</p>",
   out:"A verdict per axis"},
  {b:3,n:"wrap-up",gate:1,q:"Can this be merged, and what did it teach the plan?",
   body:"<p><strong>Merge is authorised only by your explicit approval of that specific PR.</strong> Reviews passing and CI green are signals you weigh when approving — they are not the approval. Approving one PR says nothing about the next.</p><p>Order is load-bearing: merge, confirm it landed, then the tracker, then the documents. A ticket moved to Done ahead of a merge that fails is a tracker asserting something false.</p><p>The ticket's <strong>worktree and branch retire on that same ordering</strong> — after the merge is confirmed, and never forced. A worktree with uncommitted changes holds work the merge did not carry: a fact to report, not a directory to delete.</p><p>When the last ticket in a phase closes and its exit criteria hold, <strong>the phase branch goes to <code>main</code></strong> as a pull request of its own, under its own explicit approval. Approving the tickets said nothing about shipping the phase.</p><p>Then reconciliation, under one rule: <strong>a document follows a decision, not a diff.</strong> Code diverging because someone decided otherwise means the spec is stale. Code diverging because it is <em>wrong</em> is a defect — rewriting the spec to match would launder a bug into a requirement.</p>",

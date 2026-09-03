@@ -65,7 +65,7 @@ A mechanism that refuses rather than advises — a hook that will not let a sess
 _Avoid_: Check, guard, blocker, hook (the hook is the mechanism; the gate is what it refuses)
 
 **Axis**:
-One independent dimension of review — code, spec, test, security, migration, goal. Each runs as its own parallel `reviewer` subagent and is reported separately, never merged with the others.
+One independent dimension of review — code, spec, test, security, migration. Each runs as its own parallel `reviewer` subagent and is reported separately, never merged with the others.
 _Avoid_: Check, pass, dimension
 
 **Phase branch**:

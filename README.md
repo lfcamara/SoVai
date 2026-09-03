@@ -4,7 +4,7 @@
 
 Coding agents are fast at writing code and careless about knowing *what* to write. Ask for a feature and you get a thousand lines and no shared understanding — nothing that says what problem this solved, why the approach was chosen, or what was deliberately left out.
 
-SoVai is the missing process around the agent. It turns a vague idea into a PRD, a spec, wireframes, a phased roadmap, and tickets — then implements them one at a time under TDD, reviews each change six different ways, and merges only when *you* say so.
+SoVai is the missing process around the agent. It turns a vague idea into a PRD, a spec, wireframes, a phased roadmap, and tickets — then implements them one at a time under TDD, reviews each change five different ways, and merges only when *you* say so.
 
 ```
 /plugin marketplace add lfcamara/SoVai
@@ -54,7 +54,7 @@ One name above isn't ours: `frontend-design` is an ambient skill the pipeline ha
 
 **It stops and asks you.** Facts get looked up; *decisions* get put to you, one question at a time with a recommended answer. Merging needs your explicit approval of that specific PR — reviews passing and CI green are signals you weigh, never permission the agent grants itself.
 
-**Reviewers can't quietly fix things.** Six independent axes — code, spec, tests, security, migrations, and whether the goal actually holds once it ships — run in parallel as read-only agents. A reviewer that patches what it finds destroys the evidence and hands you a verdict you can't audit. Findings come back ranked; critical and high are always fixed, the rest wait for your call.
+**Reviewers can't quietly fix things.** Five independent axes — code, spec, tests, security, migrations — run in parallel as read-only agents. A reviewer that patches what it finds destroys the evidence and hands you a verdict you can't audit. Findings come back ranked; critical and high are always fixed, the rest wait for your call.
 
 **Every phase ships.** A phase that ends with work merged but nothing a user can do isn't a phase, it's a checkpoint someone drew on a plan. Each one has to survive the question: *if everything after this were cancelled tomorrow, is the user better off?*
 
@@ -64,14 +64,14 @@ One name above isn't ours: `frontend-design` is an ambient skill the pipeline ha
 
 ## What's in it
 
-Ten blocks, 28 skills, 3 agents.
+Ten blocks, 27 skills, 3 agents.
 
 | Block | What it does |
 |---|---|
 | **Planning** | `brainstorm` · `to-prd` · `to-wireframes` · `to-roadmap` · `to-spec` · `to-tickets` |
 | **Prototyping** | `prototype` — throwaway code answering one question, on request rather than on schedule |
 | **Development** | `tdd` · `implement` · `ui-testing` · `open-pr` — red → green, one ticket at a time |
-| **Review** | `review` + six axes — parallel, read-only, ranked by severity |
+| **Review** | `review` + five axes — parallel, read-only, ranked by severity |
 | **Wrap-up** | `wrap-up` — merge on your approval, then reconcile the docs against what actually shipped |
 | **Debug** | `diagnose` — evidence, a reproduction loop, ranked hypotheses, a bug ticket |
 | **Knowledge** | `harden` · `lint-references` — recurring review findings become skill rules, and a name that went stale stops reading live |

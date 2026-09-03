@@ -1,6 +1,6 @@
 # Development block: ticket-scoped execution, red-green TDD, five-axis review
 
-**Superseded in part by [ADR-0015](0015-review-has-a-goal-axis.md), 2026-07-30: review now dispatches six axes.** The title and the "Review has five axes and one dispatcher" section record the decision as it was taken; `goal-review` was added later, on the same reasoning this ADR used for `spec-review`. Everything else stands — and the mandatory-TDD rule below became enforced rather than advisory in [ADR-0012](0012-the-plugin-ships-an-enforcement-layer.md).
+**A sixth axis was added by [ADR-0015](0015-review-has-a-goal-axis.md) on 2026-07-30 and removed again on 2026-09-03, when that ADR was reversed.** The five axes below are the current set, so the "Review has five axes and one dispatcher" section stands as written. Everything else stands too — and the mandatory-TDD rule below became enforced rather than advisory in [ADR-0012](0012-the-plugin-ships-an-enforcement-layer.md).
 
 The development block delegates execution per ticket, runs a two-step TDD loop, and splits review into five independent axes.
 

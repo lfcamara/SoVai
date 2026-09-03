@@ -29,7 +29,7 @@ Within each cluster, weight by severity: a cause behind two critical findings ha
 
 A recurring cause points at exactly one owner — pick it with this test: **what single artifact, present at the moment the defect was introduced, would have stopped it?**
 
-- A rule was missing from a review axis's criteria → that axis skill (`code-review`, `spec-review`, `test-review`, `security-review`, `migration-review`, `goal-review`).
+- A rule was missing from a review axis's criteria → that axis skill (`code-review`, `spec-review`, `test-review`, `security-review`, `migration-review`).
 - A skill's completion criterion was loose enough to let the defect pass as done → that skill.
 - An agent definition permitted an action it should have fenced off → that agent definition.
 - Nothing was watching an action a **gate** could have refused → the hook that should have fired, under `hooks/`. Where the gate exists and stayed silent because the project's own config classified the path wrong, the owner is that config, in the project's repo rather than this one.

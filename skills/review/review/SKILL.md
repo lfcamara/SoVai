@@ -1,11 +1,11 @@
 ---
 name: review
-description: Review the diff since a fixed point across independent axes — code, spec, test, security, migration, goal. Use when the user wants a branch, a PR, or work-in-progress changes reviewed, asks to "review since X", or when another skill needs a change checked before it lands.
+description: Review the diff since a fixed point across independent axes — code, spec, test, security, migration. Use when the user wants a branch, a PR, or work-in-progress changes reviewed, asks to "review since X", or when another skill needs a change checked before it lands.
 ---
 
 # Review
 
-Dispatch the diff to whichever review axes apply, run them as parallel `reviewer` subagents, and report each on its own terms. The axes are `code-review`, `spec-review`, `test-review`, `security-review`, `migration-review`, `goal-review` — six independent skills, each carrying its own patterns and anti-patterns. This skill only decides which fire and hands each its brief; the judgement lives in the axis.
+Dispatch the diff to whichever review axes apply, run them as parallel `reviewer` subagents, and report each on its own terms. The axes are `code-review`, `spec-review`, `test-review`, `security-review`, `migration-review` — five independent skills, each carrying its own patterns and anti-patterns. This skill only decides which fire and hands each its brief; the judgement lives in the axis.
 
 ## Pin the fixed point
 
@@ -13,7 +13,7 @@ Whatever the user names is the fixed point — a commit, branch, tag, `main`, `H
 
 Reviewing a ticket's branch, the process already knows it: the phase branch that ticket was cut from, `phase/<effort>-<NN>`. Resolve it and say which you used. Asking there puts a question to the user that the branch itself answers, and `...` already excludes whatever the phase branch gained meanwhile. Ask only when the review is of something else and the user named nothing.
 
-Confirm it resolves (`git rev-parse <fixed-point>`) and that `git diff <fixed-point>...HEAD` is non-empty before going further. A bad ref or an empty diff fails here — cheap and local — rather than inside six parallel subagents where the failure is expensive to trace back.
+Confirm it resolves (`git rev-parse <fixed-point>`) and that `git diff <fixed-point>...HEAD` is non-empty before going further. A bad ref or an empty diff fails here — cheap and local — rather than inside five parallel subagents where the failure is expensive to trace back.
 
 Capture `git diff <fixed-point>...HEAD` and `git log <fixed-point>..HEAD --oneline` once; every axis brief reuses them.
 
@@ -24,13 +24,12 @@ Run `code-review` and `test-review` always. Check the rest against the diff:
 - **`spec-review`** — run it when a spec exists to hold the diff to: the commit trail names a ticket, a `<effort> — Phase <N> Spec.md` or `<effort> — PRD.md` exists under `docs/planning/<effort>/` for the matching effort, or the user supplies a spec path. Check the commit messages and the filesystem before deciding; if none of the three turn up anything, skip it rather than inventing a spec to check against.
 - **`security-review`** — run it when the diff touches a security-relevant surface: authentication or authorization code, input parsing or deserialization, secrets or credentials, a dependency manifest or lockfile, or a network-facing boundary (routes, handlers, API definitions). Check `git diff --name-only` against those paths and grep the diff body for the keywords. Run it regardless of the diff if the user asks for a security pass explicitly.
 - **`migration-review`** — run it when the diff touches a schema or data migration: files under a `migrations/` directory, a schema file (`schema.prisma`, `*.sql` under a migrate path), or an ORM model whose column or type changed. Check `git diff --name-only` against those paths.
-- **`goal-review`** — run it when the goal is answerable from outside the diff: a ticket naming the outcome (the same reference `spec-review` looks for) and a pull request whose state `gh pr view` can read. Both are needed — a working tree with no PR yet cannot show merge or enforcement state, and an axis reporting "not merged" about work nobody claimed was merged is noise. Where the PR is a draft mid-ticket, run it anyway: scope coverage and a flag left switched off are both answerable then, and that is the cheapest moment to act on either.
 
 State which axes you selected and why before dispatching — the user should be able to see the decision, not just its result.
 
 ## Severity
 
-Every finding carries one of four severities, assigned by the axis that found it — severity depends on what that axis knows about the diff, which the dispatcher aggregating six reports afterward cannot re-derive.
+Every finding carries one of four severities, assigned by the axis that found it — severity depends on what that axis knows about the diff, which the dispatcher aggregating five reports afterward cannot re-derive.
 
 - **critical** — will cause data loss, a security breach, or a broken production path.
 - **high** — will cause incorrect behaviour a user meets, or defeats a guarantee the code claims to provide.
@@ -47,12 +46,11 @@ Send one message with one `Agent` call per selected axis, all using the `reviewe
 
 - **Outcome** — findings for this axis against the diff, each assigned a severity per the Severity section above, ranked by severity.
 - **Skill** — the axis skill by name (`code-review`, `spec-review`, …); point the subagent at it rather than restating its process.
-- **Inputs** — the diff command and commit list from the pin step, plus the paths this axis needs. Where selecting the axis already turned up its reference — the spec you found deciding whether `spec-review` runs, the migration files you matched for `migration-review` — pass those paths rather than making the agent search for what you have already located. `goal-review` needs two references the diff does not contain: the ticket, with its text where the agent cannot reach the tracker itself, and the pull request.
+- **Inputs** — the diff command and commit list from the pin step, plus the paths this axis needs. Where selecting the axis already turned up its reference — the spec you found deciding whether `spec-review` runs, the migration files you matched for `migration-review` — pass those paths rather than making the agent search for what you have already located. `spec-review` needs the ticket as well as the spec, with its text where the agent cannot reach the tracker itself: the ticket's acceptance criteria are what scope is checked against.
 - **Done** — every hunk in the diff accounted for under this axis's criteria.
 - **Fence** — read-only, which `reviewer` already enforces; no edits, no scope beyond this one axis.
 - **Report** — a verdict for this axis alone. The `reviewer` agent already carries the shape findings come back in; the brief only names what is specific to this axis.
 
-`goal-review` is the exception to the diff-shaped wording above: its outcome is whether the ticket's goal holds outside the diff, and it is done when every state it names has been reported.
 
 The `reviewer` subagent is read-only by construction, which is what lets its findings be trusted as findings rather than quiet fixes made along the way.
 
