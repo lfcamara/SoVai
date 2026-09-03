@@ -13,7 +13,7 @@ Scope the run to one **phase** when a roadmap exists (`docs/planning/<effort>/<e
 
 Resolve the **effort** first. This skill routinely runs weeks after the plan was written, in a session that knows nothing but the filesystem, so where more than one could match, ask instead of guessing.
 
-Work from the session, plus the spec and roadmap under `docs/planning/<effort>/` if they exist. If the user passes a reference — a path, an issue id, a URL — fetch it and read it in full.
+Work from the session, plus the roadmap and this phase's spec (`<effort> — Phase <N> Spec.md`) under `docs/planning/<effort>/` if they exist. A spec belongs to one phase, so read the one for the phase being ticketed and leave the others alone. If the user passes a reference — a path, an issue id, a URL — fetch it and read it in full.
 
 Explore the codebase before slicing. Ticket titles and bodies use the vocabulary in `CONTEXT.md`, and respect the ADRs covering the area. Look for prefactoring that would make the real change simple: make the change easy, then make the easy change — and give the prefactoring its own ticket, first.
 
