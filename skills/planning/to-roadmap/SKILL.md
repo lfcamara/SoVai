@@ -1,6 +1,6 @@
 ---
 name: to-roadmap
-description: Break a large effort into phases that each ship something useful on their own. Use when a spec covers more work than one release, when the user asks how to sequence or stage a project, or when another skill needs a roadmap before tickets can be written.
+description: Break a large effort into phases that each ship something useful on their own. Use when a PRD covers more work than one release, when the user asks how to sequence or stage a project, or when another skill needs the work sequenced before any of it can be specced.
 ---
 
 # To Roadmap
@@ -13,7 +13,15 @@ Shipping is the whole discipline. A phase that ends with work merged but nothing
 
 Resolve the **effort**. Where more than one could match, ask rather than guessing.
 
-Work from the PRD, the spec, and the wireframes under `docs/planning/<effort>/`, plus whatever the session already established. Read the codebase to see what exists today — the starting point decides how much has to happen before the first phase can ship at all.
+Work from the PRD and the wireframes under `docs/planning/<effort>/`, plus whatever the session already established.
+
+## Settle the technical forks first
+
+Read the codebase before drawing any phase: the starting point decides how much has to happen before the first one can ship at all.
+
+A **fork** surfaces here whenever the sequencing depends on a technical choice nobody has made — build or buy, one service or two, synchronous or event-driven, migrate in place or alongside. Settle it now, with the user. A roadmap drawn over an unmade decision reorders itself the moment the decision lands.
+
+Where a fork passes all three tests in `domain-modeling`'s ADR format — hard to reverse, surprising without context, the result of a real trade-off — write the ADR before the roadmap. Those ADRs are the whole of an effort's architecture record. There is deliberately no effort-wide technical document: implementation detail is written per phase, when that phase starts, while an architectural decision outlives every phase it touches and belongs somewhere built to be revised.
 
 ## Draft the phases
 
@@ -27,7 +35,7 @@ Each phase carries:
 Two tests decide whether the breakdown holds. Apply both to every phase before showing it to anyone:
 
 - **The cancellation test.** If every later phase were cancelled tomorrow, is the user better off than before this phase existed? A phase that fails leaves the project stranded mid-migration, and should be merged into the phase that completes its value.
-- **Full coverage.** Every capability in the spec's scope lands in exactly one phase. Walk the spec and account for each one — work that appears in no phase is work that will surface late, and work that appears in two is a boundary drawn in the wrong place.
+- **Full coverage.** Every user story in the PRD, and every screen in the wireframes, lands in exactly one phase. Walk both and account for each — work that appears in no phase is work that will surface late, and work that appears in two is a boundary drawn in the wrong place.
 
 Order the phases so each one raises the floor: the earliest phases carry the load-bearing risk and the thinnest end-to-end path, later phases widen it.
 
@@ -47,35 +55,12 @@ That iteration is what keeps this skill in the session. Each round is a correcti
 
 ## Write the roadmap
 
-Write the approved breakdown to `docs/planning/<effort>/<effort> — Roadmap.md`, beside the PRD and spec.
-
-<roadmap-template>
-
-# <Effort name> — Roadmap
-
-PRD: [[<effort> — PRD]] · Spec: [[<effort> — Spec]] · Wireframes: [[<effort> — Wireframes]]
-
-## Phase 1 — <name>
-
-**Ships:** what a user can do at the end of this phase.
-
-**Stands alone because:** the value that survives if everything after is cancelled.
-
-**Depends on:** earlier phases, or "Nothing — can start immediately".
-
-**Exit criteria:**
-
-- [ ] Criterion 1
-- [ ] Criterion 2
-
-</roadmap-template>
+Write the approved breakdown to `docs/planning/<effort>/<effort> — Roadmap.md`, beside the PRD, to the shape in [ROADMAP-FORMAT.md](./ROADMAP-FORMAT.md).
 
 ## Carry it forward
 
 Phases are planned once; everything after runs **per phase**, at the start of that phase, against the codebase as it stands then. Planning a later phase's detail now means planning against a codebase that will have moved by the time the work starts.
 
-So continue in the same session for **phase 1 only**, and leave the later phases untouched — each gets its own run when it begins: run the `to-tickets` skill.
+That is why the spec sits below this line rather than above it. It is the most detail-dense document the pipeline produces — seams, interfaces, schema, contracts — so writing one for the whole effort up front spends the most detail at the moment least is known.
 
-**Prototyping is a question you raise, not a stage you run.** A prototype is throwaway code that answers a question, and an effort arriving here already has a PRD, wireframes, a spec and a roadmap. Most phases reach this point with nothing left open, and a prototype built anyway is ceremony that costs a whole session.
-
-So offer it, never run it. Where the spec's **Risks and unknowns** names something only running code would settle — a state model nobody can reason about on paper, a layout that may not survive real content — name that question and let the user decide whether to spend a `prototype` run on it. Where nothing is open, go to tickets and do not raise it.
+So continue in the same session for **phase 1 only**, and leave the later phases untouched — each gets its own run when it begins: run the `to-spec` skill for phase 1.
