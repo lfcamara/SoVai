@@ -179,6 +179,8 @@ The red test is the first commit and the first push — which is what lets a dra
 
 The **implementer** opens that draft PR, not the orchestrator. The orchestrator's only channel out of a subagent is its final report, which arrives after the run is over and the work is already green — by then a draft PR says nothing the finished diff doesn't. Ticket state stays the orchestrator's, and so does the merge; a stranded ticket needs something alive to reconcile it, while a stray draft PR is visible and harmless.
 
+The **ticket's link back to the PR** is the orchestrator's, though, split off by capability rather than by preference: reaching Linear or Jira takes MCP connectors the implementer does not hold, so left with it the step is silently unexecutable on half the supported trackers. It runs when the report arrives, from the PR URL that report carries ([ADR-0007](docs/adr/0007-development-block-shape.md)).
+
 Before any of that is reported, the branch **rebases on the phase branch**, so what gets verified is what the phase will actually hold. Lint, build, tests and coverage run **inside** the implementer. Their output is enormous, and the subagent boundary is already the isolation: it dies with the run. Only the verdict and the failing lines travel back — which is the compressed form of the evidence `verify-before-claiming` requires, not an exemption from it.
 
 ### review

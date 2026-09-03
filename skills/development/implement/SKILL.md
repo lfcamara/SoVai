@@ -31,7 +31,7 @@ Land the loop at green and stop. Cleanup happens in review, against a diff a rev
 
 ## Commit discipline
 
-Work inside the worktree the brief names, and cut the ticket's branch there from the phase branch the brief names, before anything is committed — `open-pr` holds the name the branch carries. The red test is the first commit on it, and pushing it is the first push. Immediately after that push, run the `open-pr` skill yourself to open the draft PR — you are the only thing that knows the push has happened, and the orchestrator does not hear from you again until this run ends. A draft PR opened here states, through its failing test, what the ticket has to make true; opened at the end it would say nothing that the finished diff doesn't already say.
+Work inside the worktree the brief names, and cut the ticket's branch there from the phase branch the brief names, before anything is committed — `open-pr` holds the name the branch carries. The red test is the first commit on it, and pushing it is the first push. Immediately after that push, run the `open-pr` skill yourself to open the draft PR — you are the only thing that knows the push has happened, and the orchestrator does not hear from you again until this run ends. A draft PR opened here states, through its failing test, what the ticket has to make true; opened at the end it would say nothing that the finished diff doesn't already say. Opening it is yours; pointing the ticket back at it is the orchestrator's, from the URL your report carries.
 
 ## Verify before reporting
 
