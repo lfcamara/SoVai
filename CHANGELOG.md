@@ -24,6 +24,14 @@ Work on a branch. **Merging to main is the release**, because that is what `/plu
 
 ---
 
+## 2.1.2 — 2026-09-04
+
+**The workflow page's version badge is checked against the manifest.** It read `v1.1.1` while the plugin was on 2.1.1 — three releases stale, and stale in the one place a reader has no way to test what they are being told.
+
+The fix that worked for the markdown does not transfer. `engineering-workflow.md` stopped restating the version and points at `plugin.json`, which is available to it as a link; the HTML is a rendered page where a version belongs on the page itself. So the badge stays and the linter keeps it honest instead.
+
+What is deliberately **not** attempted is generating the page from the markdown, or checking that their sections cover each other. The two are structured differently on purpose — one reads top to bottom in stages, the other browses an interactive pipeline — so neither derives from the other and a coverage check between them would report noise rather than drift. The version is the one fact on that page with a single correct value, which is why it is the one thing asserted.
+
 ## 2.1.1 — 2026-09-04
 
 **The pull request now comes out of draft.** `open-pr` carried the instruction — "mark it ready only once its reviews pass" — and could not execute it: it runs inside the implementer, immediately after the red-test push, and that run ends before any review exists. Nothing else claimed the step. So every PR stayed a draft, and `wrap-up`'s first precondition is that the PR is not one, which meant the merge gate could never open on a ticket that had gone through the process exactly as written.
