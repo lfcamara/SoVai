@@ -1,6 +1,6 @@
 ---
 name: spec-review
-description: Review whether a diff builds the right thing — missing requirements, scope creep, and requirements implemented wrongly. Use to check a diff against its originating ticket, spec, or PRD, or when the review skill dispatches its spec axis.
+description: The spec axis of `review` — whether a diff builds the right thing: a requirement missing, partial, implemented wrong, or scope the ticket promised that the diff does not carry. Use when `review` dispatches this axis.
 ---
 
 # Spec Review
@@ -27,6 +27,10 @@ Every finding quotes the spec line it comes from. A finding with no citation is 
 - **Deferred but presented as delivered** — scope the ticket promised that the diff does not carry, where nothing says it was put off. Check the ticket's own acceptance criteria as a checklist, not just the spec's prose. Work the PR or the ticket explicitly names as deferred — a follow-up ticket, a stated later phase — is a fact and often a sound call; the finding is silence about it, because that is what reaches the merge looking complete.
 
 Where the spec is a PRD (business-facing: problem, solution, user stories) rather than a technical spec, hold the diff to the behaviour those stories imply, not to implementation details the PRD never had — that's `code-review`'s ground.
+
+## Entered directly
+
+Dispatched by `review`, this axis inherits a pinned fixed point, the severity ladder it assigns against, and a record `wrap-up` reads before it merges. Reached on its own it has none of those, so say that with the findings — and where the work is heading for a merge, run `review` for this axis instead, so what you find lands where the merge gate can see it.
 
 ## Severity
 

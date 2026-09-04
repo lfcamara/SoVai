@@ -1,6 +1,6 @@
 ---
 name: test-review
-description: Review the tests in a diff — whether they'd catch a real regression, sit at the right seam, and cover the cases that break. Use when reviewing a diff's test coverage or test quality, or when another skill needs the testing axis of a review run.
+description: The test axis of `review` — whether a diff's tests would fail on a real regression, sit at the right seam, and cover the cases that actually break. Use when `review` dispatches this axis.
 ---
 
 # Test Review
@@ -47,6 +47,10 @@ A test name should say what capability exists, in terms someone outside the diff
 ## Coverage percentage is a weak signal
 
 Do not use a coverage percentage, in the diff or in CI output, as evidence this axis passes. A percentage counts lines executed, not behavior verified — a suite full of the false-confidence tests described above can hit 100% while catching nothing, and a suite testing every error path and boundary on the code that matters can sit well below it. Look at what the tests actually assert and which cases they exercise instead; treat a percentage claim in a PR description as unverified until you've checked the tests behind it.
+
+## Entered directly
+
+Dispatched by `review`, this axis inherits a pinned fixed point, the severity ladder it assigns against, and a record `wrap-up` reads before it merges. Reached on its own it has none of those, so say that with the findings — and where the work is heading for a merge, run `review` for this axis instead, so what you find lands where the merge gate can see it.
 
 ## Severity
 

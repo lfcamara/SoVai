@@ -24,6 +24,18 @@ Work on a branch. **Merging to main is the release**, because that is what `/plu
 
 ---
 
+## 2.2.1 — 2026-09-04
+
+**The five review axes stop advertising themselves as entry points.** Each description opened with a standalone trigger — "Use to check code quality on a diff", "Use when reviewing a diff's security implications" — so a plain-language request could fire one on its own, outside the dispatcher. Everything that makes an axis's findings count lives in `review` and not in the axis: the pinned fixed point, the severity ladder, the **owed** marker, the recorded cause, and the record `wrap-up` reads before it merges. An axis reached alone produced findings the merge gate never sees, while reading exactly like a real review.
+
+The descriptions are now reach clauses — "the security axis of `review`… use when `review` dispatches this axis" — and `review` states that a request for a single axis is served by running `review` with that axis selected. It already did this for a security pass asked for explicitly; the rule is now general.
+
+**Merging the five into `review` was considered and rejected.** As reference files they would be *read* by a subagent rather than *loaded* as skills, and `delegate`'s own contract is that pointing at a skill "beats restating it and cannot drift from it" — weaker exactly where the criteria need to be reliably in the reviewer's head. The `reviewer` agent holds the `Skill` tool for this reason. Five skills, five parallel agents, five separate reports: unchanged.
+
+**What this does not do, stated plainly.** `disable-model-invocation` would make the bypass impossible, and is unavailable — a user-invoked skill cannot be reached by another skill either, so `review` could no longer dispatch. Reach-only wording steers; it does not lock. The residual case is a user typing an axis name deliberately, and each axis now carries a short **Entered directly** section for it: say what is missing, and run `review` for that axis where the work is heading for a merge. Silent-wrong becomes self-correcting.
+
+Recovers 235 characters of always-loaded description.
+
 ## 2.2.0 — 2026-09-04
 
 **The TDD Stop gate is removed, and the hooks stop claiming to enforce.** What is left is two hooks that remind: the SessionStart bootstrap and the pre-edit reminder. The phase tracker, the `/tmp` sentinels that crossed between hooks, and the per-session override go with the gate ([ADR-0012](docs/adr/0012-the-plugin-ships-an-enforcement-layer.md), amended).

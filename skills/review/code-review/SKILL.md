@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: Review how the code in a diff is written, against this repo's documented standards and a Fowler smell baseline. Use to check code quality, structure, or convention on a diff, when refactoring opportunities are wanted, or when the review skill dispatches its standards axis.
+description: The standards axis of `review` — how the code in a diff is written, held to this repo's documented standards and a Fowler smell baseline, and where the refactoring `tdd` postponed comes due. Use when `review` dispatches this axis.
 ---
 
 # Code Review
@@ -17,6 +17,10 @@ Two rules bind everything below, including the baseline:
 - **Every finding is a judgement call.** Phrase smells as what they might be ("possible Feature Envy"), never as violations. A documented-standard breach can be stated as a hard breach; a baseline smell cannot.
 
 Skip anything a linter or formatter already catches — restating tooling output is noise in a review a human has to read.
+
+## Entered directly
+
+Dispatched by `review`, this axis inherits a pinned fixed point, the severity ladder it assigns against, and a record `wrap-up` reads before it merges. Reached on its own it has none of those, so say that with the findings — and where the work is heading for a merge, run `review` for this axis instead, so what you find lands where the merge gate can see it.
 
 ## Severity
 
