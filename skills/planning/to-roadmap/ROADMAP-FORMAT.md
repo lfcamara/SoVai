@@ -7,7 +7,7 @@ The roadmap lives at `docs/planning/<effort>/<effort> — Roadmap.md`, beside th
 ```md
 # <Effort name> — Roadmap
 
-PRD: [[<effort> — PRD]] · Wireframes: [[<effort> — Wireframes]]
+PRD: [[<effort> — PRD]] · Wireframes: [[<effort> — Wireframes]]  ← drop this half where the effort has no interface
 
 ## Phase 1 — <name>
 

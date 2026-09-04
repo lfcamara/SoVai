@@ -29,6 +29,11 @@ Keep mechanism, file paths, and code out of it. A reader who does not write code
 
 ## Carry it forward
 
-Show the user the PRD and let them correct it. Once they are satisfied, continue in the same session: run the `to-spec` skill.
+Show the user the PRD and let them correct it. Then continue in the same session, taking the branch that fits the work:
+
+- **The effort has a user-facing interface** — run the `to-wireframes` skill. Naming the screens before sequencing the work is what makes phase boundaries concrete, and wireframes routinely surface scope that would otherwise land after the roadmap was drawn.
+- **No interface to draw** — run the `to-roadmap` skill directly, and say that you skipped wireframes so the roadmap knows to cover the user stories alone.
+
+The spec comes later either way. It is written once per phase, when that phase starts, from the roadmap entry that scopes it (ADR-0019) — so it is `to-roadmap` that reaches it, never this skill.
 
 Write the PRD here rather than dispatching it. Synthesis is a judgement about what the session meant, and the session is the only place that judgement can be made — a subagent would be handed the transcript and asked to guess at it.
