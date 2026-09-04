@@ -95,4 +95,10 @@ Move the ticket back to **Doing** and dispatch one brief per the `delegate` cont
 
 Then re-review: the axes that raised those findings, plus any axis whose selection criteria the fix diff newly matches — a fix that touches a migration file gets `migration-review` whether or not it ran the first time. Move the ticket back to Testing as you dispatch it. Findings raised on a fix run are handled exactly like the first round, with no cap on rounds: the loop ends when a review comes back with nothing that must be fixed.
 
-Once it does, the work is ready for the user to approve, and `wrap-up` merges it on that approval. Reviews passing is what makes the PR reviewable, never what authorizes the merge.
+## Take the PR out of draft
+
+Once the loop ends, mark the PR ready with `gh pr ready`. `open-pr` opened it as a draft to say the diff was not asking for a merge decision yet; this is the moment that stops being true, and this skill is the only thing that knows it — the implementer that opened the PR ended its run before any review existed, and `wrap-up` reads the draft state as a precondition rather than setting it.
+
+Ready is not approval. It says the reviews are done and the diff is now asking; the user still decides, and `wrap-up` still asks. A PR sitting in draft when `wrap-up` runs means this loop never finished, which is exactly what that precondition is for.
+
+Then the work is ready for the user to approve, and `wrap-up` merges it on that approval. Reviews passing is what makes the PR reviewable, never what authorizes the merge.

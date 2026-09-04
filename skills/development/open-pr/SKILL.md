@@ -39,8 +39,10 @@ This half sits with the orchestrator because reaching a tracker takes tools the 
 
 ## Draft until reviewed
 
-Open as a draft. Mark it ready only once its reviews pass — the draft state is the signal that the diff isn't asking for a merge decision yet, only visibility into work in progress.
+Open as a draft. The draft state is the signal that the diff isn't asking for a merge decision yet, only visibility into work in progress.
+
+Taking it out of draft is `review`'s, at the end of its round loop — the same split as **Link the ticket back**, and for the same reason. This run ends before any review exists, so an implementer told to mark the PR ready when its reviews pass is holding an instruction whose condition it can never observe. `review` is what knows the loop ended.
 
 ## Mechanics
 
-Use the `gh` CLI for every GitHub operation here — creating the PR as a draft, marking it ready, and any comment or label change along the way.
+Use the `gh` CLI for every GitHub operation here — creating the PR as a draft, and any comment or label change along the way. `gh pr ready` belongs to `review`, which runs it when the round loop ends.

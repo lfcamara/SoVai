@@ -24,6 +24,14 @@ Work on a branch. **Merging to main is the release**, because that is what `/plu
 
 ---
 
+## 2.1.1 — 2026-09-04
+
+**The pull request now comes out of draft.** `open-pr` carried the instruction — "mark it ready only once its reviews pass" — and could not execute it: it runs inside the implementer, immediately after the red-test push, and that run ends before any review exists. Nothing else claimed the step. So every PR stayed a draft, and `wrap-up`'s first precondition is that the PR is not one, which meant the merge gate could never open on a ticket that had gone through the process exactly as written.
+
+`review` owns it now, at the end of its round loop, which is the only place that knows the loop ended. The split matches the one `open-pr` already makes for linking the ticket back: a step goes to whoever can observe its condition, not to whoever the concept belongs to.
+
+Ready is not approval, and the distinction is worth keeping sharp — it says the reviews are done and the diff is now asking, where the merge still waits on the user saying so about that specific PR. `wrap-up`'s precondition stops being unsatisfiable and becomes diagnostic: a PR still in draft when it runs means the review loop never finished.
+
 ## 2.1.0 — 2026-09-04
 
 **The linter now checks the pipeline's order.** Everything it did before asks whether a name resolves. This asks whether it is the *right* name, and it exists because 2.0.1 had to fix a case where it was not: `to-prd` handed off to `to-spec` after the spec moved below the roadmap, and the reference was clean by every check — `to-spec` is a real skill, sitting in a real directory, declared in the manifest.
