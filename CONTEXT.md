@@ -49,7 +49,7 @@ The weight of a review finding — critical, high, medium, or low — assigned b
 _Avoid_: Priority, importance, level
 
 **Cause**:
-Why a finding was not prevented, recorded on the finding itself. A cause names the gap in the process ("no rule covers this"), never the moment or the person ("missed it") — a cause that repeats is what `harden` acts on.
+Why a finding was not prevented, recorded on the finding itself. A cause names the gap in the process ("no rule covers this"), never the moment or the person ("missed it") — the first is matchable against a later review, the second is not.
 _Avoid_: Reason, root cause (reserve that for the bug being diagnosed, not the process gap)
 
 **Feedback loop**:

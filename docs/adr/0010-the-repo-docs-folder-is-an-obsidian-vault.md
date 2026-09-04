@@ -45,3 +45,17 @@ It proposes rather than applies. A skill change alters every future run, which i
 A troubleshooting note records a bug, why it happened, and how it was resolved. It is written when the fix merges, not when the bug is diagnosed — `diagnose` deliberately ends at a ticket, and at that point the resolution does not exist yet to be recorded.
 
 The note is written in the words of the **symptom** rather than the diagnosis. Its value is being found again by someone hitting the same behaviour later, and the name of the root cause is precisely what that person does not yet have to search on.
+
+## The hardening skill is withdrawn; the causes it would read are kept
+
+**Status: accepted, 2026-09-04.** Amends the "Recurrence hardens the skills" section above. Everything else in this ADR stands — the vault, the filenames, the severity ladder, and the cause recorded on every finding.
+
+`harden` could not run, and could not have run for months. Its own first step refuses to proceed below roughly ten review records across the vaults it is pointed at, and nothing has produced one: the pipeline has still not been used against a real project. So it shipped as a skill that was dormant by construction, carrying the second-longest description in the plugin into every session to describe a pass it was unable to make.
+
+The defect in it was unobservable for the same reason. It read and appended `LEDGER.md` inside its own skill folder and amended skill files in place — which, installed through the marketplace, is a managed copy that `/plugin update` replaces. Every amendment and the whole ledger would have vanished on the next update, and nothing would have surfaced that until someone had run it twice.
+
+The decision this reverses is not the loop; it is the timing. **The half that cannot be reconstructed later is kept**: every finding still records why it was not prevented, in a form a later review can be matched against, and the review record still persists in the vault. That is the input, and it accumulates whether or not anything automated consumes it.
+
+What is withdrawn is the consumer, and the reason is that it was designed against an imagined pattern. Grouping by cause, weighting by severity, and the owner test — *what single artifact, present when the defect was introduced, would have stopped it?* — are all reasonable and all unvalidated, because no run of real records has ever been read. Written again from ten actual records, it would likely not have the shape it had. Building it before then is the speculation the plugin refuses everywhere else: `to-spec` per phase, tickets per phase, prototypes on a question rather than a schedule.
+
+The cost, stated: a recurring cause now goes unnoticed unless a person reads the records and sees it. Against that, a skill that cannot run notices nothing either, and costs context in every session for the privilege.

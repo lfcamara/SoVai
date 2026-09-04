@@ -342,19 +342,15 @@ So each finding carries a short cause, and the review record persists in the vau
 
 Causes name the gap — *"the spec never said which seam"*, *"no rule in code-review covers this"* — not the moment or the person. A cause phrased as "missed it" is unmatchable and unfixable.
 
-### harden turns recurrence into a rule
+### Reading the causes back is deliberately not built
 
-`harden` reads accumulated review records, groups findings **by cause rather than symptom** — two findings that look unrelated can share one hole — weights the clusters by severity, and amends whichever skill should have prevented the defect.
+A cause that repeats is a hole in the process, and the obvious next move is a skill that reads a run of review records, groups them by cause rather than symptom, and amends whichever skill should have caught the defect. One existed, and it was withdrawn before it ever ran ([ADR-0010](docs/adr/0010-the-repo-docs-folder-is-an-obsidian-vault.md), amended).
 
-Picking the owner uses one test: *what single artifact, present when the defect was introduced, would have stopped it?* A missing axis rule points at the axis; a loose completion criterion points at the skill that let it pass as done; a permitted action points at the agent definition.
+It could not run. Its own first step refused to proceed below roughly ten review records, and nothing had produced one — the pipeline has still not been used on a real project. So it sat in every session's context describing a pass it was not able to make, and the defect in how it stored its history was unobservable until it did.
 
-The amendment **competes with what is already there**. Where an existing rule was almost right, it gets sharpened rather than joined by a second one nearby — a rule added per incident is exactly the sediment `writing-great-skills` warns against, and is how the original rule stayed weak enough to miss this in the first place.
-
-It runs periodically, never per review — one occurrence is not a pattern. It runs in the SoVai repo, where the skills live, reading vaults from whichever projects you point it at: a cause appearing once in each of three projects is invisible from inside any one of them, and that is the pattern most worth catching. And it **proposes rather than applies**, because a skill change alters every future run.
+What is kept is the part that cannot be reconstructed later: **the cause, written on the finding, in a form a later review can be matched against.** That is the input such a skill would need, and it accumulates whether or not anything automated reads it. Building the reader against real records, when there are some, is a different exercise from building it against an imagined pattern.
 
 ### lint-references checks the plugin still holds together
-
-`harden` amends the plugin from what reviews found. `lint-references` checks that what came out the other side still resolves.
 
 This plugin's cross-references are almost entirely **bare names in backticks** — `review` naming its axes, `wrap-up` naming `to-tickets`, an ADR citing an agent — and nothing reads them back: not the filesystem, not Claude Code, not any other tool. A rename leaves the old name sitting in prose, reading exactly as live as the day it worked. A dead one raises no error. It silently does not happen, in a session belonging to someone who has no way to know the reference was ever meant to resolve, and who reasonably concludes the plugin does not work rather than that one name went stale.
 
