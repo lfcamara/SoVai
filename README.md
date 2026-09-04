@@ -58,7 +58,7 @@ One name above isn't ours: `frontend-design` is an ambient skill the pipeline ha
 
 **Every phase ships.** A phase that ends with work merged but nothing a user can do isn't a phase, it's a checkpoint someone drew on a plan. Each one has to survive the question: *if everything after this were cancelled tomorrow, is the user better off?*
 
-**It gets better at your project.** Every review finding records not just what broke, but **why it wasn't prevented**. When the same cause shows up again, `harden` turns it into a rule in the skill that should have caught it. The harness learns from its own misses.
+**Every finding records why it wasn't prevented.** Not just what broke — the gap in the process behind it, written so a later review can be matched against it. A cause that repeats is a hole worth closing in whichever skill should have caught it. Reading those records back automatically is deliberately not built yet: nothing has generated one, and a tool for a pattern nobody has seen is a guess.
 
 ---
 
@@ -74,7 +74,7 @@ Ten blocks, 27 skills, 3 agents.
 | **Review** | `review` + five axes — parallel, read-only, ranked by severity |
 | **Wrap-up** | `wrap-up` — merge on your approval, then reconcile the docs against what actually shipped |
 | **Debug** | `diagnose` — evidence, a reproduction loop, ranked hypotheses, a bug ticket |
-| **Knowledge** | `harden` · `lint-references` — recurring review findings become skill rules, and a name that went stale stops reading live |
+| **Knowledge** | `lint-references` — a name that went stale stops reading live |
 | **Engineering** | `verify-before-claiming` · `domain-modeling` · `grill-with-docs` — evidence before any claim of done, the vocabulary the documents are written in, and a design interview that leaves its trace (that last one you type by hand) |
 | **Orchestration** | `delegate` — the six-part brief every handoff to a subagent carries |
 | **Productivity** | `grilling` · `writing-great-skills` — the interview underneath `brainstorm`, and the standard every skill here is held to |

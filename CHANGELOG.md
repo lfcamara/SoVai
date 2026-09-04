@@ -24,6 +24,20 @@ Work on a branch. **Merging to main is the release**, because that is what `/plu
 
 ---
 
+## 2.3.0 — 2026-09-04
+
+**`harden` is withdrawn.** The skill read accumulated review records, grouped findings by cause rather than symptom, and proposed amendments to whichever skill should have caught the defect. It could not run, and could not have run for months: its own first step refuses to proceed below roughly ten review records across the vaults it is pointed at, and nothing has produced one — the pipeline has still not been used against a real project. It shipped dormant by construction, carrying the second-longest description in the plugin into every session to describe a pass it was unable to make.
+
+Its own defect was unobservable for the same reason. It read and appended `LEDGER.md` inside its skill folder and amended skill files in place, which through the marketplace is a managed copy that `/plugin update` replaces — so every amendment and the whole ledger would have vanished on the next update, and nothing would have surfaced that until someone had run it twice.
+
+**The loop is not reversed; the timing is.** Every finding still records why it was not prevented, in a form a later review can be matched against, and the review record still persists in the vault. That is the half that cannot be reconstructed later, it is what such a reader would need, and it accumulates whether or not anything automated consumes it.
+
+What is withdrawn is the consumer, because it was designed against an imagined pattern. Grouping by cause, weighting by severity, and the owner test — *what single artifact, present when the defect was introduced, would have stopped it?* — are all reasonable and all unvalidated, since no run of real records has ever been read. Written again from ten actual records it would likely not have the shape it had. Building it before then is the speculation this plugin refuses everywhere else: the spec is written per phase, tickets per phase, prototypes on a question rather than a schedule ([ADR-0010](docs/adr/0010-the-repo-docs-folder-is-an-obsidian-vault.md), amended).
+
+The cost, stated: a recurring cause now goes unnoticed unless a person reads the records and sees it. Against that, a skill that cannot run notices nothing either.
+
+**Why minor rather than major.** A skill disappearing is major by the policy above, and this one could never execute — nothing anyone was able to do stops being possible. Same reasoning as 2.2.0, and recorded for the same reason: the departure is deliberate, so the policy stays intact for the release where it bites.
+
 ## 2.2.1 — 2026-09-04
 
 **The five review axes stop advertising themselves as entry points.** Each description opened with a standalone trigger — "Use to check code quality on a diff", "Use when reviewing a diff's security implications" — so a plain-language request could fire one on its own, outside the dispatcher. Everything that makes an axis's findings count lives in `review` and not in the axis: the pinned fixed point, the severity ladder, the **owed** marker, the recorded cause, and the record `wrap-up` reads before it merges. An axis reached alone produced findings the merge gate never sees, while reading exactly like a real review.

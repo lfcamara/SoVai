@@ -70,13 +70,13 @@ End with one verdict per axis that ran — pass, or fail with its worst finding 
 
 For every finding that reached review, ask why it wasn't prevented earlier, and record a short cause beside it. A finding is a defect caught; a cause that repeats across reviews is a hole in the process — but only if it's written in a form a later review can match against. Name the gap ("the spec never said which seam", "no rule in code-review covers this"), not the person or the moment ("missed it", "rushed") — those can't be matched against next time's finding.
 
-One occurrence is not a pattern. Record the cause and move on; whether it recurs, and whether a skill needs hardening for it, is a judgement for a later pass over the accumulated records, not one this review makes off a single data point.
+One occurrence is not a pattern. Record the cause and move on; whether it recurs, and whether a skill needs changing for it, is a judgement for a later pass over the accumulated records, not one this review makes off a single data point.
 
 ## Write the review record
 
 Write a durable record of this review to the shape in [REVIEW-RECORD-FORMAT.md](./REVIEW-RECORD-FORMAT.md), at `docs/reviews/<YYYY-MM-DD> — <ticket or branch>.md`.
 
-The record isn't archival. It is the input to skill hardening later, which works only if every finding also carries why it wasn't prevented — the cause from the step above — and it is what `wrap-up` reads to decide whether anything still blocks the merge.
+The record isn't archival. It is what `wrap-up` reads to decide whether anything still blocks the merge, and it is the only place a finding's cause survives — which is what makes a run of these readable later for the holes that repeat.
 
 ## What happens next
 

@@ -55,6 +55,7 @@ feature-dev
 goal-reviewer   # ADR-0015 rejects it in favour of dispatching to `reviewer`
 # Retired skills, still named by the ADRs that decided and then reversed them.
 goal-review     # added by ADR-0015, removed 2026-09-03 in that ADR's reversal
+harden          # withdrawn 2026-09-04 in ADR-0010's amendment, still named by it
 # Claude Code built-in agents and tools — a closed set Claude Code defines, for
 # which this repo holds no file.
 Explore

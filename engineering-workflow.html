@@ -154,7 +154,7 @@ footer code{font-family:var(--mono)}
 <div class="wrap">
 
 <header class="mast">
-  <p class="eyebrow">SoVai · v2.2.1</p>
+  <p class="eyebrow">SoVai · v2.3.0</p>
   <h1>Engineering Workflow</h1>
   <p class="standfirst">How work moves from an idea someone had in the shower to code merged into main —
     twelve stages, three cadences, one rule about who is allowed to decide what, and two hooks
@@ -396,18 +396,19 @@ footer code{font-family:var(--mono)}
 
   <p class="lede" style="margin-top:1.4rem">So every finding records why it was not prevented, and the review record persists in the vault. This is the one part of the loop that cannot be reconstructed later: without a written cause, recurrence is invisible and the vault accumulates incidents instead of lessons. Causes name the gap — <em>“the spec never said which seam”</em> — not the moment or the person. “Missed it” is unmatchable and unfixable.</p>
 
-  <h3 style="margin-top:1.8rem">harden turns recurrence into a rule</h3>
-  <ol class="steps">
-    <li><div><b>Group by cause, not symptom</b><span>Two findings that look unrelated can share one hole in the process. Clusters are weighted by severity — recurrence at critical earns an amendment sooner than recurrence at low.</span></div></li>
-    <li><div><b>Find the owner</b><span>One test: what single artifact, present when the defect was introduced, would have stopped it? A missing rule points at the axis; a loose completion criterion at the skill that let it pass as done; a permitted action at the agent definition.</span></div></li>
-    <li><div><b>Sharpen, don't append</b><span>Where an existing rule was almost right, it gets rewritten rather than joined by a second one nearby. A rule added per incident is sediment — and is how the original rule stayed weak enough to miss this.</span></div></li>
-    <li><div><b>Propose, don't apply</b><span>A skill change alters every future run, so nothing lands from a pattern you have not seen. Runs periodically, never per review — one occurrence is not a pattern.</span></div></li>
-  </ol>
-  <p class="lede" style="margin-top:1.2rem">It runs in the SoVai repo, where the skills live, reading vaults from whichever projects you point it at. A cause appearing once in each of three projects is invisible from inside any one of them — and that is the pattern most worth catching.</p>
+  <h3 style="margin-top:1.8rem">Reading the causes back is deliberately not built</h3>
+  <p class="lede">The obvious next move is a skill that reads a run of records, groups findings by cause
+    rather than symptom, and amends whichever skill should have caught the defect. One existed and was
+    withdrawn before it ever ran: its own first step refused to proceed below roughly ten review
+    records, and nothing has produced one — the pipeline has still not met a real project. It sat in
+    every session describing a pass it could not make.</p>
+  <div class="auto-box"><p>What is kept is the half that cannot be reconstructed later: the
+    <strong>cause</strong>, written on the finding, in a form a later review can be matched against. It
+    accumulates whether or not anything automated reads it. Built against ten real records, such a
+    reader would likely not have the shape the withdrawn one had — which is why it waits for them.</p></div>
 
   <h3 style="margin-top:1.8rem">lint-references checks it still holds together</h3>
-  <p class="lede"><strong>harden</strong> amends the plugin from what reviews found;
-    <strong>lint-references</strong> checks that what came out the other side still resolves. The
+  <p class="lede">The
     cross-references here are almost all bare names in prose — a skill naming a skill, an ADR citing an
     agent — and nothing reads them back: not the filesystem, not Claude Code, not any other tool. A
     rename leaves the old name reading exactly as live as the day it worked, and a dead one raises no
@@ -436,7 +437,7 @@ footer code{font-family:var(--mono)}
 
 <footer>
   <span>Source of truth: <code>engineering-workflow.md</code> · reasoning in <code>docs/adr/</code> · vocabulary in <code>CONTEXT.md</code> · releases in <code>CHANGELOG.md</code></span>
-  <span>v2.2.1. Enforcement is not validation — none of it has been run against a real project yet. That is the plan, not an accident.</span>
+  <span>v2.3.0. Enforcement is not validation — none of it has been run against a real project yet. That is the plan, not an accident.</span>
 </footer>
 
 </div>
