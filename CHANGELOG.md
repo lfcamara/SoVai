@@ -24,7 +24,7 @@ Work on a branch. **Merging to main is the release**, because that is what `/plu
 
 ---
 
-## 2.0.1 — 2026-09-03
+## 2.0.1 — 2026-09-04
 
 An audit of 2.0.0 against itself, the day after it landed. Two fixes, both in the seam the rework left behind.
 
