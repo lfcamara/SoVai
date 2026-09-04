@@ -22,6 +22,7 @@ With `CLAUDE_PLUGIN_ROOT` unset — a plain shell rather than a plugin session �
 - **Undeclared skills** — every `SKILL.md` on disk appears in `plugin.json`. One that does not is never loaded, and nothing else in the repo says so.
 - **Relative markdown links** resolve on disk. External URLs and `[[wikilinks]]` are skipped: a wikilink addresses a note in a project's vault, which does not exist from here.
 - **Hook script paths** wired in `hooks/hooks.json`, when that file exists.
+- **The pipeline's order** — each planning skill's imperative hand-off ("run the `x` skill") names a stage the pipeline actually goes to next, and a stage that has a successor declares one. This is the one check that asks whether a name is the *right* one rather than whether it resolves, and it exists because a moved stage leaves its predecessor pointing at a real skill: clean by every other check, and invisible because the pipeline auto-continues and nobody types the names. The order lives in `lint.sh` as the only executable copy of a fact five documents also state.
 
 ## Read the exit code
 
@@ -33,7 +34,7 @@ With `CLAUDE_PLUGIN_ROOT` unset — a plain shell rather than a plugin session �
 
 - **Frontmatter semantics** — whether a `description` carries usable triggers, whether a name matches its directory, whether `disable-model-invocation` is the right call. This resolves references; `writing-great-skills` judges skills.
 - **A real name written without backticks.** Backticks are the convention here, and a reference written as bare prose is invisible to this.
-- **Whether a resolved reference is the right one.** A skill pointing at a real but wrong target passes.
+- **Whether a resolved reference is the right one**, outside the pipeline's order. A skill citing a real but wrong target in prose passes; only the planning hand-offs are held to a declared sequence, because they are the only references whose correct target is knowable from here.
 - **Hook script bodies** — only the paths `hooks.json` wires up, not what those scripts reach for in turn.
 
 ## When to run

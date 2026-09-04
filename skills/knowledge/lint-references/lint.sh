@@ -228,6 +228,77 @@ else
   done < "$tmp/ondisk"
 fi
 
+# --- 6: the pipeline's order ------------------------------------------------
+# The checks above ask whether a name resolves. This one asks whether it is the
+# RIGHT name, which is a different question and the only one that matters for a
+# hand-off: the pipeline auto-continues (ADR-0001), so nobody types a stage name
+# and nobody is placed to notice the chain went somewhere else. A stage that was
+# moved leaves every other surface updated and its predecessor's own closing
+# line pointing at where it used to be — which is a live reference to a real
+# skill, and therefore clean by every check above it.
+#
+# The order below is this file's copy of a fact the README, the SessionStart
+# bootstrap, engineering-workflow.md, ADR-0019 and the changelog also state.
+# It is the only copy that executes, which is the point: when they disagree,
+# this one fails the release rather than the five of them agreeing quietly.
+#
+# Each line is "<stage> <allowed successor>...". A stage with more than one is
+# a branch the skill chooses between (to-prd routes on whether the effort has an
+# interface). A stage with none ends the chain and is listed with "-".
+pipeline_order() {
+  cat <<'ORDER'
+brainstorm      to-prd
+to-prd          to-wireframes to-roadmap
+to-wireframes   to-roadmap
+to-roadmap      to-spec
+to-spec         to-tickets
+to-tickets      -
+ORDER
+}
+
+# The hand-off is written imperatively — "run the `x` skill" — which is the form
+# that actually drives the chain, as distinct from prose naming a stage in
+# passing. Only that form is read here, and only where the name it carries is
+# itself a pipeline stage; anything else a skill mentions is out of scope.
+stages=$(pipeline_order | awk '{print $1}')
+
+while read -r stage successors; do
+  [ -n "$stage" ] || continue
+  skill=$(find "$PLUGIN_ROOT/skills" -type d -name "$stage" 2>/dev/null | head -1)
+  if [ -z "$skill" ] || [ ! -f "$skill/SKILL.md" ]; then
+    checked=$((checked + 1))
+    report "$stage" "named in the pipeline order — no skill by that name"
+    continue
+  fi
+
+  declared=$(grep -oE 'run the `[a-z][a-z0-9-]*` skill' "$skill/SKILL.md" 2>/dev/null \
+    | sed -E 's/^run the `//; s/` skill$//' | sort -u)
+
+  # Every pipeline stage this skill hands off to has to be one it may hand off
+  # to. A name that is not a stage at all — `grilling`, `frontend-design` — is
+  # not a hand-off and is left alone.
+  for target in $declared; do
+    printf '%s\n' "$stages" | grep -Fxq -- "$target" || continue
+    checked=$((checked + 1))
+    printf '%s\n' "$successors" | tr ' ' '\n' | grep -Fxq -- "$target" \
+      || report "$stage -> $target" \
+                "hand-off in skills/*/$stage/SKILL.md — the pipeline goes to ${successors// / or }"
+  done
+
+  # And a stage that has a successor has to declare one. This is the half that
+  # catches a hand-off deleted rather than misdirected — the chain simply
+  # stopping, which reads as a skill that finished rather than one that broke.
+  [ "$successors" = "-" ] && continue
+  checked=$((checked + 1))
+  found=0
+  for target in $successors; do
+    printf '%s\n' "$declared" | grep -Fxq -- "$target" && { found=1; break; }
+  done
+  [ "$found" = "1" ] \
+    || report "$stage -> (nothing)" \
+              "skills/*/$stage/SKILL.md declares no hand-off — the chain stops here"
+done < <(pipeline_order)
+
 # --- 5: hook wiring (optional) ----------------------------------------------
 hooks_json="$PLUGIN_ROOT/hooks/hooks.json"
 if [ -f "$hooks_json" ]; then
