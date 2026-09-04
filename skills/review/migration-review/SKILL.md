@@ -1,6 +1,6 @@
 ---
 name: migration-review
-description: Review a schema or data migration for reversibility, destructive operations, deploy-time safety, and backfill correctness. Use when a diff adds or changes a database migration, or when another skill needs the migration axis of a review run.
+description: The migration axis of `review` — a schema or data migration's reversibility, destructive operations, deploy-time safety, and backfill correctness. Use when `review` dispatches this axis.
 ---
 
 # Migration Review
@@ -44,6 +44,10 @@ A backfill needs three properties, and the diff should be checked against all th
 ## Tested against realistic data
 
 Check whether the migration was actually run against a copy of production-shaped data — realistic row counts, realistic null patterns, realistic duplicate or malformed values — rather than only an empty local database. An empty database can't surface a lock that takes too long, a constraint that existing rows violate, or a backfill that times out. Ask for evidence of this rather than assuming it happened; a migration diff with no mention of how it was tested is a gap, not a pass.
+
+## Entered directly
+
+Dispatched by `review`, this axis inherits a pinned fixed point, the severity ladder it assigns against, and a record `wrap-up` reads before it merges. Reached on its own it has none of those, so say that with the findings — and where the work is heading for a merge, run `review` for this axis instead, so what you find lands where the merge gate can see it.
 
 ## Severity
 

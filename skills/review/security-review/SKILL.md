@@ -1,6 +1,6 @@
 ---
 name: security-review
-description: Review the security surface of a diff — untrusted input reaching an interpreter, authorization gaps, secrets, data exposure, and new dependencies. Use when reviewing a diff's security implications, or when another skill needs the security axis of a review run.
+description: The security axis of `review` — what a diff exposes: untrusted input reaching an interpreter, authorization gaps, secrets, data exposure, and new dependencies. Use when `review` dispatches this axis.
 ---
 
 # Security Review
@@ -50,6 +50,10 @@ Anything the diff makes reachable without authentication — a new route, a new 
 Order findings by exploitability and blast radius: how easily an attacker reaches the flaw (no auth required outranks authenticated-only; a public endpoint outranks an admin-only tool) crossed with what they gain if it lands (full data access or code execution outranks a single field leak). Do not rank by category — a "secrets" finding that's a low-privilege internal token in a dead code path is a lower finding than a "data exposure" finding that leaks every user's email on an unauthenticated endpoint.
 
 This applies the same way regardless of target — web, mobile, or backend service — the interpreters and trust boundaries differ, the reasoning about reachability and blast radius does not.
+
+## Entered directly
+
+Dispatched by `review`, this axis inherits a pinned fixed point, the severity ladder it assigns against, and a record `wrap-up` reads before it merges. Reached on its own it has none of those, so say that with the findings — and where the work is heading for a merge, run `review` for this axis instead, so what you find lands where the merge gate can see it.
 
 ## Severity
 

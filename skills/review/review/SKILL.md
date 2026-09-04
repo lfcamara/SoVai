@@ -27,6 +27,8 @@ Run `code-review` and `test-review` always. Check the rest against the diff:
 
 State which axes you selected and why before dispatching — the user should be able to see the decision, not just its result.
 
+**A request for one axis comes in here too.** Asked for a security pass, a look at the tests, or any single axis by name, run this skill with that axis selected rather than sending the user to the axis skill directly. The axes carry criteria; everything that makes their findings count — the pinned fixed point, the severity ladder, the **owed** marker, the recorded cause, and the record `wrap-up` reads before it merges — is here. An axis reached on its own produces findings the merge gate never sees.
+
 ## Severity
 
 Every finding carries one of four severities, assigned by the axis that found it — severity depends on what that axis knows about the diff, which the dispatcher aggregating five reports afterward cannot re-derive.
