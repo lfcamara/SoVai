@@ -20,7 +20,7 @@ A hook cannot verify that a file was read. It can only observe the edit that fol
 
 It fires once per session, on the first `SKILL.md` edit, like the other branches. A reminder repeated on every edit is a reminder that gets skimmed.
 
-A Stop-gate analogue is possible — refuse to end a session that edited a `SKILL.md` without ever reading the standard, tracked the way `tdd-phase-tracker.sh` tracks `Skill` calls — and is deliberately not built yet. The reminder is cheap and lands at the right moment; the stop gate is the escalation if this proves insufficient, and building it before knowing that is machinery bought on speculation.
+A Stop-gate analogue was once possible and deliberately not built. It is now not possible at all: the TDD Stop gate that would have been its model was removed on 2026-09-04 for a reason that applies here identically — a Stop hook's every output reaches the model rather than the user, and the model holds Bash, so any clearing condition it sets is writable by the party being gated ([ADR-0012](0012-the-plugin-ships-an-enforcement-layer.md), amended). The reminder is cheap and lands at the right moment, and it was always the load-bearing half.
 
 ## Why not make the standard model-invocable instead
 

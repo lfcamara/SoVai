@@ -154,10 +154,10 @@ footer code{font-family:var(--mono)}
 <div class="wrap">
 
 <header class="mast">
-  <p class="eyebrow">SoVai · v2.1.2</p>
+  <p class="eyebrow">SoVai · v2.2.0</p>
   <h1>Engineering Workflow</h1>
   <p class="standfirst">How work moves from an idea someone had in the shower to code merged into main —
-    twelve stages, three cadences, one rule about who is allowed to decide what, and four hooks
+    twelve stages, three cadences, one rule about who is allowed to decide what, and two hooks
     that stop the rest of it being optional.</p>
   <div class="meta">
     <span class="tag">27 skills</span>
@@ -300,28 +300,21 @@ footer code{font-family:var(--mono)}
       <code>CLAUDE.md</code></strong> — that file governs work on SoVai itself and never loads in a
       consuming project, which is the only place the rule has anything to govern. It stays short as a
       constraint rather than a preference: every line loads into every session, forever.</span></div></li>
-    <li><div><b>The pre-edit gate</b><span>Fires on the first edit of each class per session. A
+    <li><div><b>The pre-edit reminder</b><span>Fires on the first edit of each class per session. A
       production-logic path is pointed at <strong>tdd</strong> before the edit lands; a UI path is
       pointed at <strong>ui-testing</strong> for once the screen is built, and told not to open with a
       test.</span></div></li>
-    <li><div><b>The phase tracker</b><span>Records that <strong>tdd</strong> was entered. The pre-edit
-      gate reads it to switch a production edit into Green-minimal — telling a session mid-Green to go
-      and fetch a skill it is already running pollutes Green with exactly the work <strong>tdd</strong>
-      defers to <strong>code-review</strong>. The Stop gate reads it as the evidence that TDD happened at
-      all.</span></div></li>
-    <li><div><b>The Stop gate</b><span>Refuses to end a session that edited production logic without
-      ever invoking <strong>tdd</strong>. Honest about being a heuristic: it detects TDD skipped
-      entirely, never red-before-green ordering, which nothing observable at the end of a session can
-      establish. <strong>UI is never gated here</strong> — it is the deliberate exception, so the gate
-      reads only the production signal and a UI-only session ends clean. Three escape paths, and it
-      prints the exact override command for legitimate non-TDD work.</span></div></li>
   </ol>
-  <div class="auto-box"><p><strong>Enforcement survives delegation.</strong> Hooks fire inside
-    subagents, and the session id is identical in a subagent and in the session that dispatched it —
-    subagents are told apart by a separate agent id. So a production edit made inside an
-    <strong>implementer</strong> writes the same signal the main session's Stop gate reads once that run
-    is over. Had the id been per-agent the layer would have been decorative: the orchestrator writes
-    almost no production code itself.</p></div>
+  <div class="auto-box"><p><strong>These remind; they do not enforce.</strong> Every output
+    channel a hook has reaches the model rather than you, and the model holds Bash — so nothing a hook
+    writes constrains the session it fires in. What holds a change to the rules is the review block:
+    <strong>test-review</strong> reading the tests against the diff, <strong>code-review</strong>'s
+    owed marker, and <strong>wrap-up</strong> refusing to merge past either. A Stop gate claiming to do
+    the same job was removed on 2026-09-04 for exactly this reason.</p>
+    <p style="margin-top:.6rem">They do reach subagents: the session id is identical in a subagent and
+    in the session that dispatched it, so an <strong>implementer</strong> editing production logic gets
+    the reminder — which matters, because the orchestrator writes almost no production code
+    itself.</p></div>
 
   <h3 style="margin-top:1.8rem">What was deliberately not built</h3>
   <p class="lede">No hook forces delegation. Counting the orchestrator's own edits and complaining
@@ -372,11 +365,10 @@ footer code{font-family:var(--mono)}
     productionLogic, so a UI path nested under a production path wins and nobody writes exclusions.
     Onboarding is a one-file drop, never a change to the plugin — and because the file sits at the root
     and is found by ancestry, worktrees and clones inherit it for free.</p>
-  <div class="auto-box"><p><strong>Everything fails open, so a project with no config is not gated at
-    all.</strong> No config, or a malformed one, classifies nothing: no reminders, and a Stop gate that
-    never fires. The direction is chosen — under-gating costs a missed reminder, while over-gating costs
-    a developer who cannot finish a session, and a hook that breaks work over its own configuration gets
-    uninstalled, taking every rule it was carrying with it.</p></div>
+  <div class="auto-box"><p><strong>Everything fails open, so a project with no config gets no reminders at
+    all.</strong> No config, or a malformed one, classifies nothing. The direction is chosen — an
+    unfired reminder costs little, while a hook that breaks work over its own configuration gets
+    uninstalled and takes every rule it was carrying with it.</p></div>
 </section>
 
 <section>
@@ -441,7 +433,7 @@ footer code{font-family:var(--mono)}
 
 <footer>
   <span>Source of truth: <code>engineering-workflow.md</code> · reasoning in <code>docs/adr/</code> · vocabulary in <code>CONTEXT.md</code> · releases in <code>CHANGELOG.md</code></span>
-  <span>v2.1.2. Enforcement is not validation — none of it has been run against a real project yet. That is the plan, not an accident.</span>
+  <span>v2.2.0. Enforcement is not validation — none of it has been run against a real project yet. That is the plan, not an accident.</span>
 </footer>
 
 </div>

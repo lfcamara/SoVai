@@ -31,3 +31,21 @@ The bootstrap stays short for a reason worth stating as a constraint rather than
 ## What was deliberately not built
 
 No hook forces delegation. It would have been easy — count the edits the orchestrator makes and complain — and it would have been wrong. Whether to delegate is a judgement about context economy: a two-line fix costs more to brief than to make, and the test in the `delegate` skill is already the honest one, that being unable to write the **brief** means not understanding the task well enough to hand it off. Mandatory TDD is a property of the work; delegation is a property of the moment. Only the first kind belongs in a gate.
+
+## The Stop gate is removed; the layer reminds rather than enforces
+
+**Status: accepted, 2026-09-04.** Amends the Stop gate and the phase tracker out of this decision. The SessionStart bootstrap and the pre-edit reminder stand exactly as decided above.
+
+The gate could not do the job it was named for, and the reason is structural rather than a defect in the script. **Every output channel a Stop hook has reaches the model and not the user** — the block `reason`, `systemMessage` (documented as "shown to Claude, not the user"), and stderr on exit 2 — and the model holds `Bash`. So any clearing condition expressed as filesystem state is writable by the party being gated. The gate's escape hatch was `touch /tmp/sovai-tdd-override-<session>`, and the only party positioned to run it was the session being stopped. A constraint the actor can lift is a request, which is precisely the reasoning [ADR-0006](0006-agents-split-by-execution-mode-not-by-job-title.md) used to make `reviewer` read-only by tool grant rather than by instruction.
+
+Worse, it fired in the wrong place. In the designed flow a ticket reaches an `implementer` through a brief naming `implement`, and `implement` points at `tdd` — three explicit pointers, so nothing depends on the model spontaneously reaching for the skill. The gate therefore never mattered on the path the pipeline controls, and fired only on work that bypassed the pipeline: the one-line fix, the ad-hoc edit. That is exactly the population where "this did not need TDD" is most often the right answer, which is why the override existed. A gate whose exceptions are its normal case is a prompt to dismiss.
+
+And it could not observe the thing TDD is about. Its own header admitted the limit: a session that invokes `tdd` after writing the code clears it exactly as a disciplined one does. It checked that a skill was invoked, never that a test came first.
+
+**What actually holds a diff to [ADR-0007](0007-development-block-shape.md) was already in the plugin.** `test-review` reads the tests against the diff and asks whether they would fail on a real regression; `code-review` marks the postponed refactor **owed**; `wrap-up` refuses to merge past an unresolved critical, high or owed finding. Those run on evidence, by a party that is not the one being checked, and no `touch` clears them. They are the enforcement; the hooks were never it.
+
+So the Stop gate and the phase tracker that fed it are gone, along with the override and the cross-hook sentinels. What survives is the pre-edit reminder, which arrives at the moment the edit is about to land — the cheapest moment to act on it — and costs one message and one fire-once marker. It is a reminder, and the hook now says so in its own header rather than claiming otherwise.
+
+The cost, stated: a session that slid into implementation and never invoked `tdd` is no longer told so at the end. It is still told at the first edit, and the tests it did or did not write still meet `test-review`.
+
+The claim in this ADR's opening — that the hooks convert advice into enforcement — holds for the bootstrap, which makes the pipeline's contract standing rather than optional. It does not hold for the TDD gate, and this amendment is what withdraws it.

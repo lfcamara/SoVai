@@ -24,6 +24,22 @@ Work on a branch. **Merging to main is the release**, because that is what `/plu
 
 ---
 
+## 2.2.0 — 2026-09-04
+
+**The TDD Stop gate is removed, and the hooks stop claiming to enforce.** What is left is two hooks that remind: the SessionStart bootstrap and the pre-edit reminder. The phase tracker, the `/tmp` sentinels that crossed between hooks, and the per-session override go with the gate ([ADR-0012](docs/adr/0012-the-plugin-ships-an-enforcement-layer.md), amended).
+
+Three reasons, and the first is structural. **Every output channel a Stop hook has reaches the model and not the user** — the block `reason`, `systemMessage` (documented as "shown to Claude, not the user"), stderr on exit 2 — and the model holds `Bash`. So the gate's clearing condition, `touch /tmp/sovai-tdd-override-<session>`, was writable by the only party in a position to want it written. A constraint the actor can lift is a request, which is the reasoning ADR-0006 used to make `reviewer` read-only by tool grant rather than by instruction.
+
+Second, it fired in the wrong place. A ticket reaches an `implementer` through a brief naming `implement`, and `implement` points at `tdd` — three explicit pointers, so nothing on the pipeline's own path depended on the model spontaneously reaching for the skill. The gate only ever fired on work that bypassed the pipeline: the one-line fix, the ad-hoc edit. That is exactly the population where "this did not need TDD" is usually right, which is why the override existed at all. A gate whose exception is its normal case teaches its reader to dismiss it.
+
+Third, it could not see the thing TDD is about. Its own header admitted it: a session invoking `tdd` after writing the code cleared it exactly as a disciplined one did. It checked that a skill was invoked, never that a test came first.
+
+**What holds a diff to mandatory TDD was already here.** `test-review` reads the tests against the diff and asks whether they would fail on a real regression, `code-review` marks the postponed refactor **owed**, and `wrap-up` refuses to merge past an unresolved critical, high or owed finding. Those run on evidence, by a party that is not the one being checked, and no `touch` clears them.
+
+The pre-edit reminder survives unchanged in substance and simplified in mechanism: it keeps one fire-once marker per class so each message lands once rather than on every edit, and its Green-minimal branch is gone with the tracker that fed it. Its header now says it reminds. The cost is stated: a session that slid into implementation and never invoked `tdd` is no longer told so at the end — only at the first edit.
+
+**Why 2.2.0 and not 3.0.0.** By this file's own definition a gate disappearing is major. The version exists to signal a changed process to installed users, and there are none — 2.0.0 shipped and has still not been run against a real project. Escalating the major on a workflow nobody has used spends the signal on an empty room. This is a deliberate departure from the policy above rather than a reading of it, recorded here so the policy stays intact for the release where it matters.
+
 ## 2.1.2 — 2026-09-04
 
 **The workflow page's version badge is checked against the manifest.** It read `v1.1.1` while the plugin was on 2.1.1 — three releases stale, and stale in the one place a reader has no way to test what they are being told.

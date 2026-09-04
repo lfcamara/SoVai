@@ -37,7 +37,7 @@ Everything above `to-roadmap` runs **once**. Everything below runs **once per ph
 
 That single rule is the spine of the whole process, and the reasoning is always the same: detail planned against a codebase that will have moved by the time the work begins is detail that gets thrown away.
 
-None of this waits to be invoked by name, and the parts of it that matter most no longer wait to be reached for either: four hooks make them fire on their own — see [What makes it non-optional](#what-makes-it-non-optional).
+None of this waits to be invoked by name: a SessionStart hook states the contract in every session, and a pre-edit hook names the skill that should already be in play — see [What the hooks do](#what-the-hooks-do).
 
 **You do not have to enter at the top.** The SessionStart hook routes by size: an idea whose boundaries are still open goes to `brainstorm`, a feature already shaped goes to `to-prd` — skipping the interview, not the documents — and a change that fits in one ticket goes to `to-tickets`, or straight to `implement` where the ticket exists. A pipeline that can only be entered at the top is a pipeline people stop entering, and a PRD for a copy change is a PRD nobody reads.
 
@@ -275,27 +275,25 @@ And what comes back is a claim, not a fact. Read the diff, not just the report �
 
 ---
 
-## What makes it non-optional
+## What the hooks do
 
-Everything above describes a process. Until this layer existed, all of it was **advisory** — a skill the model could reach for, or not, with nothing downstream noticing the difference. Two of the plugin's own decisions turned out to assume a mechanism nobody had built: that the planning pipeline auto-continues, which rested entirely on the model choosing the right skill at the right moment, and that TDD is mandatory for non-UI logic, which nothing checked ([ADR-0012](docs/adr/0012-the-plugin-ships-an-enforcement-layer.md)).
+Everything above describes a process, and a process written in a skill applies only where the skill is reached for. [ADR-0001](docs/adr/0001-planning-pipeline-auto-continues-after-brainstorm.md) has the planning pipeline auto-continue, which rested on the model choosing the right skill at the right moment with nothing stating that it must.
 
-Four hooks now do. What a given file *is* — production logic, UI, or test — is never guessed by the plugin: it comes from the project's own config, described under [Per-project configuration](#per-project-configuration), and a project without that file is not gated at all. One check is deliberately exempt from that rule, and it is the next paragraph.
+Two hooks address that ([ADR-0012](docs/adr/0012-the-plugin-ships-an-enforcement-layer.md)). Both **remind**; neither enforces, and the distinction is load-bearing enough to state up front: every output channel a hook has reaches the model rather than you, and the model holds `Bash`, so nothing a hook writes is a constraint on the session it fires in. What actually holds a diff to its standards is the review block — `test-review` reading the tests against the diff, `code-review`'s **owed** marker, and `wrap-up` refusing to merge past either. Those run on evidence, by a party that is not the one being checked.
+
+What a given file *is* — production logic, UI, or test — is never guessed by the plugin: it comes from the project's own config, described under [Per-project configuration](#per-project-configuration), and a project without that file gets no reminders at all. One check is deliberately exempt from that rule, and it is two paragraphs down.
 
 **SessionStart — the bootstrap.** It injects three things and nothing else: the orchestration mandate, the statement that invoking the matching skill is mandatory rather than optional, and one line per block of the pipeline. The mandate lives *here* rather than in a `CLAUDE.md`, because **a plugin does not ship its `CLAUDE.md`** — that file governs sessions working on SoVai itself and never loads in a consuming project, which is the only place the rule has anything to govern. The bootstrap is also the one file in the plugin where verbosity has a permanent cost, since every line loads into every session forever, so its brevity is a constraint rather than a preference.
 
-**The pre-edit gate** fires on the first edit of each class per session. A production-logic path is pointed at `tdd` *before* the edit lands. A UI path is pointed at `ui-testing` instead, to run once the screen is built, and told explicitly not to open with a test.
+**The pre-edit reminder** fires on the first edit of each class per session. A production-logic path is pointed at `tdd` *before* the edit lands. A UI path is pointed at `ui-testing` instead, to run once the screen is built, and told explicitly not to open with a test.
 
 It also has one branch that consults no config: editing a file named `SKILL.md` points at `writing-great-skills`, to be read in full before the edit ([ADR-0018](docs/adr/0018-skill-authoring-is-gated-by-filename.md)). The filename alone is the signal, which is the point — SoVai's own repo has no `sovai.config.json`, having no production logic to gate, so a config-driven version of this check would fire everywhere except the repo where skills are actually written. The instruction it enforces already existed in prose and had already been skipped once, which is the same argument that produced this whole layer.
 
-**The phase tracker** records that `tdd` was entered, and two hooks read that record. The pre-edit gate uses it to switch a production edit into Green-minimal: telling a session mid-Green to go and fetch a skill it is already running pollutes Green with exactly the work `tdd` defers to `code-review`. The Stop gate uses it as the evidence that TDD happened at all.
+### The reminders reach subagents
 
-**The Stop gate** refuses to end a session that edited production logic without ever invoking `tdd`. It is honest about being a heuristic — it detects TDD skipped entirely, never red-before-green ordering, which nothing observable at the end of a session can establish. **UI is never gated here**: [ADR-0007](docs/adr/0007-development-block-shape.md) makes it the deliberate exception, so the gate reads only the production signal and a UI-only session ends clean. Three escape paths, so the cases it gets wrong cost a line rather than a fight — invoke `tdd` to record that it genuinely happened, go and write the failing test, or record a per-session override for legitimate non-TDD work (a typo, a pure refactor, a dependency bump, a spike). The gate prints the exact override command rather than describing it.
+Plugin hooks fire **inside subagents**, and the session id in hook input is identical in a subagent and in the session that dispatched it — subagents are told apart by a separate agent id. So an `implementer` editing production logic gets the reminder, which matters because the orchestrator writes almost no production code itself. Had the id been per-agent, a hook seeing only the orchestrator's own edits would have seen nothing.
 
-### Enforcement survives delegation
-
-This is the fact the whole layer rests on. Plugin hooks fire **inside subagents**, and the session id in hook input is identical in a subagent and in the session that dispatched it — subagents are told apart by a separate agent id. Every signal these hooks write is keyed on the session id, so a production edit made inside an `implementer` writes the same file the main session's Stop gate reads once that run is over. The gate sees edits it never witnessed.
-
-Had the id been per-agent, the layer would have been decorative. The orchestrator writes almost no production code itself, so a gate able to see only the orchestrator's own edits would have gated nothing. That one property is what makes enforcement fit the orchestrate-don't-execute design rather than sit in tension with it.
+That same property is what made a Stop gate look workable and was not enough to save it: a hook can *observe* across the boundary, and still cannot *constrain* the party it observes ([ADR-0012](docs/adr/0012-the-plugin-ships-an-enforcement-layer.md), amended).
 
 ### What was deliberately not built
 
@@ -400,7 +398,7 @@ The `"tracker"` and `"worktreeSetup"` keys are the parts of this file read by sk
 
 Onboarding is therefore a one-file drop — copy `sovai.config.example.json` to the project root, rename it, edit the three lists, the tracker and whatever a fresh worktree needs to run — never a change to this plugin. Because the file sits at the root and is found by ancestry, worktrees and clones inherit it for free.
 
-**Everything fails open, and the consequence is worth stating plainly: a project with no `sovai.config.json` is not gated.** No config, or a malformed one, classifies nothing — no reminders, and a Stop gate that never fires. A reader who skips this section gets a plugin that appears to do nothing. The direction is chosen rather than incidental: under-gating costs a missed reminder, while over-gating costs a developer who cannot finish a session, and a hook that breaks work over its own configuration gets uninstalled, taking every rule it was carrying with it.
+**Everything fails open, and the consequence is worth stating plainly: a project with no `sovai.config.json` gets no reminders.** No config, or a malformed one, classifies nothing. A reader who skips this section gets a plugin that appears to do nothing. The direction is chosen rather than incidental: under-gating costs a missed reminder, while over-gating costs a developer who cannot finish a session, and a hook that breaks work over its own configuration gets uninstalled, taking every rule it was carrying with it.
 
 ---
 

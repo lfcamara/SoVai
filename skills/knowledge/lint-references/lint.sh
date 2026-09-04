@@ -71,6 +71,12 @@ Bash
 TodoWrite
 WebFetch
 WebSearch
+# Claude Code hook API field names, cited by ADR-0012 where it explains what a
+# Stop hook can and cannot reach. Fields of someone else's schema, not ours.
+reason
+systemMessage
+additionalContext
+hookSpecificOutput
 # Skill and agent frontmatter keys.
 name
 description

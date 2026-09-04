@@ -61,8 +61,8 @@ The output of the check that would have contradicted a claim, shown beside it �
 _Avoid_: Proof, verification, result
 
 **Gate**:
-A mechanism that refuses rather than advises — a hook that will not let a session end with production logic edited and `tdd` never entered, or a rule that withholds the word "done" until its check has run. Gates here fail open: no configuration means no gating, because a gate that breaks a session gets uninstalled and takes every rule it carried with it.
-_Avoid_: Check, guard, blocker, hook (the hook is the mechanism; the gate is what it refuses)
+A mechanism that refuses rather than advises, and that the party being checked cannot lift — `wrap-up` withholding a merge while a critical, high or owed finding stands. A hook is not one: every channel it has reaches the model, which holds `Bash`, so what a hook writes is a reminder however firmly it is worded (ADR-0012, amended).
+_Avoid_: Check, guard, blocker, hook (a hook reminds; a gate refuses)
 
 **Axis**:
 One independent dimension of review — code, spec, test, security, migration. Each runs as its own parallel `reviewer` subagent and is reported separately, never merged with the others.
