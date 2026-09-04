@@ -18,18 +18,21 @@
 # sovai.config.json and would otherwise be the one project this hook never fires
 # in. See ADR-0018.
 #
-# TDD re-timing: when the tdd-active sentinel already exists, a production edit
-# gets the GREEN-minimal message instead of "go invoke tdd". Telling a session
-# mid-Green to fetch a skill it is already running pollutes Green with work the
-# `tdd` skill explicitly defers.
+# This hook REMINDS; it does not enforce. Every output channel a PreToolUse hook
+# has reaches the model, never the user, and the model holds Bash — so nothing
+# here can be a constraint on the session it fires in. The reminder earns its
+# place anyway: it arrives at the moment the edit is about to land, which is
+# when it is cheapest to act on, and it costs one message.
 #
-# Session-scoped sentinels in /tmp, keyed by session_id, fire each message once:
-#   sovai-prod-edit-<session>   production logic was edited  (READ BY THE STOP GATE)
-#   sovai-ui-edit-<session>     UI was edited                (fire-once only)
+# What actually holds a diff to ADR-0007 is `test-review` reading the tests
+# against the diff, `code-review`'s owed marker, and `wrap-up` refusing to merge
+# past either. Those run on evidence, by a party that is not the one being
+# checked. A Stop gate used to sit beside this hook claiming to do the same job;
+# it was removed because it could not (ADR-0012, amended).
 #
-# Hook input carries the same session_id inside a subagent as in the main
-# session, so a production edit made by an `implementer` subagent writes the
-# sentinel the main session's Stop gate reads. Enforcement survives delegation.
+# One sentinel per class in /tmp, keyed by session_id, purely so each message
+# fires once rather than on every edit. Nothing else reads them, and nothing
+# depends on them surviving.
 #
 # Never blocks; emits additionalContext or exits 0.
 
@@ -68,16 +71,12 @@ class=$(sovai_classify_path "$project_root" "$file_path")
 [ -z "$class" ] && exit 0
 [ "$class" = "test" ] && exit 0
 
-tdd_active="/tmp/sovai-tdd-active-${session}"
-
 case "$class" in
   production) sentinel="/tmp/sovai-prod-edit-${session}" ;;
   ui)         sentinel="/tmp/sovai-ui-edit-${session}" ;;
   *)          exit 0 ;;
 esac
 
-# The production sentinel is written on EVERY production edit, not only the
-# first: the Stop gate reads it, so it has to outlive the fire-once check below.
 already_fired=0
 [ -f "$sentinel" ] && already_fired=1
 touch "$sentinel" 2>/dev/null || true
@@ -86,11 +85,7 @@ touch "$sentinel" 2>/dev/null || true
 msg=""
 case "$class" in
   production)
-    if [ -f "$tdd_active" ]; then
-      msg="GREEN (\`${rel}\`) — a TDD cycle is already active. Write the MINIMAL code that makes the failing test pass, nothing speculative. Do not reach for review or best-practice skills now; the \`tdd\` skill defers refactoring to \`code-review\`, where the tests are already green and the code is free to move."
-    else
-      msg="About to edit production logic (\`${rel}\`). Invoke the \`tdd\` Skill (via the Skill tool) BEFORE this edit: TDD is mandatory for backend and other non-UI logic (ADR-0007), so the failing test comes first and then only enough code to pass it. Refactoring is not part of the loop — it happens later in \`code-review\`, against green tests. If this project treats this path as UI, say so in its \`sovai.config.json\` rather than working around the gate. User instructions always outrank this."
-    fi
+    msg="About to edit production logic (\`${rel}\`). Invoke the \`tdd\` Skill (via the Skill tool) BEFORE this edit: TDD is mandatory for backend and other non-UI logic (ADR-0007), so the failing test comes first and then only enough code to pass it. Refactoring is not part of the loop — it happens later in \`code-review\`, against green tests. If this project treats this path as UI, say so in its \`sovai.config.json\` rather than working around the reminder. User instructions always outrank this."
     ;;
   ui)
     msg="About to edit UI (\`${rel}\`). UI is the deliberate exception to mandatory TDD (ADR-0007): build the screen first, then invoke the \`ui-testing\` Skill (via the Skill tool) to cover it, deriving the test list from the effort's wireframes. Tests written first against a screen whose shape is still moving break on every layout change without catching a real defect, and a suite nobody trusts gets disabled. Do not start this edit with a test."

@@ -14,7 +14,7 @@ SoVai is the missing process around the agent. It turns a vague idea into a PRD,
 /plugin install sovai@sovai
 ```
 
-Then, per project: copy [`sovai.config.example.json`](sovai.config.example.json) to the project root as `sovai.config.json`, and point its three lists at that project's production logic, UI, and tests. The hooks classify files by that file and nothing else, so a project without one runs ungated — which looks a lot like a plugin that isn't doing anything.
+Then, per project: copy [`sovai.config.example.json`](sovai.config.example.json) to the project root as `sovai.config.json`, and point its three lists at that project's production logic, UI, and tests. The hooks classify files by that file and nothing else, so a project without one gets no reminders — which looks a lot like a plugin that isn't doing anything.
 
 ---
 
@@ -50,7 +50,7 @@ One name above isn't ours: `frontend-design` is an ambient skill the pipeline ha
 
 **It's a process, not a menu.** Most skill collections are a drawer you rummage through. Here each stage hands to the next in the same conversation, so nothing depends on you remembering what comes after what.
 
-**The rules fire on their own.** Hooks make the process deterministic rather than advisory: every session opens with the pipeline and the delegation mandate already loaded, the first edit to production logic names the skill that should already be running, editing a `SKILL.md` names the standard for writing one, and a session that changed production logic without ever entering `tdd` can't quietly end. Gates fail open — no config, no gating — because a gate that breaks your session gets uninstalled and takes its rules with it. What a hook can't see is whether a sentence claiming *done* has a real check behind it, so that one stays a rule the agent holds while it writes: `verify-before-claiming`.
+**The process arrives already loaded.** Every session opens with the pipeline and the delegation mandate in context, the first edit to production logic names the skill that should already be running, and editing a `SKILL.md` names the standard for writing one. Those are reminders, not locks — a hook only ever talks to the agent, so what actually holds a change to the rules is the review block, where `test-review` reads the tests against the diff and `wrap-up` won't merge past what it found. Reminders fail open: no config, no reminders, because a hook that breaks your session gets uninstalled and takes its rules with it. And the one thing no hook can see — whether a sentence claiming *done* has a real check behind it — stays a rule the agent holds while it writes: `verify-before-claiming`.
 
 **It stops and asks you.** Facts get looked up; *decisions* get put to you, one question at a time with a recommended answer. Merging needs your explicit approval of that specific PR — reviews passing and CI green are signals you weigh, never permission the agent grants itself.
 
