@@ -24,6 +24,18 @@ Work on a branch. **Merging to main is the release**, because that is what `/plu
 
 ---
 
+## 2.1.0 — 2026-09-04
+
+**The linter now checks the pipeline's order.** Everything it did before asks whether a name resolves. This asks whether it is the *right* name, and it exists because 2.0.1 had to fix a case where it was not: `to-prd` handed off to `to-spec` after the spec moved below the roadmap, and the reference was clean by every check — `to-spec` is a real skill, sitting in a real directory, declared in the manifest.
+
+That class is invisible by construction. The pipeline auto-continues (ADR-0001), so nobody types a stage name; a moved stage leaves five documents updated and one closing line pointing at where it used to be, and the only party who could notice is a reader who already knows the order. Two failure modes are now caught: a hand-off naming a stage the pipeline does not go to next, and a stage that has a successor declaring none at all — the chain stopping, which reads as a skill that finished rather than one that broke.
+
+The order lives in `lint.sh`, in one ordered list, and that placement is the decision. The README, the SessionStart bootstrap, `engineering-workflow.md`, ADR-0019 and this file all state the same sequence in prose; none of them executes. When they disagree with the skills, this copy fails the release rather than the five of them agreeing quietly with each other.
+
+What it reads is the imperative form — "run the `x` skill" — which is what actually drives the chain, as distinct from prose naming a stage in passing. A name that is not a pipeline stage is not a hand-off and is left alone, so `grilling`, `domain-modeling` and `frontend-design` go on being named freely. A branch is expressed as more than one allowed successor, which is what `to-prd` needs now that it routes on whether the effort has an interface.
+
+**Why minor.** A new capability in the release step, and nothing about the workflow changes shape. The cost is that adding, removing or reordering a planning stage now means editing the list in `lint.sh` too — which is the point rather than a side effect.
+
 ## 2.0.1 — 2026-09-04
 
 An audit of 2.0.0 against itself, the day after it landed. Two fixes, both in the seam the rework left behind.
