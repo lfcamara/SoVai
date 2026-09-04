@@ -24,6 +24,24 @@ Work on a branch. **Merging to main is the release**, because that is what `/plu
 
 ---
 
+## 2.3.1 — 2026-09-04
+
+Eight findings from the audit, each one a line or a paragraph, swept together because none of them was worth a release of its own.
+
+**The `Testing` ticket state is removed.** Nothing read it. The frontier is computed from Doing and Done, no skill branched on it, and what it expressed — that something validates before Done — is enforced by `review` running and `wrap-up` refusing to merge past what it found. Three findings were attached to correctly assigning ownership of a transition into a state with no reader.
+
+**`Doing` moved to where the dispatch happens.** It was instructed by `to-tickets`, a planning skill that has finished by the time the first ticket goes out; it now sits in `delegate`, which is what actually dispatches. Each transition lives in the skill that is live when it fires.
+
+**Two things stop being named as pipeline stages.** `prototype` handed to `frontend-design`, a skill this plugin does not own and cannot guarantee is present; it now says to take the validated structure to whatever design tooling you use, for the reason `to-wireframes` hands off a brief rather than rendering. And `screen-verifier` sat in the workflow document's per-ticket narrative while no skill dispatched it — it is a capability reached through `delegate` on request, and is described with the other agents now.
+
+**`gh` and `jq` get the floor `to-tickets` already had.** Where `gh` is missing or unauthenticated, `open-pr` reports the branch and the push so the developer can open the PR themselves, rather than reporting done. And every hook parses with `jq`, so without it they all exited silently — no mandate, no reminders, nothing said. The bootstrap is the one hook that can still speak without it, and now does. ADR-0013 chose to fail open on a project with no config, which is a choice the developer made; a missing binary is not.
+
+**`implement` branches on the ticket's shape.** It opened by reading a phase spec, so every bug fix began with a failed lookup reported as an anomaly. A ticket from `diagnose` belongs to no effort and carries its own context — evidence, reproduction command, minimised repro, root cause, seam analysis — and is read that way.
+
+**`prototype` states its own exception.** The skill said "what main keeps is the decision, never the prototype" while `LOGIC.md` built a portable module and said the TUI is throwaway but the module is not. Both are right; holding both silently meant the agent picked whichever file it read last. On the logic branch the decision often *is* the module, and the parent rule now says so.
+
+**Two smaller things.** The manifest description no longer hardcodes a skill count — it is spent on triggers, not inventory, and it is a third copy of what the array already states. And `CLAUDE.md`'s English-only rule now carries its single exception: a trigger phrase may be in whatever language you actually type, because a trigger has to match the words that will be said. The rule governs what the repo says; a trigger is a thing it listens for.
+
 ## 2.3.0 — 2026-09-04
 
 **`harden` is withdrawn.** The skill read accumulated review records, grouped findings by cause rather than symptom, and proposed amendments to whichever skill should have caught the defect. It could not run, and could not have run for months: its own first step refuses to proceed below roughly ten review records across the vaults it is pointed at, and nothing has produced one — the pipeline has still not been used against a real project. It shipped dormant by construction, carrying the second-longest description in the plugin into every session to describe a pass it was unable to make.

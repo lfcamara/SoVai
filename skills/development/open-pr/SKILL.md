@@ -46,3 +46,5 @@ Taking it out of draft is `review`'s, at the end of its round loop — the same 
 ## Mechanics
 
 Use the `gh` CLI for every GitHub operation here — creating the PR as a draft, and any comment or label change along the way. `gh pr ready` belongs to `review`, which runs it when the round loop ends.
+
+Where `gh` is not installed or not authenticated, say so plainly and report the branch name and the push, so the developer can open the PR themselves. The branch is on the remote either way; what is missing is the pull request, and a run that says which is far cheaper to recover from than one that reports done. This is the floor `to-tickets` takes for a tracker it cannot reach.

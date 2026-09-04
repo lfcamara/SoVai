@@ -23,7 +23,7 @@ IDEA
       ├─ to-spec ───────► <effort> — Phase <N> Spec.md
       ├─ to-tickets ──── break the phase into tracer bullets
       │
-      │  (prototype and frontend-design sit beside this, on request — see below)
+      │  (prototype sits beside this, on request — see below)
       │
       └─ PER TICKET, on the frontier, in parallel:
            │
@@ -130,7 +130,7 @@ The rule that matters most:
 
 No tests, no abstractions, no error handling beyond what keeps it runnable. The most useful feedback is almost always *"the header from B with the sidebar from C"* — that recombination is the actual design.
 
-When a direction wins, `frontend-design` takes it to a finished visual design. That skill is **ambient — this plugin deliberately does not own it** ([ADR-0005](docs/adr/0005-wireframes-precede-phasing-prototypes-follow-it.md)), so it stays whatever the environment provides rather than a vendored copy that drifts. It is the one stage in the pipeline SoVai names without shipping.
+When a direction wins, the visual design is the next open question, and it leaves the pipeline the same way wireframing does — you take the validated structure to whatever design tooling you use ([ADR-0005](docs/adr/0005-wireframes-precede-phasing-prototypes-follow-it.md)). Naming a specific tool here would wire the pipeline's most visual stage to a product it does not own.
 
 ### to-tickets
 
@@ -155,11 +155,12 @@ A ticket's branch is cut from the **phase branch**, and its PR targets that bran
 | State | Set by | When |
 |---|---|---|
 | To Do | — | on the frontier, unclaimed |
-| Doing | orchestrator | dispatching the implementer |
-| Testing | orchestrator | implementer reported done; reviews dispatched |
+| Doing | `delegate`, as it dispatches | the implementer is about to start |
 | Done | orchestrator | reviews passed and the PR merged |
 
-**Every transition belongs to the orchestrator.** Two reasons: a subagent that dies mid-task would leave its ticket stranded with nothing alive to reconcile it, and an implementer marking its own work Done bypasses the Testing state that exists to have something else validate first.
+**Every transition belongs to the orchestrator**, and each sits in the skill that is live when it fires — `delegate` at dispatch, `wrap-up` at merge. A subagent that dies mid-task would leave its ticket stranded with nothing alive to reconcile it, and an implementer marking its own work Done is grading its own homework.
+
+There were four states. **Testing** was removed because nothing read it: the frontier is computed from Doing and Done, no skill branched on it, and what it expressed — that something validates before Done — is enforced by `review` running and `wrap-up` refusing to merge past what it found.
 
 ### implement
 
@@ -173,7 +174,7 @@ What you approve is the *list*, never a set of written tests. Writing them all u
 
 TDD is mandatory for backend and other non-UI logic. **UI is the deliberate exception**, tested after implementation, because a screen's shape moves while it is being built and a test written against a moving shape breaks on every layout change without ever catching a real defect. `ui-testing` covers the screen once it exists, deriving its test list from the effort's wireframes.
 
-A component test passing and the screen working are **independent facts**, and until `screen-verifier` existed nothing here established the second one — every claim about an interface was inferred from source. That agent drives a browser against the running app and reports what it observed, with the artifacts behind it: the screenshot, the entry point it actually loaded, the console and network output. Where no browser tooling is reachable it returns an honest **UNVERIFIED** and names what stopped it, because reading the source and reasoning about what it would render is the assertion it exists to replace.
+A component test passing and the screen working are **independent facts**, and nothing in the ticket loop establishes the second one — a claim about an interface is inferred from source unless somebody looks. The `screen-verifier` agent is what looks, and it is dispatched on request rather than on schedule; it is described with the other agents under [How delegation works](#how-delegation-works).
 
 The red test is the first commit and the first push — which is what lets a draft PR exist that already states, through its failing test, what the ticket must make true.
 
@@ -207,7 +208,7 @@ The fixed point is not a question when a ticket is being reviewed: it is the pha
 
 **So the fixes are their own run.** The reviewers cannot write, and the implementer that wrote the code ended when it reported — so what must be fixed goes back out as a fresh `implementer` brief, into the same worktree and branch, which are still on disk because `wrap-up` retires them only after the merge. The brief quotes the findings as the axis wrote them and fences the run to those: a fix run that also tidies what nobody flagged arrives at the least reviewable moment there is. It points at `tdd` for anything that changes behaviour, since a fix to a real defect starts at a red test that reproduces it; an owed refactor changes no behaviour and runs against the suite already green, which is the whole reason the cleanup was moved here.
 
-Then the axes that raised those findings run again, plus any axis the fix diff newly qualifies for — a fix that touches a migration file gets `migration-review` whether or not it ran the first time. There is no cap on rounds. The ticket moves back to Doing for the fix and to Testing for the re-review, because those states describe what is happening to it.
+Then the axes that raised those findings run again, plus any axis the fix diff newly qualifies for — a fix that touches a migration file gets `migration-review` whether or not it ran the first time. There is no cap on rounds.
 
 ### wrap-up
 

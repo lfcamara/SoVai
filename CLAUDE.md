@@ -6,7 +6,9 @@ When reporting information to me, be extremely concise and sacrifice grammar for
 
 Conversation language: Portuguese (PT-BR/PT-PT as used by the user).
 
-Written artifacts language: English — always, no exceptions. This includes docs, skills, agents, commit messages, code comments, READMEs, and any other file created in this repo.
+Written artifacts language: English. This includes docs, skills, agents, commit messages, code comments, READMEs, and any other file created in this repo.
+
+One exception, and only this one: a **trigger phrase** in a skill's description or body may carry whatever language you actually type. `wrap-up` lists "pode mergear" beside "merge it" because a trigger has to match the words that will be said, and a merge approval said in Portuguese is still a merge approval. The rule governs what the repo *says*; a trigger is a thing it *listens for*.
 
 ## Orchestration
 

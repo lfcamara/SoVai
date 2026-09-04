@@ -11,7 +11,7 @@ Exactly one **ticket**. A ticket is sized to one context window by construction 
 
 ## Gather context
 
-Read the ticket in full, then the spec for the ticket's own phase (`<effort> — Phase <N> Spec.md`) for the decisions that shaped it, `CONTEXT.md` for the domain vocabulary tests and code should use, and the ADRs covering the area you're touching. The brief's inputs are the authoritative paths; resolve whatever it left out from `docs/planning/<effort>/`. A ticket that references something not on disk where it says it should be is a fact to report, not a gap to fill by guessing.
+Read the ticket in full, then what that ticket points at. A ticket from the planning pipeline names an effort and a phase, so read `<effort> — Phase <N> Spec.md` for the decisions that shaped it. A bug ticket from `diagnose` belongs to no effort and carries its own context instead — the evidence, the reproduction command, the minimised repro, the confirmed root cause and the seam analysis — so read those and do not go looking for a phase spec that was never written. Either way read `CONTEXT.md` for the domain vocabulary tests and code should use, and the ADRs covering the area you're touching. The brief's inputs are the authoritative paths; resolve whatever it left out from `docs/planning/<effort>/`. A ticket that references something not on disk where it says it should be is a fact to report, not a gap to fill by guessing.
 
 ## Test list, only when asked
 
@@ -50,4 +50,4 @@ Return, in this order:
 
 Ticket state belongs to the orchestrator — implementing a ticket doesn't include moving it on the tracker.
 
-What the orchestrator does with this report is move the ticket to Testing and run the `review` skill against the pushed branch. Knowing that is useful here for one reason: the report is the only thing that survives this run, so anything review would need and only you can know belongs in it.
+What the orchestrator does with this report is run the `review` skill against the pushed branch. Knowing that is useful here for one reason: the report is the only thing that survives this run, so anything review would need and only you can know belongs in it.

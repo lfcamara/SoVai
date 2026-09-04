@@ -18,6 +18,15 @@
 
 set -u
 
+# Every hook here parses its input with jq, and without it they all exit quietly
+# — no mandate, no reminders, and nothing said. ADR-0013 chose to fail open on a
+# project with no config, which is a choice the developer made; a missing binary
+# is not, so this is the one hook that can still speak and it says so.
+if ! command -v jq >/dev/null 2>&1; then
+  printf 'SoVai: jq is not installed, so the plugin hooks are inert this session — no orchestration mandate, no skill index, no pre-edit reminders. Install jq to restore them. The skills themselves are unaffected.\n'
+  exit 0
+fi
+
 # Pipe the literal message straight into jq (-R raw, -s slurp -> whole stdin as
 # one string) to build the JSON. Avoids the heredoc-inside-$() quoting quirk.
 cat <<'EOF' | jq -Rsc '{hookSpecificOutput:{hookEventName:"SessionStart",additionalContext:.}}'
