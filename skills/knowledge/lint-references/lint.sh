@@ -120,7 +120,7 @@ scan_files() {
   find "$PLUGIN_ROOT/skills" -name '*.md' 2>/dev/null
   [ -d "$PLUGIN_ROOT/agents" ]   && find "$PLUGIN_ROOT/agents"   -maxdepth 1 -name '*.md' 2>/dev/null
   [ -d "$PLUGIN_ROOT/docs/adr" ] && find "$PLUGIN_ROOT/docs/adr" -maxdepth 1 -name '*.md' 2>/dev/null
-  for f in CLAUDE.md CONTEXT.md README.md engineering-workflow.md; do
+  for f in CLAUDE.md CONTEXT.md README.md engineering-workflow.md .claude-plugin/marketplace.json; do
     [ -f "$PLUGIN_ROOT/$f" ] && printf '%s\n' "$PLUGIN_ROOT/$f"
   done
   return 0

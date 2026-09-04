@@ -14,7 +14,9 @@ SoVai is the missing process around the agent. It turns a vague idea into a PRD,
 /plugin install sovai@sovai
 ```
 
-Then, per project: copy [`sovai.config.example.json`](sovai.config.example.json) to the project root as `sovai.config.json`, and point its three lists at that project's production logic, UI, and tests. The hooks classify files by that file and nothing else, so a project without one gets no reminders — which looks a lot like a plugin that isn't doing anything.
+Then, per project: copy [`sovai.config.example.json`](sovai.config.example.json) to the project root as `sovai.config.json` and fill it in. Three of its keys are path lists — `productionLogic`, `ui`, `tests` — and the hooks classify files by those and nothing else, so a project without the file gets no reminders, which looks a lot like a plugin that isn't doing anything. The other two matter at least as much: `tracker` says where tickets go, and without it `to-tickets` asks once and falls back to local markdown; `worktreeSetup` lists the commands that make a fresh git worktree runnable, since one holds tracked files and so has no `.env` and no `node_modules`.
+
+`jq` has to be on `PATH` — both hooks parse with it, and without it they announce themselves inert rather than failing silently. `gh` is needed to open pull requests.
 
 ---
 
