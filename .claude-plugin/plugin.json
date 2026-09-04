@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "sovai",
   "displayName": "SoVai",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "description": "Engineering workflow plugin \u2014 skills and agents organized by workflow block (planning, prototyping, development, review, wrap-up, debug, engineering, orchestration, knowledge, productivity), with hooks that load the process into every session.",
   "author": {
     "name": "Leonardo C\u00e2mara"

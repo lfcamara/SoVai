@@ -18,11 +18,19 @@ Work on a branch. **Merging to main is the release**, because that is what `/plu
 
 1. Make the change — skill, agent, hook, or doc.
 2. Run the plugin's reference linter, `skills/knowledge/lint-references/lint.sh`, from the repo root. Exit 0 or the release stops. Every cross-reference in this plugin is a bare name in prose — a skill naming a skill, an ADR citing an agent — that nothing else validates, and the manifest has to agree with what is on disk in both directions, since an undeclared skill never loads and a declared path that no longer exists is a load error someone else meets first. A dead reference does not raise an error; it silently does not happen, in a session you are not in, and the person who installed the plugin has no way to tell it was ever meant to work.
-3. Bump `version` in `.claude-plugin/plugin.json`, per the policy above.
+3. Bump `version` in `.claude-plugin/plugin.json`, per the policy above. Where the change adds, removes or renames anything, check the surfaces that describe the plugin in prose and cannot be linted: `.claude-plugin/marketplace.json` — which is the listing a prospective user reads first — the README, and both workflow documents.
 4. Add a dated entry below, saying why the change was made.
 5. Merge the branch to main. Installed users pick it up with `/plugin update sovai@sovai`.
 
 ---
+
+## 2.3.2 — 2026-09-04
+
+**The marketplace listing was three releases stale.** It described a "six-axis review", "an enforcement layer of hooks", and "a review-to-skill feedback loop" — the sixth axis was removed in 2.0.0, the enforcement framing in 2.2.0, and the feedback loop's consumer in 2.3.0. It is the first thing a prospective user reads, and nothing checked it: the linter reads `plugin.json`, and had never been pointed at `marketplace.json` at all.
+
+Fixed, and the file joins the linter's scan set so at least a stale skill or agent name in it now fails the release. The prose claims themselves cannot be linted, so the release step above now names the surfaces that describe the plugin and have to be read by a person when something is added, removed or renamed.
+
+**Setup instructions were understating the work.** The README said to point the config's "three lists" at production logic, UI and tests. There are five keys, and the two it omitted are the ones with the most visible consequences: `tracker` decides where tickets go, and without it `to-tickets` falls back to local markdown; `worktreeSetup` is what makes a fresh worktree runnable, since git materializes tracked files only. The README also now states the two binaries the plugin needs — `jq` for the hooks, `gh` for pull requests.
 
 ## 2.3.1 — 2026-09-04
 
