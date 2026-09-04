@@ -34,12 +34,12 @@ The branches produce very different artifacts, and picking wrong wastes the whol
 
 5. **Surface the state.** After every action, show the full relevant state, so the user can see what changed rather than infer it.
 
-6. **Capture it when done.** Record the answer — the verdict and the question it settled — where the work is tracked. Fold the validated decision into the real code, and keep the prototype itself as a primary source on a throwaway branch, out of main. What main keeps is the decision, never the prototype.
+6. **Capture it when done.** Record the answer — the verdict and the question it settled — where the work is tracked. Fold the validated decision into the real code, and keep the prototype itself as a primary source on a throwaway branch, out of main. What main keeps is the decision, never the prototype — with one exception, on the logic branch. There the decision often *is* a module: a reducer, a state machine, a set of pure functions, validated by being driven by hand. That module is written to be lifted, and lifting it is how the decision lands. The TUI around it is throwaway like everything else. [LOGIC.md](LOGIC.md) says which is which.
 
 ## Carry it forward
 
 Record the answer before anything else — the verdict and the question it settled, per rule 6. That record is the only part of this work meant to survive.
 
-Where the prototype validated an interface and the visual design is now the open question, run the `frontend-design` skill to take the validated structure to a finished design.
+Where the prototype validated an interface and the visual design is now the open question, take the validated structure to whatever design tooling you use. This plugin does not own that step and does not name a tool for it, for the reason `to-wireframes` hands off a brief rather than rendering: wiring the pipeline to someone else's product makes its most visual stage its most fragile.
 
 Then stop and report, unless the phase's tickets have not been written yet — in which case continue to `to-tickets` for the work this just settled. This skill is invoked deliberately rather than reached by a chain, so it does not assume what the session was doing before it arrived.

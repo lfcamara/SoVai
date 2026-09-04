@@ -88,14 +88,14 @@ The record isn't archival. It is what `wrap-up` reads to decide whether anything
 
 The fixes are a fresh `implementer` run, because this skill and every agent it dispatches are read-only so that findings stay findings, and because the run that wrote the code ended when it reported.
 
-Move the ticket back to **Doing** and dispatch one brief per the `delegate` contract:
+Dispatch one brief per the `delegate` contract:
 
 - **Inputs** — the findings to fix, quoted as the axis wrote them, plus the path to the review record. The ticket's worktree and branch are still on disk — `wrap-up` retires them only after the merge — so the brief names that worktree and the work continues where it stopped.
 - **Skill** — `tdd` for anything that changes behaviour, since a fix to a real defect starts at a red test that reproduces it. An owed refactor changes no behaviour and needs no new test: it runs against the suite already green, which is the whole reason the cleanup was moved here.
 - **Fence** — the findings named and nothing else. A fix run that also tidies what nobody flagged is the uninvited diff `delegate` warns about, arriving at the least reviewable moment.
 - **Done** — each finding resolved, and lint, build and tests green afterward.
 
-Then re-review: the axes that raised those findings, plus any axis whose selection criteria the fix diff newly matches — a fix that touches a migration file gets `migration-review` whether or not it ran the first time. Move the ticket back to Testing as you dispatch it. Findings raised on a fix run are handled exactly like the first round, with no cap on rounds: the loop ends when a review comes back with nothing that must be fixed.
+Then re-review: the axes that raised those findings, plus any axis whose selection criteria the fix diff newly matches — a fix that touches a migration file gets `migration-review` whether or not it ran the first time. Findings raised on a fix run are handled exactly like the first round, with no cap on rounds: the loop ends when a review comes back with nothing that must be fixed.
 
 ## Take the PR out of draft
 

@@ -42,7 +42,7 @@ You don't invoke any of it by name, and you don't have to start at the top. An o
 
 Two things sit beside the pipeline rather than inside it. `prototype` is offered when a spec still names a question only running code can settle, never run on schedule. And `to-wireframes` ends by handing you a **design brief** — a prompt you take to Claude Design, or whatever you use — instead of drawing the screens itself; you come back with a canvas and it reconciles the record against what you actually drew. It's the one stage that stops and waits for you.
 
-One name above isn't ours: `frontend-design` is an ambient skill the pipeline hands off to, deliberately not reimplemented here.
+Visual design leaves the pipeline the same way. When a prototype settles a direction, you take it to whatever design tooling you use — SoVai names no tool for it, and reimplements none, for the same reason `to-wireframes` hands you a brief instead of drawing.
 
 ---
 

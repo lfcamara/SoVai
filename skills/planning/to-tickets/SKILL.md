@@ -78,6 +78,6 @@ Confirm `worktrees/` is in the project's `.gitignore` before any ticket is dispa
 
 Publishing ends planning. What exists now is a **frontier** — the tickets whose blockers have all closed — and each of those is workable immediately.
 
-Execution runs one ticket at a time through the `implement` skill, dispatched to an `implementer` per the `delegate` contract, and tickets on the frontier can run in parallel. Move a ticket to **Doing** as you dispatch it, before the agent starts — the frontier is computed from ticket state, so a ticket being worked while still showing To Do invites a second session to claim it.
+Execution runs one ticket at a time through the `implement` skill, dispatched to an `implementer` per the `delegate` contract, and tickets on the frontier can run in parallel. `delegate` moves a ticket to **Doing** as it dispatches — the frontier is computed from ticket state, so a ticket being worked while still showing To Do invites a second session to claim it.
 
 Tickets go straight into the loop. Where the user asks to see what will be tested on a ticket before code is written, say so in that ticket's brief: the implementer returns its list of behaviours and stops, and you re-dispatch with the approved list (ADR-0011). Unlike the planning stages, that round trip does not continue in the same session — a ticket is sized to a fresh context window, and spending that window on the planning conversation that produced it defeats the sizing.

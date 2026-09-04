@@ -43,6 +43,8 @@ Two standing rules go in every brief. Unsettled decisions come back rather than 
 
 An `implementer` works in a worktree of its own, cut from the phase branch at `<project root>/worktrees/<TICKET-ID>-<slug>`. Create it, run the commands the project lists under `worktreeSetup` in its `sovai.config.json` so the tree is actually runnable — git materializes tracked files only, so a fresh worktree has no `.env` and no `node_modules` — and name that absolute path in the brief as where the work happens.
 
+Move the ticket to **Doing** before the agent starts. The frontier is computed from ticket state, so a ticket being worked while still showing To Do invites a second session to claim it — and this is the moment the dispatch actually happens, which is why the transition sits here rather than in the planning skill that drew the frontier.
+
 That isolation is what makes the frontier's parallelism real: two implementers sharing one checkout share a HEAD, and the second one's commits land on the first one's branch (ADR-0020). The worktree outlives the run and is removed by `wrap-up` when the ticket's PR merges.
 
 Independent briefs run at once. Where two pieces of work do not touch the same files and neither needs the other's result, dispatch them together.
