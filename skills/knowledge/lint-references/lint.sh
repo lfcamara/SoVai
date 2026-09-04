@@ -299,6 +299,31 @@ while read -r stage successors; do
               "skills/*/$stage/SKILL.md declares no hand-off — the chain stops here"
 done < <(pipeline_order)
 
+# --- 7: the workflow page's version badge -----------------------------------
+# engineering-workflow.html is a rendered page rather than a rendering of
+# engineering-workflow.md — the two are deliberately structured differently, one
+# to read and one to browse — so nothing derives either from the other and no
+# coverage check between them would be anything but noise.
+#
+# What they cannot be allowed to disagree on is a fact with one correct value,
+# and the page carries exactly one: the version. The markdown stopped restating
+# it and points at the manifest; the page keeps a badge, because a version
+# belongs on a rendered page. This is what keeps that badge honest. It went
+# three releases stale before anyone looked.
+page="$PLUGIN_ROOT/engineering-workflow.html"
+if [ -f "$page" ] && [ -f "$manifest" ]; then
+  declared_version=$(jq -r '.version // empty' "$manifest" 2>/dev/null)
+  if [ -n "$declared_version" ]; then
+    while IFS= read -r shown; do
+      [ -n "$shown" ] || continue
+      checked=$((checked + 1))
+      [ "$shown" = "v$declared_version" ] \
+        || report "engineering-workflow.html $shown" \
+                  "version badge — plugin.json declares $declared_version"
+    done < <(grep -oE 'v[0-9]+\.[0-9]+\.[0-9]+' "$page" | sort -u)
+  fi
+fi
+
 # --- 5: hook wiring (optional) ----------------------------------------------
 hooks_json="$PLUGIN_ROOT/hooks/hooks.json"
 if [ -f "$hooks_json" ]; then

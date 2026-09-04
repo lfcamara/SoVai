@@ -22,6 +22,7 @@ With `CLAUDE_PLUGIN_ROOT` unset — a plain shell rather than a plugin session �
 - **Undeclared skills** — every `SKILL.md` on disk appears in `plugin.json`. One that does not is never loaded, and nothing else in the repo says so.
 - **Relative markdown links** resolve on disk. External URLs and `[[wikilinks]]` are skipped: a wikilink addresses a note in a project's vault, which does not exist from here.
 - **Hook script paths** wired in `hooks/hooks.json`, when that file exists.
+- **The workflow page's version badge** matches `plugin.json`. `engineering-workflow.html` is a rendered page rather than a rendering of `engineering-workflow.md` — the two are deliberately structured differently, one to read and one to browse — so nothing derives either from the other and no coverage check between them would be anything but noise. The version is the one fact on that page with a single correct value, and it went three releases stale before anyone looked.
 - **The pipeline's order** — each planning skill's imperative hand-off ("run the `x` skill") names a stage the pipeline actually goes to next, and a stage that has a successor declares one. This is the one check that asks whether a name is the *right* one rather than whether it resolves, and it exists because a moved stage leaves its predecessor pointing at a real skill: clean by every other check, and invisible because the pipeline auto-continues and nobody types the names. The order lives in `lint.sh` as the only executable copy of a fact five documents also state.
 
 ## Read the exit code
